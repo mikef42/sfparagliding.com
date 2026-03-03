@@ -20,20 +20,36 @@ async function init() {
       console.log('[db-init] Database tables verified. Users count:', users.totalDocs)
 
       if (users.totalDocs === 0) {
-        console.log('[db-init] No users found. Creating default admin user...')
+        console.log('[db-init] No users found. Creating admin user...')
         await payload.create({
           collection: 'users',
           data: {
-            email: 'admin@sfparagliding.com',
-            password: 'changeme123',
-            name: 'Admin',
+            email: 'mikefifield@gmail.com',
+            password: 'S00it$xlr8',
+            name: 'Mike Fifield',
             role: 'admin',
           },
         })
-        console.log('[db-init] Default admin created: admin@sfparagliding.com / changeme123')
-        console.log('[db-init] ⚠️  CHANGE THIS PASSWORD IMMEDIATELY!')
+        console.log('[db-init] Admin user created successfully.')
       } else {
-        console.log('[db-init] Admin user already exists, skipping.')
+        // Update existing admin user credentials if needed
+        const existingUser = users.docs[0]
+        if (existingUser.email !== 'mikefifield@gmail.com') {
+          console.log('[db-init] Updating admin user credentials...')
+          await payload.update({
+            collection: 'users',
+            id: existingUser.id,
+            data: {
+              email: 'mikefifield@gmail.com',
+              password: 'S00it$xlr8',
+              name: 'Mike Fifield',
+              role: 'admin',
+            },
+          })
+          console.log('[db-init] Admin credentials updated.')
+        } else {
+          console.log('[db-init] Admin user already configured, skipping.')
+        }
       }
     } catch (queryErr: unknown) {
       const msg = queryErr instanceof Error ? queryErr.message : String(queryErr)
