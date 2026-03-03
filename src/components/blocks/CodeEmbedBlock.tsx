@@ -19,21 +19,18 @@ const widthClasses: Record<string, string> = {
 export function CodeEmbedBlock({ block }: CodeEmbedBlockProps) {
   const containerRef = useRef<HTMLDivElement>(null)
 
+  // After mount, re-create <script> tags so they actually execute.
+  // dangerouslySetInnerHTML renders the HTML (including iframes) but
+  // does NOT execute <script> elements — we handle that here.
   useEffect(() => {
-    if (!containerRef.current || !block.code) return
+    if (!containerRef.current) return
 
-    const container = containerRef.current
-    container.innerHTML = block.code
-
-    // Find and execute any script tags
-    const scripts = container.querySelectorAll('script')
+    const scripts = containerRef.current.querySelectorAll('script')
     scripts.forEach((oldScript) => {
       const newScript = document.createElement('script')
-      // Copy all attributes
       Array.from(oldScript.attributes).forEach((attr) => {
         newScript.setAttribute(attr.name, attr.value)
       })
-      // Copy inline script content
       if (oldScript.textContent) {
         newScript.textContent = oldScript.textContent
       }
@@ -48,7 +45,10 @@ export function CodeEmbedBlock({ block }: CodeEmbedBlockProps) {
   return (
     <section className="py-8">
       <div className={`${maxW} mx-auto px-4`}>
-        <div ref={containerRef} />
+        <div
+          ref={containerRef}
+          dangerouslySetInnerHTML={{ __html: block.code }}
+        />
       </div>
     </section>
   )

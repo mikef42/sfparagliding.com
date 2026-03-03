@@ -52,22 +52,35 @@ export const Pages: CollectionConfig = {
       },
     },
     {
-      name: 'meta',
-      type: 'group',
+      type: 'collapsible',
+      label: 'SEO / Meta',
+      admin: {
+        initCollapsed: true,
+      },
       fields: [
         {
-          name: 'metaTitle',
-          type: 'text',
-          admin: { description: 'Defaults to page title if empty' },
-        },
-        {
-          name: 'metaDescription',
-          type: 'textarea',
-        },
-        {
-          name: 'ogImage',
-          type: 'upload',
-          relationTo: 'media',
+          name: 'meta',
+          type: 'group',
+          label: false,
+          admin: {
+            hideGutter: true,
+          },
+          fields: [
+            {
+              name: 'metaTitle',
+              type: 'text',
+              admin: { description: 'Defaults to page title if empty' },
+            },
+            {
+              name: 'metaDescription',
+              type: 'textarea',
+            },
+            {
+              name: 'ogImage',
+              type: 'upload',
+              relationTo: 'media',
+            },
+          ],
         },
       ],
     },

@@ -1,18 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* ═══════════════════════════════════════════════════════
-   SF Paragliding — Admin Theme v3
-   Complete overhaul: clean, modern, highly usable
+   SF Paragliding — Admin Theme v4
+   Targeting exact Payload CMS 3.x class names
    ═══════════════════════════════════════════════════════ */
 
-/* ── Design Tokens ── */
 :root {
   --sfp-green: #1B3C2D;
   --sfp-green-light: #245A3F;
   --sfp-green-subtle: rgba(27, 60, 45, 0.08);
   --sfp-green-hover: rgba(27, 60, 45, 0.12);
   --sfp-amber: #E8952F;
-  --sfp-amber-subtle: rgba(232, 149, 47, 0.1);
   --sfp-radius: 8px;
   --sfp-radius-lg: 12px;
   --sfp-shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
@@ -23,7 +21,7 @@
 
 
 /* ══════════════════════════════════════
-   1. TYPOGRAPHY — Larger, cleaner
+   1. TYPOGRAPHY
    ══════════════════════════════════════ */
 
 html[data-theme],
@@ -32,7 +30,6 @@ body,
   font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
 }
 
-/* Base font size bump */
 [data-theme] {
   font-size: 15px !important;
 }
@@ -60,7 +57,7 @@ body,
   --sfp-nav-border: #E5E7EB;
   --sfp-header-bg: #FFFFFF;
   --sfp-block-bg: #FFFFFF;
-  --sfp-block-header-bg: #F9FAFB;
+  --sfp-block-header: #F9FAFB;
   --sfp-block-border: #E5E7EB;
 }
 
@@ -87,131 +84,141 @@ body,
   --sfp-nav-border: #252833;
   --sfp-header-bg: #161921;
   --sfp-block-bg: #161921;
-  --sfp-block-header-bg: #1C1F2A;
+  --sfp-block-header: #1C1F2A;
   --sfp-block-border: #252833;
 }
 
 
 /* ══════════════════════════════════════
-   4. HEADER — Clean, minimal
+   4. HEADER (banner role) — remove gray
+   space, lines, clean layout
    ══════════════════════════════════════ */
 
-[class*="app-header"] {
+.app-header {
   background: var(--sfp-header-bg) !important;
   border-bottom: 1px solid var(--sfp-nav-border) !important;
   box-shadow: none !important;
-  min-height: 56px !important;
-  padding: 0 16px !important;
+  padding: 0 20px !important;
 }
 
-/* Clean up header clutter — hide redundant fields */
-[class*="app-header"] [class*="render-fields"],
-[class*="app-header"] [class*="group-field"],
-[class*="app-header"] [class*="field-type"] {
+/* Remove gray space above header */
+.app-header > * {
   margin: 0 !important;
   padding: 0 !important;
 }
 
-/* Header actions area — contains our theme toggle */
-[class*="app-header__actions"],
-[class*="actions-wrapper"] {
+/* The inner header row with breadcrumbs + actions */
+.app-header [class*="step-nav"],
+.app-header nav {
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
+  padding: 12px 0 !important;
+}
+
+/* Breadcrumbs */
+.step-nav {
+  font-size: 0.85rem !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.step-nav a {
+  color: var(--theme-elevation-400) !important;
+  text-decoration: none !important;
+}
+
+.step-nav a:hover {
+  color: var(--sfp-green) !important;
 }
 
 
 /* ══════════════════════════════════════
-   5. SIDEBAR NAV — Clean with separator
+   5. SIDEBAR NAV — remove dark rectangles,
+   fix active state, move text left
    ══════════════════════════════════════ */
 
-/* Sidebar container */
-aside[class*="nav"],
-[class*="nav--"] {
+/* Sidebar container with drop shadow separator */
+aside.nav {
   background: var(--sfp-nav-bg) !important;
   border-right: none !important;
-  box-shadow: 2px 0 12px rgba(0,0,0,0.04) !important;
-  padding-top: 8px !important;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.06) !important;
 }
 
-[data-theme="dark"] aside[class*="nav"],
-[data-theme="dark"] [class*="nav--"] {
-  box-shadow: 2px 0 16px rgba(0,0,0,0.15) !important;
+[data-theme="dark"] aside.nav {
+  box-shadow: 2px 0 20px rgba(0,0,0,0.2) !important;
 }
 
-/* Nav group labels */
-[class*="nav-group__label"],
-[class*="nav-group"] > [class*="label"] {
+/* Nav group toggle labels (Collections, Globals) */
+.nav-group__toggle {
   font-size: 0.7rem !important;
   text-transform: uppercase !important;
   letter-spacing: 0.1em !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
   color: var(--theme-elevation-400) !important;
-  padding: 16px 20px 6px !important;
-  margin: 0 !important;
+  padding: 14px 16px 6px !important;
 }
 
-/* Nav links — larger, more readable */
-[class*="nav__link"],
-[class*="nav-group__link"] {
+/* HIDE the dark rectangle indicators next to nav links */
+.nav__link-indicator {
+  display: none !important;
+}
+
+/* Nav link items — larger, left-aligned, clean */
+.nav__link {
   font-size: 0.95rem !important;
   font-weight: 500 !important;
-  padding: 10px 20px !important;
-  margin: 1px 8px !important;
+  padding: 9px 16px !important;
+  margin: 1px 6px !important;
   border-radius: 6px !important;
-  transition: all var(--sfp-transition) !important;
   color: var(--theme-elevation-500) !important;
+  transition: all var(--sfp-transition) !important;
   text-decoration: none !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  background: transparent !important;
+  border: none !important;
 }
 
-[class*="nav__link"]:hover,
-[class*="nav-group__link"]:hover {
+.nav__link-label {
+  font-size: 0.95rem !important;
+}
+
+.nav__link:hover {
   background: var(--sfp-green-subtle) !important;
   color: var(--theme-text) !important;
 }
 
-/* Active nav link — clean left accent, no weird badges/buttons */
-[class*="nav__link--active"],
-[class*="nav-group__link--active"],
-a[class*="nav__link"][class*="active"],
-a[class*="nav-group__link"][class*="active"] {
+/* Active nav link — single clean highlight, NO double rectangle */
+.nav__link--active,
+.nav__link--active:hover {
   background: var(--sfp-green-subtle) !important;
   color: var(--sfp-green) !important;
   font-weight: 600 !important;
-  position: relative !important;
 }
 
-[data-theme="dark"] [class*="nav__link--active"],
-[data-theme="dark"] [class*="nav-group__link--active"],
-[data-theme="dark"] a[class*="nav__link"][class*="active"],
-[data-theme="dark"] a[class*="nav-group__link"][class*="active"] {
+[data-theme="dark"] .nav__link--active,
+[data-theme="dark"] .nav__link--active:hover {
   color: #7dd8a6 !important;
   background: rgba(125, 216, 166, 0.08) !important;
 }
 
-/* Remove the weird pill/badge button next to active nav item */
-[class*="nav__link"] [class*="pill"],
-[class*="nav__link"] [class*="badge"],
-[class*="nav-group__link"] [class*="pill"],
-[class*="nav-group__link"] [class*="badge"] {
-  display: none !important;
-}
-
-/* Nav bottom area — user/logout section */
-[class*="nav__footer"],
-[class*="nav"] > [class*="account"] {
+/* Log out link at bottom */
+.nav a[href="/admin/logout"] {
+  font-size: 0.85rem !important;
+  padding: 10px 16px !important;
+  color: var(--theme-elevation-400) !important;
   border-top: 1px solid var(--sfp-nav-border) !important;
-  padding: 12px 16px !important;
+  margin-top: 8px !important;
 }
 
 
 /* ══════════════════════════════════════
-   6. PRIMARY BUTTONS — Forest green
+   6. BUTTONS — forest green primary
    ══════════════════════════════════════ */
 
-button[class*="btn--style-primary"],
-a[class*="btn--style-primary"],
-[class*="form-submit"] button[type="submit"] {
+.btn--style-primary {
   background-color: var(--sfp-green) !important;
   color: #FFFFFF !important;
   font-weight: 600 !important;
@@ -219,41 +226,36 @@ a[class*="btn--style-primary"],
   border-radius: 6px !important;
   border: none !important;
   padding: 10px 20px !important;
-  letter-spacing: 0.01em !important;
   box-shadow: 0 2px 6px rgba(27, 60, 45, 0.2) !important;
   transition: all var(--sfp-transition) !important;
-  cursor: pointer !important;
 }
 
-button[class*="btn--style-primary"]:hover,
-a[class*="btn--style-primary"]:hover {
+.btn--style-primary:hover {
   background-color: var(--sfp-green-light) !important;
   box-shadow: 0 4px 12px rgba(27, 60, 45, 0.3) !important;
   transform: translateY(-1px) !important;
 }
 
-[data-theme="dark"] button[class*="btn--style-primary"],
-[data-theme="dark"] a[class*="btn--style-primary"] {
+[data-theme="dark"] .btn--style-primary {
   background-color: #2D6B4A !important;
   color: #FFFFFF !important;
 }
 
-[data-theme="dark"] button[class*="btn--style-primary"]:hover,
-[data-theme="dark"] a[class*="btn--style-primary"]:hover {
+[data-theme="dark"] .btn--style-primary:hover {
   background-color: #358058 !important;
 }
 
-/* Secondary/outline buttons */
-button[class*="btn--style-secondary"],
-a[class*="btn--style-secondary"] {
-  border-radius: 6px !important;
+/* Pill-style buttons (used in upload and elsewhere) */
+.btn--style-pill {
+  border-radius: 20px !important;
+  font-size: 0.8rem !important;
   font-weight: 500 !important;
-  transition: all var(--sfp-transition) !important;
+  padding: 6px 14px !important;
 }
 
 
 /* ══════════════════════════════════════
-   7. FORM INPUTS — Clean, properly sized
+   7. FORM INPUTS
    ══════════════════════════════════════ */
 
 input[type="text"],
@@ -285,24 +287,22 @@ textarea:focus {
   box-shadow: 0 0 0 3px rgba(74, 158, 115, 0.15) !important;
 }
 
-/* Labels — clear, readable */
+/* Labels */
 label,
-[class*="field-type"] > [class*="label"],
-[class*="field-label"] {
+.field-label {
   font-size: 0.875rem !important;
   font-weight: 600 !important;
   color: var(--theme-text) !important;
   margin-bottom: 6px !important;
-  display: block !important;
 }
 
 /* Field spacing */
-[class*="field-type"] {
+.field-type {
   margin-bottom: 20px !important;
 }
 
 /* Field descriptions */
-[class*="field-description"] {
+.field-description {
   font-size: 0.8rem !important;
   color: var(--theme-elevation-400) !important;
   margin-top: 4px !important;
@@ -310,44 +310,58 @@ label,
 
 
 /* ══════════════════════════════════════
-   8. SELECT / DROPDOWNS — Fix the "rectangles"
+   8. SELECT DROPDOWNS — fix "rectangle"
+   issue (Payload uses custom select with
+   popup-button-list, not react-select)
    ══════════════════════════════════════ */
 
-/* React Select container */
-[class*="react-select__control"] {
+/* The Payload select wrapper */
+.field-type.select .react-select .rs__control,
+.rs__control {
   border-radius: var(--sfp-radius) !important;
   border: 1px solid var(--theme-elevation-200) !important;
   background: var(--theme-input-bg) !important;
   min-height: 42px !important;
   font-size: 0.95rem !important;
   box-shadow: none !important;
-  transition: border-color var(--sfp-transition) !important;
+  padding: 0 8px !important;
 }
 
-[class*="react-select__control--is-focused"] {
+.rs__control--is-focused {
   border-color: var(--sfp-green) !important;
   box-shadow: 0 0 0 3px var(--sfp-green-subtle) !important;
 }
 
-/* Fix the dropdown indicator — the "weird rectangle" */
-[class*="react-select__indicator-separator"] {
+/* Hide separator line in select */
+.rs__indicator-separator {
   display: none !important;
 }
 
-[class*="react-select__dropdown-indicator"],
-[class*="react-select__clear-indicator"] {
-  color: var(--theme-elevation-400) !important;
-  padding: 6px !important;
+/* Fix dropdown arrow indicators — the "white rectangle" */
+.rs__indicators {
+  padding: 0 !important;
 }
 
-[class*="react-select__dropdown-indicator"] svg,
-[class*="react-select__clear-indicator"] svg {
+.rs__dropdown-indicator,
+.rs__clear-indicator {
+  color: var(--theme-elevation-400) !important;
+  padding: 4px !important;
+}
+
+.rs__dropdown-indicator svg,
+.rs__clear-indicator svg {
   width: 16px !important;
   height: 16px !important;
 }
 
-/* Select menu dropdown */
-[class*="react-select__menu"] {
+/* The selected value display */
+.rs__single-value {
+  color: var(--theme-text) !important;
+  font-size: 0.95rem !important;
+}
+
+/* Select dropdown menu */
+.rs__menu {
   border-radius: var(--sfp-radius) !important;
   border: 1px solid var(--theme-elevation-200) !important;
   box-shadow: var(--sfp-shadow-lg) !important;
@@ -356,134 +370,203 @@ label,
   background: var(--theme-elevation-50) !important;
 }
 
-[class*="react-select__option"] {
+.rs__option {
   font-size: 0.9rem !important;
   padding: 10px 14px !important;
 }
 
-[class*="react-select__option--is-selected"] {
+.rs__option--is-selected {
   background-color: var(--sfp-green) !important;
   color: #fff !important;
 }
 
-[class*="react-select__option--is-focused"]:not([class*="is-selected"]) {
+.rs__option--is-focused:not(.rs__option--is-selected) {
   background-color: var(--sfp-green-subtle) !important;
 }
 
-/* Native select elements */
+/* Popup button list (used in status selects etc) */
+.popup-button-list__button {
+  border-radius: 4px !important;
+  font-size: 0.85rem !important;
+  padding: 6px 10px !important;
+}
+
+.popup-button-list__button--selected {
+  background: var(--sfp-green) !important;
+  color: #fff !important;
+}
+
+/* Native selects */
 select {
   border-radius: var(--sfp-radius) !important;
   padding: 10px 14px !important;
   font-size: 0.95rem !important;
   background: var(--theme-input-bg) !important;
   border: 1px solid var(--theme-elevation-200) !important;
-  appearance: auto !important;
-  -webkit-appearance: auto !important;
 }
 
 
 /* ══════════════════════════════════════
-   9. BLOCKS / LAYOUT ROWS — Distinguishable
+   9. BLOCK ROWS — distinguishable cards
+   with proper spacing
    ══════════════════════════════════════ */
 
-/* Each block row — card-like with left accent */
-[class*="blocks-field__block"],
-[class*="array-field__row"] {
+/* The entire block row container */
+.blocks-field__row {
   background: var(--sfp-block-bg) !important;
   border: 1px solid var(--sfp-block-border) !important;
   border-left: 4px solid var(--sfp-green) !important;
   border-radius: var(--sfp-radius-lg) !important;
-  overflow: hidden !important;
   margin-bottom: 12px !important;
   box-shadow: var(--sfp-shadow-sm) !important;
+  overflow: hidden !important;
   transition: box-shadow var(--sfp-transition) !important;
 }
 
-[data-theme="dark"] [class*="blocks-field__block"],
-[data-theme="dark"] [class*="array-field__row"] {
+[data-theme="dark"] .blocks-field__row {
   border-left-color: #4a9e73 !important;
 }
 
-[class*="blocks-field__block"]:hover,
-[class*="array-field__row"]:hover {
+.blocks-field__row:hover {
   box-shadow: var(--sfp-shadow-md) !important;
 }
 
-/* Collapsible header — the block's title bar */
-[class*="collapsible__header"] {
-  padding: 12px 16px !important;
-  background: var(--sfp-block-header-bg) !important;
-  border-bottom: 1px solid var(--sfp-block-border) !important;
+/* Block header bar */
+.collapsible__header-wrap {
+  padding: 10px 16px !important;
+  background: var(--sfp-block-header) !important;
   display: flex !important;
   align-items: center !important;
-  gap: 8px !important;
+  gap: 10px !important;
+  min-height: 48px !important;
+}
+
+/* The toggle button (expand/collapse arrow) */
+.collapsible__toggle-wrap {
+  display: flex !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+}
+
+.collapsible__toggle {
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  border: none !important;
   cursor: pointer !important;
+  color: var(--theme-elevation-400) !important;
 }
 
-/* Fix the row number badges — clean them up */
-[class*="collapsible__header"] [class*="row-label"],
-[class*="collapsible__header"] [class*="block-label"] {
-  font-size: 0.85rem !important;
-  font-weight: 600 !important;
-  color: var(--theme-text) !important;
+.collapsible__toggle:hover {
+  background: var(--sfp-green-subtle) !important;
+  color: var(--sfp-green) !important;
 }
 
-/* The numbered pill/circle — make it subtle and clean */
-[class*="blocks-field__block"] [class*="pill"],
-[class*="array-field__row"] [class*="pill"],
-[class*="collapsible"] [class*="pill"] {
+/* Fix the drag handle dots */
+.collapsible__drag {
+  cursor: grab !important;
+  color: var(--theme-elevation-300) !important;
+  padding: 4px !important;
+  flex-shrink: 0 !important;
+}
+
+/* Block number — clean small badge, no weird oval */
+.blocks-field__block-number {
   background: var(--sfp-green) !important;
   color: #fff !important;
   font-size: 0.7rem !important;
   font-weight: 700 !important;
-  min-width: 22px !important;
-  height: 22px !important;
+  width: 24px !important;
+  height: 24px !important;
+  min-width: 24px !important;
   border-radius: 6px !important;
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
-  padding: 0 6px !important;
+  line-height: 1 !important;
+  flex-shrink: 0 !important;
 }
 
-[data-theme="dark"] [class*="blocks-field__block"] [class*="pill"],
-[data-theme="dark"] [class*="array-field__row"] [class*="pill"],
-[data-theme="dark"] [class*="collapsible"] [class*="pill"] {
+[data-theme="dark"] .blocks-field__block-number {
   background: #2D6B4A !important;
 }
 
-/* Block type label — clean tag style */
-[class*="blocks-field__block-type"],
-[class*="block-type"] {
-  font-size: 0.75rem !important;
+/* Block type pill badge — clean tag */
+.blocks-field__block-pill {
+  font-size: 0.7rem !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  color: var(--theme-elevation-400) !important;
-  padding: 2px 8px !important;
-  background: transparent !important;
+  letter-spacing: 0.04em !important;
+  padding: 3px 10px !important;
+  border-radius: 4px !important;
+  background: var(--sfp-green-subtle) !important;
+  color: var(--sfp-green) !important;
   border: none !important;
+  line-height: 1.4 !important;
 }
 
-/* Collapsible content area */
-[class*="collapsible__content"] {
-  padding: 20px !important;
+[data-theme="dark"] .blocks-field__block-pill {
+  background: rgba(74, 158, 115, 0.12) !important;
+  color: #7dd8a6 !important;
 }
 
-/* Block action buttons (move up/down, delete) */
-[class*="blocks-field__block"] [class*="collapsible__actions"],
-[class*="array-field__row"] [class*="collapsible__actions"] {
+.blocks-field__block-pill .pill__label {
+  font-size: inherit !important;
+  line-height: inherit !important;
+}
+
+/* Block title input (the "Untit..." textbox) */
+.blocks-field__block-header input[type="text"],
+.collapsible__header-wrap input[type="text"] {
+  border: none !important;
+  background: transparent !important;
+  font-size: 0.85rem !important;
+  color: var(--theme-elevation-400) !important;
+  padding: 4px 8px !important;
+  max-width: 200px !important;
+}
+
+/* Actions on the right (menu, collapse indicator) */
+.collapsible__actions-wrap,
+.collapsible__actions {
   display: flex !important;
   align-items: center !important;
-  gap: 4px !important;
+  gap: 2px !important;
+  margin-left: auto !important;
 }
 
-[class*="collapsible__actions"] button {
+/* The expand/collapse indicator chevron */
+.collapsible__indicator {
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
   border-radius: 4px !important;
-  transition: all var(--sfp-transition) !important;
+  color: var(--theme-elevation-400) !important;
 }
 
-[class*="collapsible__actions"] button:hover {
+.collapsible__indicator:hover {
   background: var(--sfp-green-subtle) !important;
+}
+
+/* Block content area — proper padding */
+.collapsible__content {
+  padding: 24px 20px !important;
+}
+
+/* Add spacing between block header and first field */
+.blocks-field__fields {
+  padding-top: 4px !important;
+}
+
+.blocks-field__fields .field-type:first-child {
+  margin-top: 0 !important;
 }
 
 
@@ -491,34 +574,27 @@ select {
    10. BLOCK PICKER / DRAWER
    ══════════════════════════════════════ */
 
-/* Block selector cards */
-[class*="block-card"],
-[class*="blocks-drawer__block"] {
+.blocks-field__drawer-toggler {
+  border: 2px dashed var(--theme-elevation-250) !important;
   border-radius: var(--sfp-radius) !important;
-  border: 1px solid var(--theme-elevation-200) !important;
-  background: var(--theme-elevation-50) !important;
-  padding: 14px !important;
-  transition: all 0.2s ease !important;
+  padding: 12px 20px !important;
+  background: transparent !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  transition: all var(--sfp-transition) !important;
   cursor: pointer !important;
+  margin-top: 8px !important;
 }
 
-[class*="block-card"]:hover,
-[class*="blocks-drawer__block"]:hover {
+.blocks-field__drawer-toggler:hover {
   border-color: var(--sfp-green) !important;
-  box-shadow: var(--sfp-shadow-md) !important;
-  transform: translateY(-1px) !important;
-}
-
-/* Drawer panel */
-[class*="drawer__content"],
-[class*="list-drawer__content"],
-[class*="blocks-drawer"] {
-  background: var(--theme-bg) !important;
+  color: var(--sfp-green) !important;
+  background: var(--sfp-green-subtle) !important;
 }
 
 
 /* ══════════════════════════════════════
-   11. RICH TEXT EDITOR
+   11. RICH TEXT & CODE EDITORS
    ══════════════════════════════════════ */
 
 [class*="rich-text"] [class*="editor"] {
@@ -536,22 +612,7 @@ select {
   border-bottom: 1px solid var(--theme-elevation-200) !important;
 }
 
-[class*="rich-text"] [class*="toolbar"] button {
-  border-radius: 4px !important;
-  padding: 6px !important;
-  transition: all var(--sfp-transition) !important;
-}
-
-[class*="rich-text"] [class*="toolbar"] button:hover {
-  background: var(--sfp-green-subtle) !important;
-}
-
-
-/* ══════════════════════════════════════
-   12. CODE EDITOR
-   ══════════════════════════════════════ */
-
-[class*="code-field"] {
+.code-field {
   border-radius: var(--sfp-radius) !important;
   overflow: hidden !important;
   border: 1px solid var(--theme-elevation-200) !important;
@@ -559,43 +620,93 @@ select {
 
 
 /* ══════════════════════════════════════
-   13. DASHBOARD CARDS
+   12. DOCUMENT EDIT VIEW — fix header
+   spacing and metadata area
    ══════════════════════════════════════ */
 
-[class*="dashboard__card"],
-[class*="card--has-link"] {
+/* Page title */
+.doc-header__title h1 {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  color: var(--theme-text) !important;
+  margin-bottom: 8px !important;
+}
+
+/* Meta bar (Last Modified, Created) */
+.doc-controls {
+  padding: 8px 0 !important;
+  gap: 12px !important;
+  border-bottom: 1px solid var(--sfp-block-border) !important;
+  margin-bottom: 20px !important;
+}
+
+.doc-controls__meta {
+  font-size: 0.8rem !important;
+  color: var(--theme-elevation-400) !important;
+}
+
+/* Content padding */
+.template-default__wrap {
+  padding-top: 12px !important;
+}
+
+/* Render fields — ensure proper spacing inside blocks */
+.render-fields {
+  padding: 0 !important;
+}
+
+.render-fields--margins-small .field-type {
+  margin-bottom: 16px !important;
+}
+
+/* Main form column */
+[class*="gutter--left"] {
+  padding-left: 24px !important;
+}
+
+[class*="gutter--right"] {
+  padding-right: 24px !important;
+}
+
+
+/* ══════════════════════════════════════
+   13. SIDEBAR FIELDS (right panel)
+   ══════════════════════════════════════ */
+
+/* The sidebar column with Slug, Status, Published At */
+.doc-fields__sidebar .field-type {
+  margin-bottom: 16px !important;
+}
+
+
+/* ══════════════════════════════════════
+   14. DASHBOARD
+   ══════════════════════════════════════ */
+
+.card {
   border-radius: var(--sfp-radius-lg) !important;
   border: 1px solid var(--theme-elevation-200) !important;
   background: var(--theme-elevation-50) !important;
-  padding: 20px !important;
   transition: all 0.2s ease !important;
+  overflow: hidden !important;
 }
 
-[class*="dashboard__card"]:hover,
-[class*="card--has-link"]:hover {
+.card:hover {
   box-shadow: var(--sfp-shadow-md) !important;
   border-color: var(--sfp-green) !important;
   transform: translateY(-2px) !important;
 }
 
-[class*="dashboard__card"] h4,
-[class*="card"] [class*="title"] {
+.card h3,
+.card h4 {
   font-size: 1.05rem !important;
   font-weight: 600 !important;
 }
 
 
 /* ══════════════════════════════════════
-   14. TABLE / LIST VIEW
+   15. TABLE / LIST VIEW
    ══════════════════════════════════════ */
-
-[class*="list__header"] {
-  font-size: 0.8rem !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.04em !important;
-  font-weight: 600 !important;
-  color: var(--theme-elevation-400) !important;
-}
 
 [class*="table"] td {
   font-size: 0.9rem !important;
@@ -604,14 +715,12 @@ select {
 
 [class*="table"] tr {
   border-bottom: 1px solid var(--theme-elevation-150) !important;
-  transition: background var(--sfp-transition) !important;
 }
 
 [class*="table"] tr:hover {
   background: var(--sfp-green-subtle) !important;
 }
 
-/* Cell link styles */
 [class*="table"] a {
   color: var(--theme-text) !important;
   font-weight: 500 !important;
@@ -623,33 +732,51 @@ select {
 
 
 /* ══════════════════════════════════════
-   15. STATUS / META PANELS
+   16. UPLOAD AREAS
    ══════════════════════════════════════ */
 
-/* Sidebar meta sections (status, dates, publish) */
-[class*="sidebar-field"],
-[class*="meta"] {
-  font-size: 0.85rem !important;
+.upload__toggler {
+  border-radius: var(--sfp-radius) !important;
+  border: 2px dashed var(--theme-elevation-250) !important;
+  padding: 16px !important;
+  transition: all var(--sfp-transition) !important;
 }
 
-/* Status indicators — fix the weird rectangles */
-[class*="status-indicator"],
-[class*="status__value"] {
-  border-radius: 20px !important;
-  padding: 3px 10px !important;
-  font-size: 0.75rem !important;
-  font-weight: 600 !important;
-}
-
-/* Checkbox / toggle styling */
-[class*="check"],
-[class*="toggle"] {
-  border-radius: 4px !important;
+.upload__toggler:hover {
+  border-color: var(--sfp-green) !important;
 }
 
 
 /* ══════════════════════════════════════
-   16. THEME TOGGLE BUTTON
+   17. COLLAPSIBLE FIELD TYPE
+   (used for SEO/Meta section)
+   ══════════════════════════════════════ */
+
+.field-type.collapsible {
+  border: 1px solid var(--sfp-block-border) !important;
+  border-radius: var(--sfp-radius) !important;
+  overflow: hidden !important;
+  margin-bottom: 20px !important;
+}
+
+.field-type.collapsible > .collapsible__header-wrap {
+  padding: 10px 16px !important;
+  background: var(--sfp-block-header) !important;
+  cursor: pointer !important;
+}
+
+.field-type.collapsible > .collapsible__content {
+  padding: 20px 16px !important;
+}
+
+/* Group inside collapsible — no extra gutter */
+.field-type.group {
+  margin-bottom: 0 !important;
+}
+
+
+/* ══════════════════════════════════════
+   18. THEME TOGGLE
    ══════════════════════════════════════ */
 
 .theme-toggle-btn {
@@ -679,22 +806,14 @@ select {
   background: rgba(74, 158, 115, 0.1) !important;
 }
 
-.theme-toggle-btn .toggle-sun {
-  display: none;
-}
-.theme-toggle-btn .toggle-moon {
-  display: block;
-}
-[data-theme="dark"] .theme-toggle-btn .toggle-sun {
-  display: block;
-}
-[data-theme="dark"] .theme-toggle-btn .toggle-moon {
-  display: none;
-}
+.theme-toggle-btn .toggle-sun { display: none; }
+.theme-toggle-btn .toggle-moon { display: block; }
+[data-theme="dark"] .theme-toggle-btn .toggle-sun { display: block; }
+[data-theme="dark"] .theme-toggle-btn .toggle-moon { display: none; }
 
 
 /* ══════════════════════════════════════
-   17. SCROLLBAR
+   19. SCROLLBAR
    ══════════════════════════════════════ */
 
 [data-theme] ::-webkit-scrollbar {
@@ -713,136 +832,71 @@ select {
 
 
 /* ══════════════════════════════════════
-   18. MISC CLEANUP
+   20. MISC
    ══════════════════════════════════════ */
 
-/* Add Block button — make it stand out */
-[class*="blocks-field__add-row"],
-[class*="array-field__add-row"],
-button[class*="add-new"] {
-  border-radius: var(--sfp-radius) !important;
-  border: 2px dashed var(--theme-elevation-250) !important;
-  padding: 12px !important;
-  font-size: 0.9rem !important;
-  font-weight: 500 !important;
-  transition: all var(--sfp-transition) !important;
-  background: transparent !important;
-}
-
-[class*="blocks-field__add-row"]:hover,
-[class*="array-field__add-row"]:hover,
-button[class*="add-new"]:hover {
-  border-color: var(--sfp-green) !important;
-  color: var(--sfp-green) !important;
-  background: var(--sfp-green-subtle) !important;
-}
-
-/* Upload / file field areas */
-[class*="upload__toggler"],
-[class*="file-field__upload"] {
-  border-radius: var(--sfp-radius) !important;
-  border: 2px dashed var(--theme-elevation-250) !important;
-  transition: all var(--sfp-transition) !important;
-}
-
-[class*="upload__toggler"]:hover,
-[class*="file-field__upload"]:hover {
-  border-color: var(--sfp-green) !important;
-}
-
-/* Breadcrumbs */
-[class*="step-nav"] {
-  font-size: 0.85rem !important;
-  color: var(--theme-elevation-400) !important;
-}
-
-[class*="step-nav"] a {
-  color: var(--theme-elevation-400) !important;
-  transition: color var(--sfp-transition) !important;
-}
-
-[class*="step-nav"] a:hover {
-  color: var(--sfp-green) !important;
-}
-
-/* Document header / title area */
-[class*="doc-header"] h1,
-[class*="collection-list__header"] h1 {
-  font-size: 1.75rem !important;
-  font-weight: 700 !important;
-  color: var(--theme-text) !important;
-}
-
-/* Pagination */
-[class*="paginator"] button,
-[class*="per-page"] select {
-  border-radius: 6px !important;
-  font-size: 0.85rem !important;
-}
-
-/* Toast notifications */
+/* Toast */
 [class*="toast"] {
   border-radius: var(--sfp-radius) !important;
   box-shadow: var(--sfp-shadow-lg) !important;
-  font-size: 0.9rem !important;
 }
 
-/* Tabs */
-[class*="tabs-field__tab-button"] {
-  font-size: 0.9rem !important;
-  font-weight: 500 !important;
-  padding: 10px 16px !important;
-  border-radius: 6px 6px 0 0 !important;
-  transition: all var(--sfp-transition) !important;
-}
-
-[class*="tabs-field__tab-button--active"] {
-  font-weight: 600 !important;
-  color: var(--sfp-green) !important;
-  border-bottom-color: var(--sfp-green) !important;
-}
-
-/* Relationship field value tags */
-[class*="relationship--multi-value"] {
-  border-radius: 4px !important;
-  font-size: 0.85rem !important;
-}
-
-/* Document controls area */
-[class*="doc-controls"] {
-  gap: 8px !important;
-}
-
-/* Eyebrow / version info */
-[class*="eyebrow"],
-[class*="version-count"] {
-  font-size: 0.75rem !important;
-  color: var(--theme-elevation-400) !important;
-}
-
-/* Main content padding */
-[class*="template-default__wrap"] {
-  padding-top: 20px !important;
-}
-
-/* Search field in nav/list */
-[class*="search-filter"] input {
-  border-radius: var(--sfp-radius) !important;
-  font-size: 0.9rem !important;
-}
-
-/* Modal / dialog */
+/* Modal */
 [class*="modal__content"],
 [class*="dialog"] {
   border-radius: var(--sfp-radius-lg) !important;
   box-shadow: var(--sfp-shadow-lg) !important;
 }
 
-/* Gutter / padding for content */
-[class*="gutter--left"] {
-  padding-left: 24px !important;
+/* Pagination */
+[class*="paginator"] button {
+  border-radius: 6px !important;
 }
 
-[class*="gutter--right"] {
-  padding-right: 24px !important;
+/* Blocks field label section (Layout heading + actions) */
+.blocks-field__header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 12px !important;
+  padding-bottom: 8px !important;
+  border-bottom: 1px solid var(--sfp-block-border) !important;
+}
+
+.blocks-field__header h3 {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+}
+
+.blocks-field__header-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.blocks-field__header-action {
+  font-size: 0.8rem !important;
+  color: var(--theme-elevation-400) !important;
+  cursor: pointer !important;
+}
+
+.blocks-field__header-action:hover {
+  color: var(--sfp-green) !important;
+}
+
+/* Array/repeater rows */
+.array-field__row {
+  background: var(--sfp-block-bg) !important;
+  border: 1px solid var(--sfp-block-border) !important;
+  border-left: 4px solid var(--sfp-amber) !important;
+  border-radius: var(--sfp-radius-lg) !important;
+  margin-bottom: 12px !important;
+  box-shadow: var(--sfp-shadow-sm) !important;
+  overflow: hidden !important;
+}
+
+/* Eyebrow text */
+.eyebrow {
+  font-size: 0.75rem !important;
+  color: var(--theme-elevation-400) !important;
 }
