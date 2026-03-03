@@ -326,8 +326,11 @@ label,
   box-shadow: none !important;
 }
 
-/* Ensure the value container shows full text */
+/* Ensure the value container shows full text — override react-select grid layout */
 .rs__value-container {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
   overflow: visible !important;
   padding: 2px 8px !important;
 }
@@ -336,6 +339,17 @@ label,
 .value-container {
   overflow: visible !important;
   min-width: 0 !important;
+  flex: 1 !important;
+}
+
+/* Single value positioning */
+.rs__single-value {
+  color: var(--theme-text) !important;
+  font-size: 0.95rem !important;
+  position: static !important;
+  transform: none !important;
+  max-width: 100% !important;
+  overflow: visible !important;
 }
 
 .rs__control--is-focused {
@@ -363,12 +377,6 @@ label,
 .rs__clear-indicator svg {
   width: 16px !important;
   height: 16px !important;
-}
-
-/* The selected value display */
-.rs__single-value {
-  color: var(--theme-text) !important;
-  font-size: 0.95rem !important;
 }
 
 /* Select dropdown menu */
