@@ -80,8 +80,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             {products.docs.map((product) => {
               const imageUrl =
                 product.images?.[0]?.image &&
-                typeof product.images[0].image === 'object'
-                  ? getImageUrl(product.images[0].image, 'medium')
+                  typeof product.images[0].image === 'object'
+                  ? getImageUrl(product.images[0].image as any, 'medium')
                   : '/placeholder.jpg'
 
               return (

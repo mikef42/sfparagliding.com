@@ -14,7 +14,7 @@ interface CTABannerBlockProps {
 
 export function CTABannerBlock({ block }: CTABannerBlockProps) {
   const hasImage = !!block.backgroundImage
-  const imageUrl = hasImage ? getImageUrl(block.backgroundImage, 'large') : null
+  const imageUrl = hasImage ? getImageUrl(block.backgroundImage as any, 'large') : null
 
   return (
     <section
@@ -33,17 +33,15 @@ export function CTABannerBlock({ block }: CTABannerBlockProps) {
 
       <div className="relative z-10 container-wide text-center">
         <h2
-          className={`font-heading text-4xl md:text-5xl lg:text-6xl mb-4 ${
-            hasImage ? 'text-white' : ''
-          }`}
+          className={`font-heading text-4xl md:text-5xl lg:text-6xl mb-4 ${hasImage ? 'text-white' : ''
+            }`}
         >
           {block.heading}
         </h2>
         {block.text && (
           <p
-            className={`text-lg max-w-xl mx-auto mb-8 ${
-              hasImage ? 'text-white/80' : 'text-gray-600'
-            }`}
+            className={`text-lg max-w-xl mx-auto mb-8 ${hasImage ? 'text-white/80' : 'text-gray-600'
+              }`}
           >
             {block.text}
           </p>

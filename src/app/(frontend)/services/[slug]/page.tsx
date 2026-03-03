@@ -35,7 +35,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
   const imageUrl =
     service.image && typeof service.image === 'object'
-      ? getImageUrl(service.image, 'large')
+      ? getImageUrl(service.image as any, 'large')
       : null
 
   return (

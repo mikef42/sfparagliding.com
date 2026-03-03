@@ -1,0 +1,10 @@
+[    1326ms] Error: Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at rD (https://sfparagliding.com/_next/static/chunks/4bd1b696-cc729d47eba2cee4.js:1:35062)
+    at rO (https://sfparagliding.com/_next/static/chunks/4bd1b696-cc729d47eba2cee4.js:1:36095)
+    at https://sfparagliding.com/_next/static/chunks/4bd1b696-cc729d47eba2cee4.js:1:117791
+    at iS (https://sfparagliding.com/_next/static/chunks/4bd1b696-cc729d47eba2cee4.js:1:122663)
+    at ib (https://sfparagliding.com/_next/static/chunks/4bd1b696-cc729d47eba2cee4.js:1:114451)
+    at https://sfparagliding.com/_next/static/chunks/4bd1b696-cc729d47eba2cee4.js:1:110438
+    at io (https://sfparagliding.com/_next/static/chunks/4bd1b696-cc729d47eba2cee4.js:1:110539)
+    at iY (https://sfparagliding.com/_next/static/chunks/4bd1b696-cc729d47eba2cee4.js:1:132642)
+    at MessagePort.w (https://sfparagliding.com/_next/static/chunks/5964-217149ecc4b4e5f3.js:1:51549)

@@ -39,6 +39,7 @@ clone/
 
 # Deployment credentials
 .deploy-credentials
-.deploy-credentials
-.deploy-credentials
+
+# Scripts with credentials
+scripts/recreate-pages.sh
 .deploy-credentials

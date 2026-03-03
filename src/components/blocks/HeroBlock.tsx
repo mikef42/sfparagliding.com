@@ -13,7 +13,7 @@ interface HeroBlockProps {
 }
 
 export function HeroBlock({ block }: HeroBlockProps) {
-  const imageUrl = getImageUrl(block.backgroundImage, 'large')
+  const imageUrl = getImageUrl(block.backgroundImage as any, 'large')
   const opacity = (block.overlayOpacity ?? 30) / 100
   const align = block.textAlignment || 'center'
 

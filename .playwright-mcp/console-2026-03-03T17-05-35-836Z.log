@@ -1,0 +1,4 @@
+[     714ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://sfparagliding.com/_next/static/css/ce91254b5c975ab8.css:0
+[     723ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://sfparagliding.com/_next/static/chunks/webpack-b1286e815f63338e.js:0
+[     723ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://sfparagliding.com/_next/static/chunks/472f405a-4ca8c11d5fcf211e.js:0
+[    3935ms] [WARNING] The resource https://sfparagliding.com/logo.png was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally. @ https://sfparagliding.com/admin:0

@@ -33,7 +33,7 @@ export default async function ServicesPage() {
             {services.docs.map((service) => {
               const imageUrl =
                 service.image && typeof service.image === 'object'
-                  ? getImageUrl(service.image, 'medium')
+                  ? getImageUrl(service.image as any, 'medium')
                   : '/placeholder.jpg'
 
               return (

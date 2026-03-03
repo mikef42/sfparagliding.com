@@ -35,7 +35,7 @@ export function GalleryBlock({ block }: GalleryBlockProps) {
           )}
         >
           {block.images.map((item, i) => {
-            const imageUrl = getImageUrl(item.image, 'medium')
+            const imageUrl = getImageUrl(item.image as any, 'medium')
             return (
               <div key={i} className="group">
                 <div className="aspect-[4/3] overflow-hidden rounded-sm bg-gray-100">

@@ -11,7 +11,7 @@ interface ImageTextBlockProps {
 }
 
 export function ImageTextBlock({ block }: ImageTextBlockProps) {
-  const imageUrl = getImageUrl(block.image, 'large')
+  const imageUrl = getImageUrl(block.image as any, 'large')
   const isImageLeft = block.layout !== 'image-right'
 
   return (

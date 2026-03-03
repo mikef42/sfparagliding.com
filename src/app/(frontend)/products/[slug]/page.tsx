@@ -36,7 +36,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
   const images = product.images || []
   const featuredImage =
     images[0]?.image && typeof images[0].image === 'object'
-      ? getImageUrl(images[0].image, 'large')
+      ? getImageUrl(images[0].image as any, 'large')
       : '/placeholder.jpg'
 
   return (
