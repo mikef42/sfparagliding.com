@@ -1,310 +1,848 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* ═══════════════════════════════════════════════════════
-   SF Paragliding — "Aero" Admin Theme
-   Clean minimal dark/light modes built on Payload tokens
+   SF Paragliding — Admin Theme v3
+   Complete overhaul: clean, modern, highly usable
    ═══════════════════════════════════════════════════════ */
 
+/* ── Design Tokens ── */
 :root {
-  --sfp-amber: #E8952F;
-  --sfp-amber-hover: #D4841F;
-  --sfp-amber-subtle: rgba(232, 149, 47, 0.15);
   --sfp-green: #1B3C2D;
-  --sfp-green-dark: #142E22;
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --transition-fast: 0.15s ease-in-out;
+  --sfp-green-light: #245A3F;
+  --sfp-green-subtle: rgba(27, 60, 45, 0.08);
+  --sfp-green-hover: rgba(27, 60, 45, 0.12);
+  --sfp-amber: #E8952F;
+  --sfp-amber-subtle: rgba(232, 149, 47, 0.1);
+  --sfp-radius: 8px;
+  --sfp-radius-lg: 12px;
+  --sfp-shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --sfp-shadow-md: 0 4px 12px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04);
+  --sfp-shadow-lg: 0 10px 30px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.04);
+  --sfp-transition: 0.15s ease;
 }
 
-/* ── Typography Override ── */
+
+/* ══════════════════════════════════════
+   1. TYPOGRAPHY — Larger, cleaner
+   ══════════════════════════════════════ */
 
 html[data-theme],
 body,
 [data-theme] * {
-  font-family: 'Outfit', system-ui, -apple-system, sans-serif !important;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif !important;
 }
 
-/* ── Global Spacing & App Frame ── */
+/* Base font size bump */
+[data-theme] {
+  font-size: 15px !important;
+}
+
+
+/* ══════════════════════════════════════
+   2. LIGHT THEME
+   ══════════════════════════════════════ */
+
+[data-theme="light"] {
+  --theme-bg: #F5F6F8;
+  --theme-elevation-0: #F5F6F8;
+  --theme-elevation-50: #FFFFFF;
+  --theme-elevation-100: #F0F1F3;
+  --theme-elevation-150: #E6E8EB;
+  --theme-elevation-200: #DDDFE3;
+  --theme-elevation-250: #C8CBD0;
+  --theme-elevation-300: #A0A4AB;
+  --theme-elevation-400: #6B7280;
+  --theme-elevation-500: #4B5563;
+  --theme-elevation-800: #1F2937;
+  --theme-text: #111827;
+  --theme-input-bg: #FFFFFF;
+  --sfp-nav-bg: #FFFFFF;
+  --sfp-nav-border: #E5E7EB;
+  --sfp-header-bg: #FFFFFF;
+  --sfp-block-bg: #FFFFFF;
+  --sfp-block-header-bg: #F9FAFB;
+  --sfp-block-border: #E5E7EB;
+}
+
+
+/* ══════════════════════════════════════
+   3. DARK THEME
+   ══════════════════════════════════════ */
+
+[data-theme="dark"] {
+  --theme-bg: #0F1117;
+  --theme-elevation-0: #0F1117;
+  --theme-elevation-50: #161921;
+  --theme-elevation-100: #1C1F2A;
+  --theme-elevation-150: #252833;
+  --theme-elevation-200: #313543;
+  --theme-elevation-250: #3F4453;
+  --theme-elevation-300: #5A5F6E;
+  --theme-elevation-400: #8B8F9E;
+  --theme-elevation-500: #B5B8C4;
+  --theme-elevation-800: #E8EAF0;
+  --theme-text: #E8EAF0;
+  --theme-input-bg: #1C1F2A;
+  --sfp-nav-bg: #161921;
+  --sfp-nav-border: #252833;
+  --sfp-header-bg: #161921;
+  --sfp-block-bg: #161921;
+  --sfp-block-header-bg: #1C1F2A;
+  --sfp-block-border: #252833;
+}
+
+
+/* ══════════════════════════════════════
+   4. HEADER — Clean, minimal
+   ══════════════════════════════════════ */
 
 [class*="app-header"] {
-  border-bottom: 1px solid var(--theme-elevation-200) !important;
-  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.05) !important;
+  background: var(--sfp-header-bg) !important;
+  border-bottom: 1px solid var(--sfp-nav-border) !important;
+  box-shadow: none !important;
+  min-height: 56px !important;
+  padding: 0 16px !important;
 }
 
-[class*="template-default__wrap"] {
-  padding-top: 2rem !important;
-  /* Give some breathing room under header */
+/* Clean up header clutter — hide redundant fields */
+[class*="app-header"] [class*="render-fields"],
+[class*="app-header"] [class*="group-field"],
+[class*="app-header"] [class*="field-type"] {
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
-/* ── Nav & Sidebar Styling ── */
-
-aside[class*="nav"] {
-  border-right: 1px solid var(--theme-elevation-200) !important;
+/* Header actions area — contains our theme toggle */
+[class*="app-header__actions"],
+[class*="actions-wrapper"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
 }
 
-[class*="nav-group__label"] {
-  font-size: 0.65rem !important;
+
+/* ══════════════════════════════════════
+   5. SIDEBAR NAV — Clean with separator
+   ══════════════════════════════════════ */
+
+/* Sidebar container */
+aside[class*="nav"],
+[class*="nav--"] {
+  background: var(--sfp-nav-bg) !important;
+  border-right: none !important;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.04) !important;
+  padding-top: 8px !important;
+}
+
+[data-theme="dark"] aside[class*="nav"],
+[data-theme="dark"] [class*="nav--"] {
+  box-shadow: 2px 0 16px rgba(0,0,0,0.15) !important;
+}
+
+/* Nav group labels */
+[class*="nav-group__label"],
+[class*="nav-group"] > [class*="label"] {
+  font-size: 0.7rem !important;
   text-transform: uppercase !important;
   letter-spacing: 0.1em !important;
-  font-weight: 700 !important;
-  color: var(--theme-elevation-500) !important;
-  padding-left: 24px !important;
-  margin-top: 20px !important;
+  font-weight: 600 !important;
+  color: var(--theme-elevation-400) !important;
+  padding: 16px 20px 6px !important;
+  margin: 0 !important;
 }
 
+/* Nav links — larger, more readable */
 [class*="nav__link"],
 [class*="nav-group__link"] {
-  border-radius: var(--radius-sm) !important;
-  margin: 2px 12px !important;
-  padding: 10px 14px !important;
-  font-size: 0.9rem !important;
+  font-size: 0.95rem !important;
   font-weight: 500 !important;
-  transition: all var(--transition-fast) !important;
+  padding: 10px 20px !important;
+  margin: 1px 8px !important;
+  border-radius: 6px !important;
+  transition: all var(--sfp-transition) !important;
+  color: var(--theme-elevation-500) !important;
+  text-decoration: none !important;
 }
 
 [class*="nav__link"]:hover,
 [class*="nav-group__link"]:hover {
-  background: var(--theme-elevation-100) !important;
-  color: var(--theme-elevation-800) !important;
+  background: var(--sfp-green-subtle) !important;
+  color: var(--theme-text) !important;
 }
 
+/* Active nav link — clean left accent, no weird badges/buttons */
 [class*="nav__link--active"],
-[class*="nav-group__link--active"] {
-  background: var(--sfp-amber-subtle) !important;
-  color: var(--sfp-amber) !important;
+[class*="nav-group__link--active"],
+a[class*="nav__link"][class*="active"],
+a[class*="nav-group__link"][class*="active"] {
+  background: var(--sfp-green-subtle) !important;
+  color: var(--sfp-green) !important;
   font-weight: 600 !important;
   position: relative !important;
 }
 
-[class*="nav__link--active"]::before,
-[class*="nav-group__link--active"]::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 15%;
-  height: 70%;
-  width: 4px;
-  background-color: var(--sfp-amber);
-  border-radius: 0 4px 4px 0;
+[data-theme="dark"] [class*="nav__link--active"],
+[data-theme="dark"] [class*="nav-group__link--active"],
+[data-theme="dark"] a[class*="nav__link"][class*="active"],
+[data-theme="dark"] a[class*="nav-group__link"][class*="active"] {
+  color: #7dd8a6 !important;
+  background: rgba(125, 216, 166, 0.08) !important;
+}
+
+/* Remove the weird pill/badge button next to active nav item */
+[class*="nav__link"] [class*="pill"],
+[class*="nav__link"] [class*="badge"],
+[class*="nav-group__link"] [class*="pill"],
+[class*="nav-group__link"] [class*="badge"] {
+  display: none !important;
+}
+
+/* Nav bottom area — user/logout section */
+[class*="nav__footer"],
+[class*="nav"] > [class*="account"] {
+  border-top: 1px solid var(--sfp-nav-border) !important;
+  padding: 12px 16px !important;
 }
 
 
-/* ── Cards & Dashboards ── */
+/* ══════════════════════════════════════
+   6. PRIMARY BUTTONS — Forest green
+   ══════════════════════════════════════ */
 
-[class*="dashboard__card"],
-[class*="card--has-link"],
-[class*="block-card"] {
-  border-radius: var(--radius-md) !important;
-  border: 1px solid var(--theme-elevation-200) !important;
-  background: var(--theme-elevation-50) !important;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+button[class*="btn--style-primary"],
+a[class*="btn--style-primary"],
+[class*="form-submit"] button[type="submit"] {
+  background-color: var(--sfp-green) !important;
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  border-radius: 6px !important;
+  border: none !important;
+  padding: 10px 20px !important;
+  letter-spacing: 0.01em !important;
+  box-shadow: 0 2px 6px rgba(27, 60, 45, 0.2) !important;
+  transition: all var(--sfp-transition) !important;
+  cursor: pointer !important;
 }
 
-[class*="dashboard__card"]:hover,
-[class*="card--has-link"]:hover,
-[class*="block-card"]:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08) !important;
-  border-color: var(--sfp-amber-subtle) !important;
+button[class*="btn--style-primary"]:hover,
+a[class*="btn--style-primary"]:hover {
+  background-color: var(--sfp-green-light) !important;
+  box-shadow: 0 4px 12px rgba(27, 60, 45, 0.3) !important;
+  transform: translateY(-1px) !important;
 }
 
-[class*="block-card"] {
-  padding: 16px !important;
+[data-theme="dark"] button[class*="btn--style-primary"],
+[data-theme="dark"] a[class*="btn--style-primary"] {
+  background-color: #2D6B4A !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] button[class*="btn--style-primary"]:hover,
+[data-theme="dark"] a[class*="btn--style-primary"]:hover {
+  background-color: #358058 !important;
+}
+
+/* Secondary/outline buttons */
+button[class*="btn--style-secondary"],
+a[class*="btn--style-secondary"] {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  transition: all var(--sfp-transition) !important;
 }
 
 
-/* ── Form Items & Inputs ── */
+/* ══════════════════════════════════════
+   7. FORM INPUTS — Clean, properly sized
+   ══════════════════════════════════════ */
 
 input[type="text"],
 input[type="email"],
 input[type="number"],
 input[type="url"],
 input[type="password"],
-textarea,
-select,
-[class*="react-select__control"] {
-  border-radius: var(--radius-sm) !important;
-  padding: 12px 14px !important;
+input[type="search"],
+textarea {
+  border-radius: var(--sfp-radius) !important;
+  padding: 10px 14px !important;
   font-size: 0.95rem !important;
   background-color: var(--theme-input-bg) !important;
-  border: 1px solid var(--theme-elevation-250) !important;
-  transition: all var(--transition-fast) !important;
+  border: 1px solid var(--theme-elevation-200) !important;
+  transition: border-color var(--sfp-transition), box-shadow var(--sfp-transition) !important;
+  color: var(--theme-text) !important;
 }
 
 input:focus,
-textarea:focus,
-select:focus,
-[class*="react-select__control--is-focused"] {
-  border-color: var(--sfp-amber) !important;
+textarea:focus {
+  border-color: var(--sfp-green) !important;
   outline: none !important;
-  box-shadow: 0 0 0 3px var(--sfp-amber-subtle) !important;
+  box-shadow: 0 0 0 3px var(--sfp-green-subtle) !important;
 }
 
-/* Fix Labels */
+[data-theme="dark"] input:focus,
+[data-theme="dark"] textarea:focus {
+  border-color: #4a9e73 !important;
+  box-shadow: 0 0 0 3px rgba(74, 158, 115, 0.15) !important;
+}
+
+/* Labels — clear, readable */
 label,
-[class*="field-type"]>[class*="label"],
+[class*="field-type"] > [class*="label"],
 [class*="field-label"] {
-  font-size: 0.85rem !important;
+  font-size: 0.875rem !important;
   font-weight: 600 !important;
   color: var(--theme-text) !important;
   margin-bottom: 6px !important;
-  display: block;
-  letter-spacing: 0.01em;
+  display: block !important;
 }
 
-/* Field Spacing */
+/* Field spacing */
 [class*="field-type"] {
-  margin-bottom: 24px !important;
+  margin-bottom: 20px !important;
 }
 
+/* Field descriptions */
 [class*="field-description"] {
   font-size: 0.8rem !important;
-  color: var(--theme-elevation-500) !important;
-  margin-top: 6px !important;
+  color: var(--theme-elevation-400) !important;
+  margin-top: 4px !important;
 }
 
 
-/* ── Primary Buttons (Save, Publish) ── */
+/* ══════════════════════════════════════
+   8. SELECT / DROPDOWNS — Fix the "rectangles"
+   ══════════════════════════════════════ */
 
-button[class*="btn--style-primary"],
-a[class*="btn--style-primary"],
-[class*="save-draft"] button,
-button.btn--size-small[class*="btn--style-primary"] {
-  background-color: var(--sfp-amber) !important;
+/* React Select container */
+[class*="react-select__control"] {
+  border-radius: var(--sfp-radius) !important;
+  border: 1px solid var(--theme-elevation-200) !important;
+  background: var(--theme-input-bg) !important;
+  min-height: 42px !important;
+  font-size: 0.95rem !important;
+  box-shadow: none !important;
+  transition: border-color var(--sfp-transition) !important;
+}
+
+[class*="react-select__control--is-focused"] {
+  border-color: var(--sfp-green) !important;
+  box-shadow: 0 0 0 3px var(--sfp-green-subtle) !important;
+}
+
+/* Fix the dropdown indicator — the "weird rectangle" */
+[class*="react-select__indicator-separator"] {
+  display: none !important;
+}
+
+[class*="react-select__dropdown-indicator"],
+[class*="react-select__clear-indicator"] {
+  color: var(--theme-elevation-400) !important;
+  padding: 6px !important;
+}
+
+[class*="react-select__dropdown-indicator"] svg,
+[class*="react-select__clear-indicator"] svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* Select menu dropdown */
+[class*="react-select__menu"] {
+  border-radius: var(--sfp-radius) !important;
+  border: 1px solid var(--theme-elevation-200) !important;
+  box-shadow: var(--sfp-shadow-lg) !important;
+  overflow: hidden !important;
+  z-index: 100 !important;
+  background: var(--theme-elevation-50) !important;
+}
+
+[class*="react-select__option"] {
+  font-size: 0.9rem !important;
+  padding: 10px 14px !important;
+}
+
+[class*="react-select__option--is-selected"] {
+  background-color: var(--sfp-green) !important;
   color: #fff !important;
+}
+
+[class*="react-select__option--is-focused"]:not([class*="is-selected"]) {
+  background-color: var(--sfp-green-subtle) !important;
+}
+
+/* Native select elements */
+select {
+  border-radius: var(--sfp-radius) !important;
+  padding: 10px 14px !important;
+  font-size: 0.95rem !important;
+  background: var(--theme-input-bg) !important;
+  border: 1px solid var(--theme-elevation-200) !important;
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+}
+
+
+/* ══════════════════════════════════════
+   9. BLOCKS / LAYOUT ROWS — Distinguishable
+   ══════════════════════════════════════ */
+
+/* Each block row — card-like with left accent */
+[class*="blocks-field__block"],
+[class*="array-field__row"] {
+  background: var(--sfp-block-bg) !important;
+  border: 1px solid var(--sfp-block-border) !important;
+  border-left: 4px solid var(--sfp-green) !important;
+  border-radius: var(--sfp-radius-lg) !important;
+  overflow: hidden !important;
+  margin-bottom: 12px !important;
+  box-shadow: var(--sfp-shadow-sm) !important;
+  transition: box-shadow var(--sfp-transition) !important;
+}
+
+[data-theme="dark"] [class*="blocks-field__block"],
+[data-theme="dark"] [class*="array-field__row"] {
+  border-left-color: #4a9e73 !important;
+}
+
+[class*="blocks-field__block"]:hover,
+[class*="array-field__row"]:hover {
+  box-shadow: var(--sfp-shadow-md) !important;
+}
+
+/* Collapsible header — the block's title bar */
+[class*="collapsible__header"] {
+  padding: 12px 16px !important;
+  background: var(--sfp-block-header-bg) !important;
+  border-bottom: 1px solid var(--sfp-block-border) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+}
+
+/* Fix the row number badges — clean them up */
+[class*="collapsible__header"] [class*="row-label"],
+[class*="collapsible__header"] [class*="block-label"] {
+  font-size: 0.85rem !important;
   font-weight: 600 !important;
-  border-radius: var(--radius-sm) !important;
-  letter-spacing: 0.02em !important;
-  transition: all var(--transition-fast) !important;
+  color: var(--theme-text) !important;
+}
+
+/* The numbered pill/circle — make it subtle and clean */
+[class*="blocks-field__block"] [class*="pill"],
+[class*="array-field__row"] [class*="pill"],
+[class*="collapsible"] [class*="pill"] {
+  background: var(--sfp-green) !important;
+  color: #fff !important;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  min-width: 22px !important;
+  height: 22px !important;
+  border-radius: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 6px !important;
+}
+
+[data-theme="dark"] [class*="blocks-field__block"] [class*="pill"],
+[data-theme="dark"] [class*="array-field__row"] [class*="pill"],
+[data-theme="dark"] [class*="collapsible"] [class*="pill"] {
+  background: #2D6B4A !important;
+}
+
+/* Block type label — clean tag style */
+[class*="blocks-field__block-type"],
+[class*="block-type"] {
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--theme-elevation-400) !important;
+  padding: 2px 8px !important;
+  background: transparent !important;
   border: none !important;
-  box-shadow: 0 2px 8px rgba(232, 149, 47, 0.25) !important;
 }
 
-[data-theme="dark"] button[class*="btn--style-primary"],
-[data-theme="dark"] a[class*="btn--style-primary"],
-[data-theme="dark"] [class*="save-draft"] button {
-  color: #0c0f14 !important;
-  /* Dark text on amber button in dark mode */
+/* Collapsible content area */
+[class*="collapsible__content"] {
+  padding: 20px !important;
 }
 
-button[class*="btn--style-primary"]:hover,
-a[class*="btn--style-primary"]:hover {
-  background-color: var(--sfp-amber-hover) !important;
+/* Block action buttons (move up/down, delete) */
+[class*="blocks-field__block"] [class*="collapsible__actions"],
+[class*="array-field__row"] [class*="collapsible__actions"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+[class*="collapsible__actions"] button {
+  border-radius: 4px !important;
+  transition: all var(--sfp-transition) !important;
+}
+
+[class*="collapsible__actions"] button:hover {
+  background: var(--sfp-green-subtle) !important;
+}
+
+
+/* ══════════════════════════════════════
+   10. BLOCK PICKER / DRAWER
+   ══════════════════════════════════════ */
+
+/* Block selector cards */
+[class*="block-card"],
+[class*="blocks-drawer__block"] {
+  border-radius: var(--sfp-radius) !important;
+  border: 1px solid var(--theme-elevation-200) !important;
+  background: var(--theme-elevation-50) !important;
+  padding: 14px !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+}
+
+[class*="block-card"]:hover,
+[class*="blocks-drawer__block"]:hover {
+  border-color: var(--sfp-green) !important;
+  box-shadow: var(--sfp-shadow-md) !important;
   transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(232, 149, 47, 0.4) !important;
+}
+
+/* Drawer panel */
+[class*="drawer__content"],
+[class*="list-drawer__content"],
+[class*="blocks-drawer"] {
+  background: var(--theme-bg) !important;
 }
 
 
-/* ── Rich Text Editor & Code Fields ── */
+/* ══════════════════════════════════════
+   11. RICH TEXT EDITOR
+   ══════════════════════════════════════ */
 
 [class*="rich-text"] [class*="editor"] {
-  border-radius: 0 0 var(--radius-sm) var(--radius-sm) !important;
+  border-radius: 0 0 var(--sfp-radius) var(--sfp-radius) !important;
   padding: 16px !important;
   font-size: 1rem !important;
-  line-height: 1.6 !important;
+  line-height: 1.7 !important;
+  min-height: 150px !important;
 }
 
 [class*="rich-text"] [class*="toolbar"] {
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0 !important;
-  padding: 6px !important;
-  background: var(--theme-elevation-50) !important;
-  border-bottom: 1px solid var(--theme-elevation-200) !important;
-}
-
-[class*="code-field"] {
-  border-radius: var(--radius-sm) !important;
-  overflow: hidden !important;
-}
-
-/* ── Repeater / Blocks Container Space ── */
-
-[class*="blocks-field__block"],
-[class*="array-field__row"] {
-  border: 1px solid var(--theme-elevation-200) !important;
-  border-radius: var(--radius-md) !important;
-  overflow: hidden !important;
-  margin-bottom: 16px !important;
-  background: var(--theme-elevation-50) !important;
-}
-
-[class*="collapsible__header"] {
-  padding: 14px 20px !important;
+  border-radius: var(--sfp-radius) var(--sfp-radius) 0 0 !important;
+  padding: 6px 8px !important;
   background: var(--theme-elevation-100) !important;
   border-bottom: 1px solid var(--theme-elevation-200) !important;
 }
 
-[class*="collapsible__content"] {
-  padding: 24px !important;
+[class*="rich-text"] [class*="toolbar"] button {
+  border-radius: 4px !important;
+  padding: 6px !important;
+  transition: all var(--sfp-transition) !important;
 }
 
-/* ── Theme Overrides (Light/Dark Variables) ── */
-
-[data-theme="light"] {
-  --theme-bg: #F8F9FA;
-  --theme-elevation-0: #F8F9FA;
-  --theme-elevation-50: #FFFFFF;
-  --theme-elevation-100: #F1F3F5;
-  --theme-elevation-150: #E9ECEF;
-  --theme-elevation-200: #DEE2E6;
-  --theme-elevation-250: #CED4DA;
-  --theme-elevation-300: #ADB5BD;
-  --theme-elevation-400: #868E96;
-  --theme-elevation-500: #495057;
-  --theme-elevation-800: #212529;
-  --theme-text: #212529;
-  --theme-input-bg: #FFFFFF;
+[class*="rich-text"] [class*="toolbar"] button:hover {
+  background: var(--sfp-green-subtle) !important;
 }
 
-[data-theme="dark"] {
-  --theme-bg: #0A0A0B;
-  --theme-elevation-0: #0A0A0B;
-  --theme-elevation-50: #121214;
-  --theme-elevation-100: #18181B;
-  --theme-elevation-150: #27272A;
-  --theme-elevation-200: #3F3F46;
-  --theme-elevation-250: #52525B;
-  --theme-elevation-300: #71717A;
-  --theme-elevation-400: #A1A1AA;
-  --theme-elevation-500: #D4D4D8;
-  --theme-elevation-800: #F4F4F5;
-  --theme-text: #F4F4F5;
-  --theme-input-bg: #121214;
+
+/* ══════════════════════════════════════
+   12. CODE EDITOR
+   ══════════════════════════════════════ */
+
+[class*="code-field"] {
+  border-radius: var(--sfp-radius) !important;
+  overflow: hidden !important;
+  border: 1px solid var(--theme-elevation-200) !important;
 }
 
-/* Theme Toggle Button custom style */
+
+/* ══════════════════════════════════════
+   13. DASHBOARD CARDS
+   ══════════════════════════════════════ */
+
+[class*="dashboard__card"],
+[class*="card--has-link"] {
+  border-radius: var(--sfp-radius-lg) !important;
+  border: 1px solid var(--theme-elevation-200) !important;
+  background: var(--theme-elevation-50) !important;
+  padding: 20px !important;
+  transition: all 0.2s ease !important;
+}
+
+[class*="dashboard__card"]:hover,
+[class*="card--has-link"]:hover {
+  box-shadow: var(--sfp-shadow-md) !important;
+  border-color: var(--sfp-green) !important;
+  transform: translateY(-2px) !important;
+}
+
+[class*="dashboard__card"] h4,
+[class*="card"] [class*="title"] {
+  font-size: 1.05rem !important;
+  font-weight: 600 !important;
+}
+
+
+/* ══════════════════════════════════════
+   14. TABLE / LIST VIEW
+   ══════════════════════════════════════ */
+
+[class*="list__header"] {
+  font-size: 0.8rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  font-weight: 600 !important;
+  color: var(--theme-elevation-400) !important;
+}
+
+[class*="table"] td {
+  font-size: 0.9rem !important;
+  padding: 12px 16px !important;
+}
+
+[class*="table"] tr {
+  border-bottom: 1px solid var(--theme-elevation-150) !important;
+  transition: background var(--sfp-transition) !important;
+}
+
+[class*="table"] tr:hover {
+  background: var(--sfp-green-subtle) !important;
+}
+
+/* Cell link styles */
+[class*="table"] a {
+  color: var(--theme-text) !important;
+  font-weight: 500 !important;
+}
+
+[class*="table"] a:hover {
+  color: var(--sfp-green) !important;
+}
+
+
+/* ══════════════════════════════════════
+   15. STATUS / META PANELS
+   ══════════════════════════════════════ */
+
+/* Sidebar meta sections (status, dates, publish) */
+[class*="sidebar-field"],
+[class*="meta"] {
+  font-size: 0.85rem !important;
+}
+
+/* Status indicators — fix the weird rectangles */
+[class*="status-indicator"],
+[class*="status__value"] {
+  border-radius: 20px !important;
+  padding: 3px 10px !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+}
+
+/* Checkbox / toggle styling */
+[class*="check"],
+[class*="toggle"] {
+  border-radius: 4px !important;
+}
+
+
+/* ══════════════════════════════════════
+   16. THEME TOGGLE BUTTON
+   ══════════════════════════════════════ */
+
 .theme-toggle-btn {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  width: 40px !important;
-  height: 40px !important;
+  width: 36px !important;
+  height: 36px !important;
   border: 1px solid var(--theme-elevation-200) !important;
-  border-radius: var(--radius-sm) !important;
-  background: var(--theme-elevation-50) !important;
+  border-radius: 8px !important;
+  background: transparent !important;
   color: var(--theme-elevation-500) !important;
   cursor: pointer !important;
-  transition: all var(--transition-fast) !important;
+  transition: all var(--sfp-transition) !important;
+  flex-shrink: 0 !important;
 }
 
 .theme-toggle-btn:hover {
-  background: var(--sfp-amber-subtle) !important;
-  color: var(--sfp-amber) !important;
-  border-color: var(--sfp-amber) !important;
+  background: var(--sfp-green-subtle) !important;
+  color: var(--sfp-green) !important;
+  border-color: var(--sfp-green) !important;
+}
+
+[data-theme="dark"] .theme-toggle-btn:hover {
+  color: #7dd8a6 !important;
+  border-color: #4a9e73 !important;
+  background: rgba(74, 158, 115, 0.1) !important;
 }
 
 .theme-toggle-btn .toggle-sun {
   display: none;
 }
-
 .theme-toggle-btn .toggle-moon {
   display: block;
 }
-
 [data-theme="dark"] .theme-toggle-btn .toggle-sun {
   display: block;
 }
-
 [data-theme="dark"] .theme-toggle-btn .toggle-moon {
   display: none;
+}
+
+
+/* ══════════════════════════════════════
+   17. SCROLLBAR
+   ══════════════════════════════════════ */
+
+[data-theme] ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+[data-theme] ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+[data-theme] ::-webkit-scrollbar-thumb {
+  background: var(--theme-elevation-250);
+  border-radius: 3px;
+}
+
+
+/* ══════════════════════════════════════
+   18. MISC CLEANUP
+   ══════════════════════════════════════ */
+
+/* Add Block button — make it stand out */
+[class*="blocks-field__add-row"],
+[class*="array-field__add-row"],
+button[class*="add-new"] {
+  border-radius: var(--sfp-radius) !important;
+  border: 2px dashed var(--theme-elevation-250) !important;
+  padding: 12px !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  transition: all var(--sfp-transition) !important;
+  background: transparent !important;
+}
+
+[class*="blocks-field__add-row"]:hover,
+[class*="array-field__add-row"]:hover,
+button[class*="add-new"]:hover {
+  border-color: var(--sfp-green) !important;
+  color: var(--sfp-green) !important;
+  background: var(--sfp-green-subtle) !important;
+}
+
+/* Upload / file field areas */
+[class*="upload__toggler"],
+[class*="file-field__upload"] {
+  border-radius: var(--sfp-radius) !important;
+  border: 2px dashed var(--theme-elevation-250) !important;
+  transition: all var(--sfp-transition) !important;
+}
+
+[class*="upload__toggler"]:hover,
+[class*="file-field__upload"]:hover {
+  border-color: var(--sfp-green) !important;
+}
+
+/* Breadcrumbs */
+[class*="step-nav"] {
+  font-size: 0.85rem !important;
+  color: var(--theme-elevation-400) !important;
+}
+
+[class*="step-nav"] a {
+  color: var(--theme-elevation-400) !important;
+  transition: color var(--sfp-transition) !important;
+}
+
+[class*="step-nav"] a:hover {
+  color: var(--sfp-green) !important;
+}
+
+/* Document header / title area */
+[class*="doc-header"] h1,
+[class*="collection-list__header"] h1 {
+  font-size: 1.75rem !important;
+  font-weight: 700 !important;
+  color: var(--theme-text) !important;
+}
+
+/* Pagination */
+[class*="paginator"] button,
+[class*="per-page"] select {
+  border-radius: 6px !important;
+  font-size: 0.85rem !important;
+}
+
+/* Toast notifications */
+[class*="toast"] {
+  border-radius: var(--sfp-radius) !important;
+  box-shadow: var(--sfp-shadow-lg) !important;
+  font-size: 0.9rem !important;
+}
+
+/* Tabs */
+[class*="tabs-field__tab-button"] {
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  padding: 10px 16px !important;
+  border-radius: 6px 6px 0 0 !important;
+  transition: all var(--sfp-transition) !important;
+}
+
+[class*="tabs-field__tab-button--active"] {
+  font-weight: 600 !important;
+  color: var(--sfp-green) !important;
+  border-bottom-color: var(--sfp-green) !important;
+}
+
+/* Relationship field value tags */
+[class*="relationship--multi-value"] {
+  border-radius: 4px !important;
+  font-size: 0.85rem !important;
+}
+
+/* Document controls area */
+[class*="doc-controls"] {
+  gap: 8px !important;
+}
+
+/* Eyebrow / version info */
+[class*="eyebrow"],
+[class*="version-count"] {
+  font-size: 0.75rem !important;
+  color: var(--theme-elevation-400) !important;
+}
+
+/* Main content padding */
+[class*="template-default__wrap"] {
+  padding-top: 20px !important;
+}
+
+/* Search field in nav/list */
+[class*="search-filter"] input {
+  border-radius: var(--sfp-radius) !important;
+  font-size: 0.9rem !important;
+}
+
+/* Modal / dialog */
+[class*="modal__content"],
+[class*="dialog"] {
+  border-radius: var(--sfp-radius-lg) !important;
+  box-shadow: var(--sfp-shadow-lg) !important;
+}
+
+/* Gutter / padding for content */
+[class*="gutter--left"] {
+  padding-left: 24px !important;
+}
+
+[class*="gutter--right"] {
+  padding-right: 24px !important;
 }

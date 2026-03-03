@@ -1,7 +1,10 @@
 /**
- * Ensures all required database tables exist.
+ * Ensures the CodeEmbed block table exists with correct schema.
  * Runs at container startup BEFORE the Next.js server.
- * Uses the pg module (already installed via @payloadcms/db-postgres).
+ *
+ * IMPORTANT: Only drops/recreates the table if the 'id' column has the
+ * wrong data type (serial/integer instead of varchar). Otherwise, it
+ * creates the table if missing and leaves existing data intact.
  */
 import pg from 'pg'
 
@@ -20,11 +23,27 @@ async function ensureSchema() {
     await client.connect()
     console.log('[ensure-schema] Connected to database.')
 
-    // Drop the old broken table (had integer id instead of varchar)
-    await client.query(`DROP TABLE IF EXISTS "pages_blocks_code_embed" CASCADE`).catch(() => {})
+    // Check if the table exists and whether the id column is the correct type
+    const check = await client.query(`
+      SELECT data_type FROM information_schema.columns
+      WHERE table_name = 'pages_blocks_code_embed' AND column_name = 'id'
+    `)
 
-    // Create block tables for the pages collection.
-    // Payload 3.x uses varchar IDs (MongoDB-style ObjectId strings), not serial integers.
+    if (check.rows.length > 0) {
+      const idType = check.rows[0].data_type
+      if (idType === 'character varying' || idType === 'text') {
+        // Table exists with correct id type — nothing to do
+        console.log('[ensure-schema] pages_blocks_code_embed table OK (id type: ' + idType + ').')
+        return
+      }
+      // Table exists but id column is wrong type (integer/serial) — drop and recreate
+      console.log('[ensure-schema] Fixing id column type from ' + idType + ' to varchar...')
+      await client.query(`DROP TABLE IF EXISTS "pages_blocks_code_embed" CASCADE`)
+    }
+
+    // Create the table (either first time or after dropping broken one)
+    console.log('[ensure-schema] Creating pages_blocks_code_embed table...')
+
     const statements = [
       `CREATE TABLE IF NOT EXISTS "pages_blocks_code_embed" (
         "_order" integer NOT NULL,
@@ -50,7 +69,6 @@ async function ensureSchema() {
       try {
         await client.query(sql)
       } catch (err) {
-        // Ignore "already exists" errors
         if (!err.message?.includes('already exists')) {
           console.error('[ensure-schema] SQL error:', err.message)
         }
