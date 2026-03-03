@@ -1,463 +1,364 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
 /* ═══════════════════════════════════════════════════════
-   SF Paragliding — Payload Admin Theme
-   Light + Dark mode with brand accents
+   SF Paragliding — "Summit" Admin Theme
+   Deep navy dark mode · Warm light mode · Amber accents
+   Font: Outfit (geometric, modern)
    ═══════════════════════════════════════════════════════ */
 
-/* ── Theme Toggle Button ── */
+
+/* ── Design Tokens ── */
+
+:root {
+  --sfp-amber: #e8952f;
+  --sfp-amber-hover: #d4841e;
+  --sfp-amber-glow: rgba(232, 149, 47, 0.12);
+  --sfp-amber-bright: #f5a623;
+  --sfp-green: #1B3C2D;
+  --sfp-radius: 10px;
+  --sfp-radius-sm: 6px;
+  --sfp-ease: 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+
+/* ── Global Font ── */
+
+html[data-theme],
+body,
+[data-theme] * {
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif !important;
+}
+
+
+/* ── Brand Accent (both themes) ── */
+
+[data-theme="light"],
+[data-theme="dark"] {
+  --theme-success-500: var(--sfp-amber);
+}
+
+
+/* ══════════════════════════════
+   THEME TOGGLE
+   Both icons always in DOM —
+   CSS toggles via [data-theme]
+   ══════════════════════════════ */
+
 .theme-toggle-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: 1px solid var(--theme-elevation-250);
-  border-radius: 8px;
-  background: var(--theme-elevation-100);
-  color: var(--theme-elevation-800);
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--theme-elevation-300);
+  border-radius: var(--sfp-radius);
+  background: transparent;
+  color: var(--theme-elevation-700);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all var(--sfp-ease);
   flex-shrink: 0;
+  padding: 0;
 }
 
 .theme-toggle-btn:hover {
-  background: var(--theme-elevation-200);
-  color: #E8952F;
-  border-color: #E8952F;
+  border-color: var(--sfp-amber);
+  color: var(--sfp-amber);
+  background: var(--sfp-amber-glow);
+  transform: scale(1.05);
 }
 
-/* ── Brand Accent (both themes) ── */
-[data-theme="light"],
-[data-theme="dark"] {
-  --theme-success-500: #E8952F;
-}
+/* Light mode: show moon, hide sun */
+.theme-toggle-btn .toggle-sun { display: none; }
+.theme-toggle-btn .toggle-moon { display: block; }
 
-/* ── Primary Buttons (both themes) ── */
+/* Dark mode: show sun, hide moon */
+[data-theme="dark"] .theme-toggle-btn .toggle-sun { display: block; }
+[data-theme="dark"] .theme-toggle-btn .toggle-moon { display: none; }
+
+
+/* ══════════════════════════════
+   PRIMARY BUTTONS
+   ══════════════════════════════ */
+
 button[class*="btn--style-primary"],
 a[class*="btn--style-primary"] {
-  background-color: #E8952F !important;
-  color: #fff !important;
+  background-color: var(--sfp-amber) !important;
   font-weight: 600 !important;
-  border-radius: 6px !important;
+  border-radius: var(--sfp-radius-sm) !important;
+  letter-spacing: 0.01em;
+  transition: all var(--sfp-ease) !important;
 }
 
 button[class*="btn--style-primary"]:hover,
 a[class*="btn--style-primary"]:hover {
-  background-color: #d4841e !important;
-}
-
-/* ── Toast Notifications ── */
-[class*="toast"] {
-  border-radius: 8px !important;
+  background-color: var(--sfp-amber-hover) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(232, 149, 47, 0.3) !important;
 }
 
 
-/* ═══════════════════════════════════════════════════════
-   LAYOUT FIXES (both themes)
-   Fix text overlap, spacing, block readability
-   ═══════════════════════════════════════════════════════ */
-
-/* ── Block row headers: fix toggle / label overlap ── */
-[class*="blocks-field__block-header"] {
-  display: flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-  min-height: 44px !important;
-  padding: 8px 12px !important;
-}
-
-[class*="blocks-field__block-header"] > * {
-  flex-shrink: 0;
-}
-
-/* ── Block label text — prevent clipping ── */
-[class*="blocks-field__block-pill"],
-[class*="section-title"] {
-  white-space: nowrap;
-  overflow: visible !important;
-  text-overflow: unset !important;
-}
-
-/* ── Block row: clear spacing between blocks ── */
-[class*="blocks-field__row"] {
-  margin-bottom: 12px !important;
-  border-radius: 8px !important;
-  overflow: visible !important;
-}
-
-/* ── Collapsible sections: more padding inside ── */
-[class*="collapsible__content"] {
-  padding: 16px 20px !important;
-}
-
-/* ── Field spacing: breathable layout inside blocks ── */
-[class*="field-type"] {
-  margin-bottom: 16px !important;
-}
-
-/* ── Labels: readable sizing ── */
-[class*="field-label"],
-label[class*="label"] {
-  font-size: 0.8125rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.01em;
-  margin-bottom: 6px !important;
-}
-
-/* ── Text inputs & textareas: readable sizing ── */
-[class*="field-type"] input[type="text"],
-[class*="field-type"] textarea,
-[class*="field-type"] select {
-  font-size: 0.9375rem !important;
-  padding: 10px 12px !important;
-  border-radius: 6px !important;
-  line-height: 1.5 !important;
-}
-
-[class*="field-type"] textarea {
-  min-height: 80px !important;
-}
-
-/* ── Upload fields: clean spacing ── */
-[class*="upload__toggler"] {
-  gap: 8px !important;
-}
-
-/* ── Sidebar fields: proper spacing ── */
-[class*="sidebar-field"] {
-  margin-bottom: 20px !important;
-}
-
-/* ── Document header: status pill, title ── */
-[class*="doc-header__title"] {
-  font-size: 1.5rem !important;
-  line-height: 1.3 !important;
-}
-
-/* ── Save button area: visible and spaced ── */
-[class*="save-draft"],
-[class*="doc-controls"] {
-  gap: 8px !important;
-}
-
-/* ── Collection list table: readable rows ── */
-[class*="table"] td,
-[class*="table"] th {
-  padding: 12px 16px !important;
-}
-
-/* ── Relationship & select dropdowns ── */
-[class*="react-select"] {
-  font-size: 0.9375rem !important;
-}
-
-/* ── Rich text editor: comfortable editing ── */
-[class*="rich-text-lexical"] {
-  min-height: 200px !important;
-}
-
-[class*="rich-text-lexical"] [contenteditable="true"] {
-  padding: 16px !important;
-  font-size: 1rem !important;
-  line-height: 1.7 !important;
-}
-
-/* ── Dashboard collection cards ── */
-[class*="dashboard__card"] {
-  border-radius: 8px !important;
-}
-
-
-/* ═══════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
+   ██████   █████  ██████  ██   ██
+   ██   ██ ██   ██ ██   ██ ██  ██
+   ██   ██ ███████ ██████  █████
+   ██   ██ ██   ██ ██   ██ ██  ██
+   ██████  ██   ██ ██   ██ ██   ██
    DARK THEME
-   ═══════════════════════════════════════════════════════ */
+   ══════════════════════════════════════════════════════ */
 
 [data-theme="dark"] {
-  --theme-bg: #16161e;
-  --theme-input-bg: #1e1e28;
-  --theme-elevation-0: #16161e;
-  --theme-elevation-50: #1a1a24;
-  --theme-elevation-100: #1e1e28;
-  --theme-elevation-150: #24242f;
-  --theme-elevation-200: #2a2a36;
-  --theme-elevation-250: #30303d;
-  --theme-elevation-300: #363644;
-  --theme-elevation-350: #3c3c4b;
-  --theme-elevation-400: #424252;
-  --theme-elevation-450: #4a4a5c;
-  --theme-elevation-500: #525266;
-  --theme-elevation-550: #626278;
-  --theme-elevation-600: #72728a;
-  --theme-elevation-650: #83839e;
-  --theme-elevation-700: #9696b2;
-  --theme-elevation-750: #aaaac6;
-  --theme-elevation-800: #c0c0da;
-  --theme-elevation-850: #d4d4ec;
-  --theme-elevation-900: #e4e4f4;
-  --theme-elevation-950: #f0f0fc;
+  --theme-bg: #0c1018;
+  --theme-input-bg: #131825;
+  --theme-elevation-0: #0c1018;
+  --theme-elevation-50: #0f1420;
+  --theme-elevation-100: #131825;
+  --theme-elevation-150: #171d2c;
+  --theme-elevation-200: #1c2234;
+  --theme-elevation-250: #21283e;
+  --theme-elevation-300: #272f48;
+  --theme-elevation-350: #2e3752;
+  --theme-elevation-400: #36405e;
+  --theme-elevation-450: #404b6b;
+  --theme-elevation-500: #4b5778;
+  --theme-elevation-550: #586486;
+  --theme-elevation-600: #667294;
+  --theme-elevation-650: #7681a2;
+  --theme-elevation-700: #8892b2;
+  --theme-elevation-750: #9ca4c2;
+  --theme-elevation-800: #b0b8d2;
+  --theme-elevation-850: #c6cde0;
+  --theme-elevation-900: #dce1ee;
+  --theme-elevation-950: #edf0f6;
   --theme-elevation-1000: #ffffff;
-  --theme-text: #e4e4f0;
-  --theme-border-color: #2e2e3c;
+  --theme-text: #e8ecf4;
+  --theme-border-color: #1e2638;
 }
 
-/* ── Dark: Nav sidebar ── */
+/* Dark: primary button text */
+[data-theme="dark"] button[class*="btn--style-primary"],
+[data-theme="dark"] a[class*="btn--style-primary"] {
+  color: #0c0f14 !important;
+}
+
+
+/* ── Dark: Nav Sidebar ── */
+
 [data-theme="dark"] [class*="template-default__nav"],
 [data-theme="dark"] aside[class*="nav"] {
-  background-color: #0e0e14 !important;
-  border-right: 1px solid #1e1e2a !important;
-  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5) !important;
+  background: linear-gradient(180deg, #080c14 0%, #0c1018 100%) !important;
+  border-right: 1px solid #171e2e !important;
 }
 
-/* ── Dark: App header ── */
+/* ── Dark: App Header ── */
+
 [data-theme="dark"] header[class*="app-header"],
 [data-theme="dark"] [class*="app-header"] {
-  background-color: #0c0c12 !important;
-  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
-  border-bottom: 1px solid #1e1e2a !important;
+  background: #090d16 !important;
+  border-bottom: 1px solid #171e2e !important;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* ── Dark: Nav links ── */
+/* ── Dark: Nav Links ── */
+
 [data-theme="dark"] [class*="nav__link"],
 [data-theme="dark"] [class*="nav-group__link"] {
-  color: rgba(255, 255, 255, 0.65) !important;
-  padding: 8px 16px !important;
+  color: rgba(232, 236, 244, 0.5) !important;
+  transition: all var(--sfp-ease) !important;
+  border-radius: 6px !important;
+  margin: 1px 8px !important;
+  padding: 8px 12px !important;
   font-size: 0.875rem !important;
-  transition: all 0.15s ease !important;
+  font-weight: 400 !important;
 }
 
 [data-theme="dark"] [class*="nav__link"]:hover,
 [data-theme="dark"] [class*="nav-group__link"]:hover {
-  background-color: rgba(232, 149, 47, 0.08) !important;
-  color: #E8952F !important;
+  color: var(--sfp-amber-bright) !important;
+  background: var(--sfp-amber-glow) !important;
 }
 
 [data-theme="dark"] [class*="nav__link--active"],
 [data-theme="dark"] [class*="nav-group__link--active"] {
-  color: #E8952F !important;
-  background-color: rgba(232, 149, 47, 0.1) !important;
-  border-left: 3px solid #E8952F !important;
+  color: var(--sfp-amber) !important;
+  background: var(--sfp-amber-glow) !important;
+  font-weight: 600 !important;
+  border-left: 3px solid var(--sfp-amber) !important;
 }
 
-/* ── Dark: Nav group labels ── */
+/* ── Dark: Nav Group Labels ── */
+
 [data-theme="dark"] [class*="nav-group__label"],
 [data-theme="dark"] [class*="nav-group"] > button {
-  color: rgba(255, 255, 255, 0.35) !important;
-  text-transform: uppercase;
-  font-size: 0.6875rem;
-  letter-spacing: 0.1em;
-  font-weight: 600;
+  color: rgba(232, 236, 244, 0.25) !important;
+  text-transform: uppercase !important;
+  font-size: 0.6875rem !important;
+  letter-spacing: 0.12em !important;
+  font-weight: 700 !important;
+  padding-left: 20px !important;
 }
 
-/* ── Dark: Nav brand area ── */
+/* ── Dark: Nav Brand ── */
+
 [data-theme="dark"] [class*="nav__brand"],
 [data-theme="dark"] [class*="nav__logo"] {
-  border-bottom-color: #1e1e2a !important;
+  border-bottom-color: #171e2e !important;
 }
 
-/* ── Dark: Nav group dividers ── */
 [data-theme="dark"] [class*="nav-group"] {
-  border-top-color: #1e1e2a !important;
+  border-top-color: #171e2e !important;
 }
 
-/* ── Dark: Block rows — visible containers ── */
-[data-theme="dark"] [class*="blocks-field__row"] {
-  background-color: #1a1a24 !important;
-  border: 1px solid #2a2a38 !important;
-}
+/* ── Dark: Focus Ring ── */
 
-[data-theme="dark"] [class*="blocks-field__block-header"] {
-  background-color: #1e1e2a !important;
-  border-bottom: 1px solid #2a2a38 !important;
-}
-
-/* ── Dark: Input fields — clear boundaries ── */
-[data-theme="dark"] [class*="field-type"] input[type="text"],
-[data-theme="dark"] [class*="field-type"] textarea,
-[data-theme="dark"] [class*="field-type"] select {
-  background-color: #12121a !important;
-  border: 1px solid #2a2a38 !important;
-  color: #e4e4f0 !important;
-}
-
-[data-theme="dark"] [class*="field-type"] input[type="text"]:focus,
-[data-theme="dark"] [class*="field-type"] textarea:focus,
-[data-theme="dark"] [class*="field-type"] select:focus {
-  border-color: #E8952F !important;
-  box-shadow: 0 0 0 2px rgba(232, 149, 47, 0.15) !important;
-  outline: none !important;
-}
-
-/* ── Dark: Collapsible header ── */
-[data-theme="dark"] [class*="collapsible__header"] {
-  background-color: #1a1a26 !important;
-}
-
-/* ── Dark: Collection table ── */
-[data-theme="dark"] [class*="table"] tr:hover td {
-  background-color: #1a1a26 !important;
-}
-
-/* ── Dark: Dashboard cards ── */
-[data-theme="dark"] [class*="dashboard__card"],
-[data-theme="dark"] [class*="card"] {
-  background-color: #1a1a24 !important;
-  border: 1px solid #2a2a38 !important;
-}
-
-/* ── Dark: Focus rings ── */
 [data-theme="dark"] *:focus-visible {
-  outline-color: #E8952F;
+  outline-color: var(--sfp-amber) !important;
+  outline-offset: 2px;
 }
 
 /* ── Dark: Scrollbar ── */
-[data-theme="dark"] ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
 
-[data-theme="dark"] ::-webkit-scrollbar-track {
-  background: #16161e;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: #363644;
-  border-radius: 4px;
-}
-
-[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: #4a4a5c;
-}
-
-/* ── Dark: Primary button text ── */
-[data-theme="dark"] button[class*="btn--style-primary"],
-[data-theme="dark"] a[class*="btn--style-primary"] {
-  color: #0d0d10 !important;
-}
-
-/* ── Dark: Pill / badge styling ── */
-[data-theme="dark"] [class*="blocks-field__block-pill"] {
-  background-color: #2a2a38 !important;
-  color: #b0b0c8 !important;
-  font-size: 0.75rem !important;
-  padding: 2px 10px !important;
-  border-radius: 4px !important;
-}
-
-/* ── Dark: Upload area ── */
-[data-theme="dark"] [class*="upload__toggler"] {
-  border-color: #2a2a38 !important;
-}
-
-/* ── Dark: Relationship select ── */
-[data-theme="dark"] [class*="react-select__control"] {
-  background-color: #12121a !important;
-  border-color: #2a2a38 !important;
-}
-
-[data-theme="dark"] [class*="react-select__menu"] {
-  background-color: #1a1a24 !important;
-  border: 1px solid #2a2a38 !important;
-}
+[data-theme="dark"] ::-webkit-scrollbar { width: 7px; height: 7px; }
+[data-theme="dark"] ::-webkit-scrollbar-track { background: #0c1018; }
+[data-theme="dark"] ::-webkit-scrollbar-thumb { background: #272f48; border-radius: 4px; }
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #36405e; }
 
 
-/* ═══════════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
+   ██      ██  ██████  ██   ██ ████████
+   ██      ██ ██       ██   ██    ██
+   ██      ██ ██   ███ ██████     ██
+   ██      ██ ██    ██ ██   ██    ██
+   ███████ ██  ██████  ██   ██    ██
    LIGHT THEME
-   ═══════════════════════════════════════════════════════ */
+   ══════════════════════════════════════════════════════ */
 
-/* ── Light: Nav sidebar — branded forest green ── */
+[data-theme="light"] {
+  --theme-bg: #f4f5f7;
+  --theme-input-bg: #ffffff;
+  --theme-border-color: #dfe2e9;
+}
+
+/* ── Light: Nav Sidebar — Brand Forest Green ── */
+
 [data-theme="light"] [class*="template-default__nav"],
 [data-theme="light"] aside[class*="nav"] {
-  background-color: #1B3C2D !important;
+  background: linear-gradient(180deg, #142e22 0%, var(--sfp-green) 100%) !important;
   border-right: 1px solid #244a38 !important;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.12) !important;
 }
 
-/* ── Light: App header ── */
+/* ── Light: App Header ── */
+
 [data-theme="light"] header[class*="app-header"],
 [data-theme="light"] [class*="app-header"] {
-  background-color: #ffffff !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
-  border-bottom: 1px solid #e5e7eb !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e5e7ec !important;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05) !important;
 }
 
-/* ── Light: Nav links — white text on forest green ── */
+/* ── Light: Nav Links (white on green) ── */
+
 [data-theme="light"] [class*="nav__link"],
 [data-theme="light"] [class*="nav-group__link"] {
-  color: rgba(255, 255, 255, 0.8) !important;
-  padding: 8px 16px !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  transition: all var(--sfp-ease) !important;
+  border-radius: 6px !important;
+  margin: 1px 8px !important;
+  padding: 8px 12px !important;
   font-size: 0.875rem !important;
-  transition: all 0.15s ease !important;
+  font-weight: 400 !important;
 }
 
 [data-theme="light"] [class*="nav__link"]:hover,
 [data-theme="light"] [class*="nav-group__link"]:hover {
-  background-color: rgba(255, 255, 255, 0.1) !important;
-  color: #E8952F !important;
+  color: var(--sfp-amber-bright) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
 }
 
 [data-theme="light"] [class*="nav__link--active"],
 [data-theme="light"] [class*="nav-group__link--active"] {
-  color: #E8952F !important;
-  background-color: rgba(255, 255, 255, 0.08) !important;
-  border-left: 3px solid #E8952F !important;
+  color: var(--sfp-amber) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  font-weight: 600 !important;
+  border-left: 3px solid var(--sfp-amber) !important;
 }
 
-/* ── Light: Nav group labels ── */
+/* ── Light: Nav Group Labels ── */
+
 [data-theme="light"] [class*="nav-group__label"],
 [data-theme="light"] [class*="nav-group"] > button {
-  color: rgba(255, 255, 255, 0.45) !important;
-  text-transform: uppercase;
-  font-size: 0.6875rem;
-  letter-spacing: 0.1em;
-  font-weight: 600;
+  color: rgba(255, 255, 255, 0.35) !important;
+  text-transform: uppercase !important;
+  font-size: 0.6875rem !important;
+  letter-spacing: 0.12em !important;
+  font-weight: 700 !important;
+  padding-left: 20px !important;
 }
 
-/* ── Light: Nav brand/logo area ── */
+/* ── Light: Nav Brand ── */
+
 [data-theme="light"] [class*="nav__brand"],
 [data-theme="light"] [class*="nav__logo"] {
   border-bottom-color: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* ── Light: Nav group dividers ── */
 [data-theme="light"] [class*="nav-group"] {
-  border-top-color: rgba(255, 255, 255, 0.1) !important;
+  border-top-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* ── Light: Nav close/toggle button ── */
+/* ── Light: Nav Close/Toggle ── */
+
 [data-theme="light"] [class*="nav"] button[class*="close"],
 [data-theme="light"] [class*="nav"] button[class*="hamburger"] {
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-/* ── Light: Block rows ── */
-[data-theme="light"] [class*="blocks-field__row"] {
-  background-color: #ffffff !important;
-  border: 1px solid #e5e7eb !important;
-}
+/* ── Light: Input Focus ── */
 
-[data-theme="light"] [class*="blocks-field__block-header"] {
-  background-color: #f9fafb !important;
-  border-bottom: 1px solid #e5e7eb !important;
-}
-
-/* ── Light: Input fields ── */
-[data-theme="light"] [class*="field-type"] input[type="text"]:focus,
-[data-theme="light"] [class*="field-type"] textarea:focus,
-[data-theme="light"] [class*="field-type"] select:focus {
-  border-color: #E8952F !important;
-  box-shadow: 0 0 0 2px rgba(232, 149, 47, 0.12) !important;
+[data-theme="light"] input:focus,
+[data-theme="light"] textarea:focus,
+[data-theme="light"] select:focus {
+  border-color: var(--sfp-amber) !important;
+  box-shadow: 0 0 0 3px var(--sfp-amber-glow) !important;
   outline: none !important;
 }
 
-/* ── Light: Pill / badge styling ── */
-[data-theme="light"] [class*="blocks-field__block-pill"] {
-  background-color: #f0f1f3 !important;
-  color: #4a5568 !important;
-  font-size: 0.75rem !important;
-  padding: 2px 10px !important;
-  border-radius: 4px !important;
+/* ── Light: Focus Ring ── */
+
+[data-theme="light"] *:focus-visible {
+  outline-color: var(--sfp-amber) !important;
+  outline-offset: 2px;
 }
 
-/* ── Light: Focus ring ── */
-[data-theme="light"] *:focus-visible {
-  outline-color: #E8952F;
+
+/* ══════════════════════════════════════════════════════
+   DASHBOARD
+   ══════════════════════════════════════════════════════ */
+
+/* Dashboard cards */
+[class*="dashboard__card"],
+[class*="card--has-link"] {
+  border-radius: var(--sfp-radius) !important;
+  transition: all var(--sfp-ease) !important;
+}
+
+[class*="dashboard__card"]:hover,
+[class*="card--has-link"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="dark"] [class*="dashboard__card"]:hover,
+[data-theme="dark"] [class*="card--has-link"]:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   TOAST NOTIFICATIONS
+   ══════════════════════════════════════════════════════ */
+
+[class*="toast"] {
+  border-radius: var(--sfp-radius) !important;
+  font-weight: 500 !important;
 }
