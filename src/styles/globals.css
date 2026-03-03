@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-brand-forest: #1B3C2D;
+  --color-brand-forest-deep: #142E22;
+  --color-brand-amber: #E8952F;
+  --color-brand-amber-hover: #D4841F;
+  --color-brand-cream: #FAFAF5;
+  --color-brand-sand: #F5F0E8;
+
+  --font-heading: 'Bebas Neue', sans-serif;
+  --font-body: 'Source Sans 3', sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-body text-gray-800 bg-white;
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+    line-height: 1.1;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-block bg-brand-amber text-white font-heading text-sm tracking-widest
+           px-8 py-3 rounded-sm transition-all duration-200
+           hover:bg-brand-amber-hover hover:shadow-lg hover:-translate-y-0.5
+           active:translate-y-0 active:shadow-md;
+  }
+
+  .btn-outline {
+    @apply inline-block border-2 border-brand-forest text-brand-forest font-heading text-sm tracking-widest
+           px-8 py-3 rounded-sm transition-all duration-200
+           hover:bg-brand-forest hover:text-white;
+  }
+
+  .section-heading {
+    @apply font-heading text-sm tracking-[0.25em] text-center uppercase;
+  }
+
+  .section-divider {
+    @apply w-8 h-0.5 bg-brand-amber mx-auto mt-3 mb-10;
+  }
+
+  .container-wide {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .container-narrow {
+    @apply max-w-4xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Rich text content styling */
+  .prose-content a {
+    @apply text-brand-amber underline underline-offset-2 hover:text-brand-amber-hover transition-colors;
+  }
+
+  .prose-content p {
+    @apply mb-4 leading-relaxed;
+  }
+
+  .prose-content h2 {
+    @apply text-2xl mt-8 mb-4;
+  }
+
+  .prose-content h3 {
+    @apply text-xl mt-6 mb-3;
+  }
+
+  .prose-content ul {
+    @apply list-disc pl-6 mb-4 space-y-1;
+  }
+
+  .prose-content ol {
+    @apply list-decimal pl-6 mb-4 space-y-1;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animate-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animate-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animate-delay-500 {
+    animation-delay: 500ms;
+  }
+}
