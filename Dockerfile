@@ -44,6 +44,13 @@ RUN mkdir -p /app/media && chown -R nextjs:nodejs /app/media
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+# Copy startup scripts for schema verification
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/entrypoint.sh ./scripts/entrypoint.sh
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/ensure-schema.mjs ./scripts/ensure-schema.mjs
+
+# Install pg module for the schema script (standalone build may not include it)
+RUN npm init -y > /dev/null 2>&1 && npm install --no-save --omit=dev pg 2>&1 | tail -1
+
 USER nextjs
 
 EXPOSE 3000
@@ -55,4 +62,4 @@ ENV HOSTNAME="0.0.0.0"
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://127.0.0.1:3000/ || exit 1
 
-CMD ["node", "server.js"]
+CMD ["sh", "scripts/entrypoint.sh"]
