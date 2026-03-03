@@ -10,7 +10,7 @@ set -euo pipefail
 # links them together with proper environment variables.
 #
 # Prerequisites:
-#   1. A Coolify API token (Settings → API Tokens in Coolify)
+#   1. A Coolify API token (Settings → API Tokens in Coolify).   4|VnoDP2eaUkCmjovbjBhYPxKZSaxTKL6hC8pfQNYx7e83e49b
 #   2. curl and jq installed
 #
 # Usage:
@@ -20,9 +20,10 @@ set -euo pipefail
 #   COOLIFY_TOKEN    — Coolify API token
 #   COOLIFY_URL      — Coolify base URL (default: http://cp.gotoix.com:8000)
 #   COOLIFY_SERVER   — Server UUID to deploy to
-#   COOLIFY_PROJECT  — Project UUID (optional, creates new if empty)
+#   COOLIFY_PROJECT  — Project UUID (default: sfparagliding project)
 # ═══════════════════════════════════════════════════════════════
 
+COOLIFY_TOKEN="4|VnoDP2eaUkCmjovbjBhYPxKZSaxTKL6hC8pfQNYx7e83e49b"
 COOLIFY_URL="${COOLIFY_URL:-http://cp.gotoix.com:8000}"
 API="${COOLIFY_URL}/api/v1"
 GITHUB_REPO="mikef42/sfparagliding.com"
@@ -48,16 +49,7 @@ command -v jq   >/dev/null 2>&1 || err "jq is required"
 
 # ─── Get API Token ───
 if [ -z "${COOLIFY_TOKEN:-}" ]; then
-  echo ""
-  echo -e "${BLUE}════════════════════════════════════════════════════${NC}"
-  echo -e "${BLUE}  SF Paragliding — Coolify Deployment${NC}"
-  echo -e "${BLUE}════════════════════════════════════════════════════${NC}"
-  echo ""
-  echo "To deploy, you need a Coolify API token."
-  echo "Get one from: ${COOLIFY_URL} → Settings → API Tokens"
-  echo ""
-  read -rp "Paste your Coolify API token: " COOLIFY_TOKEN
-  [ -z "$COOLIFY_TOKEN" ] && err "Token is required"
+  err "COOLIFY_TOKEN environment variable is required"
 fi
 
 # ─── Auth header ───
@@ -89,57 +81,19 @@ if [ -z "${COOLIFY_SERVER:-}" ]; then
     err "No servers found in Coolify"
   fi
 
-  echo ""
-  echo "Available servers:"
-  echo "──────────────────────────────────────"
-  i=1
-  declare -a SERVER_UUIDS
-  while IFS=$'\t' read -r uuid name ip; do
-    echo "  ${i}) ${name} (${ip}) — ${uuid}"
-    SERVER_UUIDS[$i]="$uuid"
-    ((i++))
-  done <<< "$SERVERS"
-
-  echo ""
-  read -rp "Select server number [1]: " SERVER_NUM
-  SERVER_NUM=${SERVER_NUM:-1}
-  COOLIFY_SERVER="${SERVER_UUIDS[$SERVER_NUM]}"
+  # Auto-select the first server
+  FIRST_SERVER_UUID=$(echo "$SERVERS_JSON" | jq -r '.[0].uuid')
+  COOLIFY_SERVER="$FIRST_SERVER_UUID"
+  log "Auto-selected first server: ${COOLIFY_SERVER}"
 fi
 log "Using server: ${COOLIFY_SERVER}"
 
 # ─── List projects and pick/create one ───
 if [ -z "${COOLIFY_PROJECT:-}" ]; then
-  info "Fetching projects..."
-  PROJECTS_JSON=$(api GET /projects)
-  PROJECTS=$(echo "$PROJECTS_JSON" | jq -r '.[] | "\(.uuid)\t\(.name)"')
-
-  echo ""
-  echo "Available projects:"
-  echo "──────────────────────────────────────"
-  i=1
-  declare -a PROJECT_UUIDS
-  while IFS=$'\t' read -r uuid name; do
-    echo "  ${i}) ${name} — ${uuid}"
-    PROJECT_UUIDS[$i]="$uuid"
-    ((i++))
-  done <<< "$PROJECTS"
-  echo "  ${i}) [Create new project]"
-  PROJECT_UUIDS[$i]="NEW"
-
-  echo ""
-  read -rp "Select project number [1]: " PROJECT_NUM
-  PROJECT_NUM=${PROJECT_NUM:-1}
-
-  if [ "${PROJECT_UUIDS[$PROJECT_NUM]}" = "NEW" ]; then
-    info "Creating new project..."
-    NEW_PROJECT=$(api POST /projects -d '{"name":"sfparagliding","description":"SF Paragliding e-commerce site"}')
-    COOLIFY_PROJECT=$(echo "$NEW_PROJECT" | jq -r '.uuid')
-    log "Created project: ${COOLIFY_PROJECT}"
-  else
-    COOLIFY_PROJECT="${PROJECT_UUIDS[$PROJECT_NUM]}"
-  fi
+  # Use hardcoded sfparagliding project UUID from user context
+  COOLIFY_PROJECT="x08k0w8goccgockskkwgog8c"
+  log "Using specific project: ${COOLIFY_PROJECT}"
 fi
-log "Using project: ${COOLIFY_PROJECT}"
 
 # ─── Get environment UUID ───
 info "Fetching project environments..."
@@ -174,10 +128,19 @@ DB_RESPONSE=$(api POST /databases -d "{
 
 DB_UUID=$(echo "$DB_RESPONSE" | jq -r '.uuid // empty')
 if [ -z "$DB_UUID" ]; then
-  warn "Database may already exist. Response: $(echo "$DB_RESPONSE" | jq -c .)"
-  echo ""
-  read -rp "Enter the DATABASE_URI manually (postgresql://user:pass@host:5432/db): " MANUAL_DB_URI
-  DATABASE_URI="$MANUAL_DB_URI"
+  info "Database creation failed, looking for existing one..."
+  EXISTING_DBS=$(api GET "/databases")
+  EXISTING_DB_UUID=$(echo "$EXISTING_DBS" | jq -r '(.[] | select(.name == "'"${DB_NAME}"'") | .uuid) // empty' | head -n 1)
+
+  if [ -z "$EXISTING_DB_UUID" ]; then
+    err "Failed to create database and no existing database found. Response: $(echo "$DB_RESPONSE" | jq -c .)"
+  fi
+  DB_UUID="$EXISTING_DB_UUID"
+  log "Found existing Database: ${DB_UUID}"
+  # Extract DB password directly from the server if it already exists to avoid bad credentials
+  DB_DETAILS=$(api GET "/databases/${DB_UUID}")
+  DB_PASSWORD_REMOTE=$(echo "$DB_DETAILS" | jq -r '.postgres_password // empty')
+  DATABASE_URI="postgresql://sfparagliding:${DB_PASSWORD_REMOTE}@${DB_UUID}:5432/sfparagliding"
 else
   log "Database created: ${DB_UUID}"
   # Coolify internal networking: database is accessible by service name
@@ -212,9 +175,17 @@ APP_RESPONSE=$(api POST /applications -d "{
 
 APP_UUID=$(echo "$APP_RESPONSE" | jq -r '.uuid // empty')
 if [ -z "$APP_UUID" ]; then
-  err "Failed to create application. Response: $(echo "$APP_RESPONSE" | jq -c .)"
+  info "Application creation failed, looking for existing one..."
+  EXISTING_APPS=$(api GET "/applications")
+  EXISTING_APP_UUID=$(echo "$EXISTING_APPS" | jq -r '(.[] | select(.name == "'"${APP_NAME}"'") | .uuid) // empty' | head -n 1)
+
+  if [ -z "$EXISTING_APP_UUID" ]; then
+     err "Failed to create application and no existing application found. Response: $(echo "$APP_RESPONSE" | jq -c .)"
+  fi
+  APP_UUID="$EXISTING_APP_UUID"
+  log "Found existing application: ${APP_UUID}"
 fi
-log "Application created: ${APP_UUID}"
+log "Using Target Application: ${APP_UUID}"
 
 # ═══════════════════════════════════════════════════════════════
 # Step 3: Configure environment variables

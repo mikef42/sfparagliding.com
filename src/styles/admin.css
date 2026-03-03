@@ -156,15 +156,12 @@ button[class*="btn--style-primary"]:hover,
 }
 
 /* ── Headings & text ── */
-h1, h2, h3, h4, h5, h6,
 [class*="collection-list__header"],
 [class*="eyebrow"] {
   color: #eeeeff !important;
 }
 
-p, span, label, a {
-  color: #c8c8d8;
-}
+
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar {

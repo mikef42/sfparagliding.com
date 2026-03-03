@@ -10,7 +10,7 @@ export function StaticHomepage() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage:
-              'url(https://cdn.shopify.com/s/files/1/0654/9177/3656/files/SFparagliding-mussel-rock_2048x2048.jpg)',
+              'url(/hero.jpg)',
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/40" />

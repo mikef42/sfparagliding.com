@@ -26,7 +26,7 @@ fi
 
 # Get API token
 if [ -z "${COOLIFY_TOKEN:-}" ]; then
-  read -rp "Coolify API token: " COOLIFY_TOKEN
+  err "COOLIFY_TOKEN environment variable is required"
 fi
 
 AUTH="Authorization: Bearer ${COOLIFY_TOKEN}"

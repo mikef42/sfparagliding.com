@@ -22,37 +22,12 @@ export function Header() {
       <div className="container-wide">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <svg
-              className="w-7 h-7 text-brand-amber transition-transform group-hover:rotate-12"
-              viewBox="0 0 32 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16 4C16 4 8 8 4 16C2 20 4 24 8 26C12 28 16 24 16 24C16 24 20 28 24 26C28 24 30 20 28 16C24 8 16 4 16 4Z"
-                fill="currentColor"
-                opacity="0.9"
-              />
-              <path
-                d="M16 4L16 24"
-                stroke="white"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M16 14L10 18"
-                stroke="white"
-                strokeWidth="1"
-                strokeLinecap="round"
-              />
-              <path
-                d="M16 14L22 18"
-                stroke="white"
-                strokeWidth="1"
-                strokeLinecap="round"
-              />
-            </svg>
+          <Link href="/" className="flex items-center gap-3 group">
+            <img
+              src="/logo.png"
+              alt="SF Paragliding Logo"
+              className="w-8 h-8 object-contain transition-transform group-hover:scale-105"
+            />
             <span className="font-heading text-xl tracking-wide text-brand-forest">
               SF Paragliding
             </span>
