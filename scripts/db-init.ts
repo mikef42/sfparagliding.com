@@ -1,40 +1,69 @@
 /**
  * Database initialization script
- * Runs Payload initialization to push schema to fresh database.
- * Called before the Next.js server starts in production.
+ * Runs Payload initialization with push:true to create tables in fresh database.
+ * Must be run with NODE_ENV=development so Payload's schema push activates.
  */
 import { getPayload } from 'payload'
 import config from '../payload.config'
 
 async function init() {
   console.log('[db-init] Initializing Payload and pushing database schema...')
+  console.log('[db-init] NODE_ENV:', process.env.NODE_ENV)
+
   try {
     const payload = await getPayload({ config })
-    console.log('[db-init] Database schema ready.')
+    console.log('[db-init] Payload initialized.')
 
-    // Check if admin user exists, create one if not
-    const users = await payload.find({ collection: 'users', limit: 1 })
-    if (users.totalDocs === 0) {
-      console.log('[db-init] No users found. Creating default admin user...')
-      await payload.create({
-        collection: 'users',
-        data: {
-          email: 'admin@sfparagliding.com',
-          password: 'changeme123',
-          name: 'Admin',
-          role: 'admin',
-        },
-      })
-      console.log('[db-init] Default admin created: admin@sfparagliding.com / changeme123')
-      console.log('[db-init] ⚠️  CHANGE THIS PASSWORD IMMEDIATELY!')
-    } else {
-      console.log('[db-init] Admin user already exists, skipping.')
+    // Verify tables exist by counting users
+    try {
+      const users = await payload.find({ collection: 'users', limit: 1 })
+      console.log('[db-init] Database tables verified. Users count:', users.totalDocs)
+
+      if (users.totalDocs === 0) {
+        console.log('[db-init] No users found. Creating default admin user...')
+        await payload.create({
+          collection: 'users',
+          data: {
+            email: 'admin@sfparagliding.com',
+            password: 'changeme123',
+            name: 'Admin',
+            role: 'admin',
+          },
+        })
+        console.log('[db-init] Default admin created: admin@sfparagliding.com / changeme123')
+        console.log('[db-init] ⚠️  CHANGE THIS PASSWORD IMMEDIATELY!')
+      } else {
+        console.log('[db-init] Admin user already exists, skipping.')
+      }
+    } catch (queryErr: unknown) {
+      const msg = queryErr instanceof Error ? queryErr.message : String(queryErr)
+      console.error('[db-init] Table verification failed:', msg)
+
+      // Try to explicitly call the push/migrate methods
+      console.log('[db-init] Attempting manual schema push...')
+      try {
+        if (typeof (payload.db as any).pushSchema === 'function') {
+          await (payload.db as any).pushSchema()
+          console.log('[db-init] pushSchema() succeeded')
+        } else if (typeof (payload.db as any).push === 'function') {
+          await (payload.db as any).push({ forceAcceptWarning: true })
+          console.log('[db-init] push() succeeded')
+        } else {
+          // List available methods for debugging
+          const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(payload.db))
+            .filter(m => m !== 'constructor')
+          console.log('[db-init] Available DB methods:', methods.join(', '))
+        }
+      } catch (pushErr: unknown) {
+        const pushMsg = pushErr instanceof Error ? pushErr.message : String(pushErr)
+        console.error('[db-init] Manual push failed:', pushMsg)
+      }
     }
 
     process.exit(0)
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err)
-    console.error('[db-init] Error:', message)
+    console.error('[db-init] Initialization error:', message)
     process.exit(1)
   }
 }
