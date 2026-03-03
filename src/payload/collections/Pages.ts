@@ -9,6 +9,7 @@ import { CTABanner } from '../blocks/CTABanner'
 import { FAQAccordion } from '../blocks/FAQAccordion'
 import { Gallery } from '../blocks/Gallery'
 import { Spacer } from '../blocks/Spacer'
+import { CodeEmbed } from '../blocks/CodeEmbed'
 import { revalidateCollection } from '../hooks/revalidate'
 
 export const Pages: CollectionConfig = {
@@ -84,6 +85,7 @@ export const Pages: CollectionConfig = {
         FAQAccordion,
         Gallery,
         Spacer,
+        CodeEmbed,
       ],
     },
     {

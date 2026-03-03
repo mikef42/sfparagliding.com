@@ -16,6 +16,7 @@
   color: var(--theme-elevation-800);
   cursor: pointer;
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .theme-toggle-btn:hover {
@@ -51,85 +52,255 @@ a[class*="btn--style-primary"]:hover {
 
 
 /* ═══════════════════════════════════════════════════════
+   LAYOUT FIXES (both themes)
+   Fix text overlap, spacing, block readability
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Block row headers: fix toggle / label overlap ── */
+[class*="blocks-field__block-header"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 44px !important;
+  padding: 8px 12px !important;
+}
+
+[class*="blocks-field__block-header"] > * {
+  flex-shrink: 0;
+}
+
+/* ── Block label text — prevent clipping ── */
+[class*="blocks-field__block-pill"],
+[class*="section-title"] {
+  white-space: nowrap;
+  overflow: visible !important;
+  text-overflow: unset !important;
+}
+
+/* ── Block row: clear spacing between blocks ── */
+[class*="blocks-field__row"] {
+  margin-bottom: 12px !important;
+  border-radius: 8px !important;
+  overflow: visible !important;
+}
+
+/* ── Collapsible sections: more padding inside ── */
+[class*="collapsible__content"] {
+  padding: 16px 20px !important;
+}
+
+/* ── Field spacing: breathable layout inside blocks ── */
+[class*="field-type"] {
+  margin-bottom: 16px !important;
+}
+
+/* ── Labels: readable sizing ── */
+[class*="field-label"],
+label[class*="label"] {
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+  margin-bottom: 6px !important;
+}
+
+/* ── Text inputs & textareas: readable sizing ── */
+[class*="field-type"] input[type="text"],
+[class*="field-type"] textarea,
+[class*="field-type"] select {
+  font-size: 0.9375rem !important;
+  padding: 10px 12px !important;
+  border-radius: 6px !important;
+  line-height: 1.5 !important;
+}
+
+[class*="field-type"] textarea {
+  min-height: 80px !important;
+}
+
+/* ── Upload fields: clean spacing ── */
+[class*="upload__toggler"] {
+  gap: 8px !important;
+}
+
+/* ── Sidebar fields: proper spacing ── */
+[class*="sidebar-field"] {
+  margin-bottom: 20px !important;
+}
+
+/* ── Document header: status pill, title ── */
+[class*="doc-header__title"] {
+  font-size: 1.5rem !important;
+  line-height: 1.3 !important;
+}
+
+/* ── Save button area: visible and spaced ── */
+[class*="save-draft"],
+[class*="doc-controls"] {
+  gap: 8px !important;
+}
+
+/* ── Collection list table: readable rows ── */
+[class*="table"] td,
+[class*="table"] th {
+  padding: 12px 16px !important;
+}
+
+/* ── Relationship & select dropdowns ── */
+[class*="react-select"] {
+  font-size: 0.9375rem !important;
+}
+
+/* ── Rich text editor: comfortable editing ── */
+[class*="rich-text-lexical"] {
+  min-height: 200px !important;
+}
+
+[class*="rich-text-lexical"] [contenteditable="true"] {
+  padding: 16px !important;
+  font-size: 1rem !important;
+  line-height: 1.7 !important;
+}
+
+/* ── Dashboard collection cards ── */
+[class*="dashboard__card"] {
+  border-radius: 8px !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════
    DARK THEME
    ═══════════════════════════════════════════════════════ */
 
 [data-theme="dark"] {
-  --theme-bg: #1a1a22;
-  --theme-input-bg: #24242e;
-  --theme-elevation-0: #1a1a22;
-  --theme-elevation-50: #1e1e28;
-  --theme-elevation-100: #24242e;
-  --theme-elevation-150: #2a2a35;
-  --theme-elevation-200: #30303c;
-  --theme-elevation-250: #363643;
-  --theme-elevation-300: #3c3c4a;
-  --theme-elevation-350: #424251;
-  --theme-elevation-400: #484858;
-  --theme-elevation-450: #4e4e5f;
-  --theme-elevation-500: #555566;
-  --theme-elevation-550: #65657a;
-  --theme-elevation-600: #75758e;
-  --theme-elevation-650: #8585a2;
-  --theme-elevation-700: #9595b6;
-  --theme-elevation-750: #a8a8ca;
-  --theme-elevation-800: #bbbbde;
-  --theme-elevation-850: #d0d0ee;
-  --theme-elevation-900: #e0e0f5;
-  --theme-elevation-950: #eeeefc;
+  --theme-bg: #16161e;
+  --theme-input-bg: #1e1e28;
+  --theme-elevation-0: #16161e;
+  --theme-elevation-50: #1a1a24;
+  --theme-elevation-100: #1e1e28;
+  --theme-elevation-150: #24242f;
+  --theme-elevation-200: #2a2a36;
+  --theme-elevation-250: #30303d;
+  --theme-elevation-300: #363644;
+  --theme-elevation-350: #3c3c4b;
+  --theme-elevation-400: #424252;
+  --theme-elevation-450: #4a4a5c;
+  --theme-elevation-500: #525266;
+  --theme-elevation-550: #626278;
+  --theme-elevation-600: #72728a;
+  --theme-elevation-650: #83839e;
+  --theme-elevation-700: #9696b2;
+  --theme-elevation-750: #aaaac6;
+  --theme-elevation-800: #c0c0da;
+  --theme-elevation-850: #d4d4ec;
+  --theme-elevation-900: #e4e4f4;
+  --theme-elevation-950: #f0f0fc;
   --theme-elevation-1000: #ffffff;
-  --theme-text: #e0e0ee;
-  --theme-border-color: #3c3c4a;
+  --theme-text: #e4e4f0;
+  --theme-border-color: #2e2e3c;
 }
 
 /* ── Dark: Nav sidebar ── */
 [data-theme="dark"] [class*="template-default__nav"],
 [data-theme="dark"] aside[class*="nav"] {
-  background-color: #111117 !important;
-  border-right-color: #2a2a36 !important;
-  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.4) !important;
+  background-color: #0e0e14 !important;
+  border-right: 1px solid #1e1e2a !important;
+  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5) !important;
 }
 
 /* ── Dark: App header ── */
 [data-theme="dark"] header[class*="app-header"],
 [data-theme="dark"] [class*="app-header"] {
-  background-color: #0e0e14 !important;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5) !important;
-  border-bottom-color: #2a2a36 !important;
+  background-color: #0c0c12 !important;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.6) !important;
+  border-bottom: 1px solid #1e1e2a !important;
 }
 
 /* ── Dark: Nav links ── */
+[data-theme="dark"] [class*="nav__link"],
+[data-theme="dark"] [class*="nav-group__link"] {
+  color: rgba(255, 255, 255, 0.65) !important;
+  padding: 8px 16px !important;
+  font-size: 0.875rem !important;
+  transition: all 0.15s ease !important;
+}
+
 [data-theme="dark"] [class*="nav__link"]:hover,
 [data-theme="dark"] [class*="nav-group__link"]:hover {
-  background-color: #1c1c26 !important;
+  background-color: rgba(232, 149, 47, 0.08) !important;
   color: #E8952F !important;
 }
 
 [data-theme="dark"] [class*="nav__link--active"],
 [data-theme="dark"] [class*="nav-group__link--active"] {
   color: #E8952F !important;
-  background-color: #1a1a24 !important;
+  background-color: rgba(232, 149, 47, 0.1) !important;
   border-left: 3px solid #E8952F !important;
 }
 
 /* ── Dark: Nav group labels ── */
 [data-theme="dark"] [class*="nav-group__label"],
 [data-theme="dark"] [class*="nav-group"] > button {
-  color: #8888a2 !important;
+  color: rgba(255, 255, 255, 0.35) !important;
   text-transform: uppercase;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
 }
 
 /* ── Dark: Nav brand area ── */
 [data-theme="dark"] [class*="nav__brand"],
 [data-theme="dark"] [class*="nav__logo"] {
-  border-bottom-color: #2a2a36 !important;
+  border-bottom-color: #1e1e2a !important;
 }
 
 /* ── Dark: Nav group dividers ── */
 [data-theme="dark"] [class*="nav-group"] {
-  border-top-color: #2a2a36 !important;
+  border-top-color: #1e1e2a !important;
+}
+
+/* ── Dark: Block rows — visible containers ── */
+[data-theme="dark"] [class*="blocks-field__row"] {
+  background-color: #1a1a24 !important;
+  border: 1px solid #2a2a38 !important;
+}
+
+[data-theme="dark"] [class*="blocks-field__block-header"] {
+  background-color: #1e1e2a !important;
+  border-bottom: 1px solid #2a2a38 !important;
+}
+
+/* ── Dark: Input fields — clear boundaries ── */
+[data-theme="dark"] [class*="field-type"] input[type="text"],
+[data-theme="dark"] [class*="field-type"] textarea,
+[data-theme="dark"] [class*="field-type"] select {
+  background-color: #12121a !important;
+  border: 1px solid #2a2a38 !important;
+  color: #e4e4f0 !important;
+}
+
+[data-theme="dark"] [class*="field-type"] input[type="text"]:focus,
+[data-theme="dark"] [class*="field-type"] textarea:focus,
+[data-theme="dark"] [class*="field-type"] select:focus {
+  border-color: #E8952F !important;
+  box-shadow: 0 0 0 2px rgba(232, 149, 47, 0.15) !important;
+  outline: none !important;
+}
+
+/* ── Dark: Collapsible header ── */
+[data-theme="dark"] [class*="collapsible__header"] {
+  background-color: #1a1a26 !important;
+}
+
+/* ── Dark: Collection table ── */
+[data-theme="dark"] [class*="table"] tr:hover td {
+  background-color: #1a1a26 !important;
+}
+
+/* ── Dark: Dashboard cards ── */
+[data-theme="dark"] [class*="dashboard__card"],
+[data-theme="dark"] [class*="card"] {
+  background-color: #1a1a24 !important;
+  border: 1px solid #2a2a38 !important;
 }
 
 /* ── Dark: Focus rings ── */
@@ -144,16 +315,16 @@ a[class*="btn--style-primary"]:hover {
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-track {
-  background: #1a1a22;
+  background: #16161e;
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: #40404e;
+  background: #363644;
   border-radius: 4px;
 }
 
 [data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: #55556a;
+  background: #4a4a5c;
 }
 
 /* ── Dark: Primary button text ── */
@@ -162,12 +333,37 @@ a[class*="btn--style-primary"]:hover {
   color: #0d0d10 !important;
 }
 
+/* ── Dark: Pill / badge styling ── */
+[data-theme="dark"] [class*="blocks-field__block-pill"] {
+  background-color: #2a2a38 !important;
+  color: #b0b0c8 !important;
+  font-size: 0.75rem !important;
+  padding: 2px 10px !important;
+  border-radius: 4px !important;
+}
+
+/* ── Dark: Upload area ── */
+[data-theme="dark"] [class*="upload__toggler"] {
+  border-color: #2a2a38 !important;
+}
+
+/* ── Dark: Relationship select ── */
+[data-theme="dark"] [class*="react-select__control"] {
+  background-color: #12121a !important;
+  border-color: #2a2a38 !important;
+}
+
+[data-theme="dark"] [class*="react-select__menu"] {
+  background-color: #1a1a24 !important;
+  border: 1px solid #2a2a38 !important;
+}
+
 
 /* ═══════════════════════════════════════════════════════
    LIGHT THEME
    ═══════════════════════════════════════════════════════ */
 
-/* ── Light: Nav sidebar — dark branded nav ── */
+/* ── Light: Nav sidebar — branded forest green ── */
 [data-theme="light"] [class*="template-default__nav"],
 [data-theme="light"] aside[class*="nav"] {
   background-color: #1B3C2D !important;
@@ -187,6 +383,9 @@ a[class*="btn--style-primary"]:hover {
 [data-theme="light"] [class*="nav__link"],
 [data-theme="light"] [class*="nav-group__link"] {
   color: rgba(255, 255, 255, 0.8) !important;
+  padding: 8px 16px !important;
+  font-size: 0.875rem !important;
+  transition: all 0.15s ease !important;
 }
 
 [data-theme="light"] [class*="nav__link"]:hover,
@@ -205,10 +404,11 @@ a[class*="btn--style-primary"]:hover {
 /* ── Light: Nav group labels ── */
 [data-theme="light"] [class*="nav-group__label"],
 [data-theme="light"] [class*="nav-group"] > button {
-  color: rgba(255, 255, 255, 0.5) !important;
+  color: rgba(255, 255, 255, 0.45) !important;
   text-transform: uppercase;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  font-weight: 600;
 }
 
 /* ── Light: Nav brand/logo area ── */
@@ -226,6 +426,35 @@ a[class*="btn--style-primary"]:hover {
 [data-theme="light"] [class*="nav"] button[class*="close"],
 [data-theme="light"] [class*="nav"] button[class*="hamburger"] {
   color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* ── Light: Block rows ── */
+[data-theme="light"] [class*="blocks-field__row"] {
+  background-color: #ffffff !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+[data-theme="light"] [class*="blocks-field__block-header"] {
+  background-color: #f9fafb !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+/* ── Light: Input fields ── */
+[data-theme="light"] [class*="field-type"] input[type="text"]:focus,
+[data-theme="light"] [class*="field-type"] textarea:focus,
+[data-theme="light"] [class*="field-type"] select:focus {
+  border-color: #E8952F !important;
+  box-shadow: 0 0 0 2px rgba(232, 149, 47, 0.12) !important;
+  outline: none !important;
+}
+
+/* ── Light: Pill / badge styling ── */
+[data-theme="light"] [class*="blocks-field__block-pill"] {
+  background-color: #f0f1f3 !important;
+  color: #4a5568 !important;
+  font-size: 0.75rem !important;
+  padding: 2px 10px !important;
+  border-radius: 4px !important;
 }
 
 /* ── Light: Focus ring ── */

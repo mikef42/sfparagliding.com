@@ -8,6 +8,7 @@ import { CTABannerBlock } from './CTABannerBlock'
 import { FAQAccordionBlock } from './FAQAccordionBlock'
 import { GalleryBlock } from './GalleryBlock'
 import { SpacerBlock } from './SpacerBlock'
+import { CodeEmbedBlock } from './CodeEmbedBlock'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const blockComponents: Record<string, React.ComponentType<{ block: any }>> = {
@@ -21,6 +22,7 @@ const blockComponents: Record<string, React.ComponentType<{ block: any }>> = {
   faqAccordion: FAQAccordionBlock,
   gallery: GalleryBlock,
   spacer: SpacerBlock,
+  codeEmbed: CodeEmbedBlock,
 }
 
 interface RenderBlocksProps {
