@@ -1,203 +1,234 @@
 /* ═══════════════════════════════════════════════════════
-   SF Paragliding — Custom Payload Admin Theme
-   Dark gray palette with black nav bar + drop shadow
+   SF Paragliding — Payload Admin Theme
+   Light + Dark mode with brand accents
    ═══════════════════════════════════════════════════════ */
 
-:root {
-  /* Override Payload's dark theme variables */
-  --theme-bg: #1e1e24;
-  --theme-input-bg: #27272f;
-  --theme-elevation-0: #1e1e24;
-  --theme-elevation-50: #23232b;
-  --theme-elevation-100: #27272f;
-  --theme-elevation-150: #2c2c35;
-  --theme-elevation-200: #31313b;
-  --theme-elevation-250: #363641;
-  --theme-elevation-300: #3b3b47;
-  --theme-elevation-350: #40404d;
-  --theme-elevation-400: #454553;
-  --theme-elevation-450: #4a4a59;
-  --theme-elevation-500: #50505f;
-  --theme-elevation-550: #606073;
-  --theme-elevation-600: #707087;
-  --theme-elevation-650: #80809b;
-  --theme-elevation-700: #9090af;
-  --theme-elevation-750: #a0a0c3;
-  --theme-elevation-800: #b8b8d7;
-  --theme-elevation-850: #d0d0eb;
-  --theme-elevation-900: #e0e0f5;
-  --theme-elevation-950: #eeeeff;
-  --theme-elevation-1000: #ffffff;
+/* ── Theme Toggle Button ── */
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--theme-elevation-250);
+  border-radius: 8px;
+  background: var(--theme-elevation-100);
+  color: var(--theme-elevation-800);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
 
-  /* Brand accent — SF Paragliding amber */
+.theme-toggle-btn:hover {
+  background: var(--theme-elevation-200);
+  color: #E8952F;
+  border-color: #E8952F;
+}
+
+/* ── Brand Accent (both themes) ── */
+[data-theme="light"],
+[data-theme="dark"] {
   --theme-success-500: #E8952F;
-  --theme-text: #e0e0eb;
-  --theme-border-color: #3b3b47;
 }
 
-/* ── Nav bar: solid black with drop shadow ── */
-[class*="nav"] header,
-.payload__nav,
-nav[class*="nav--"] {
-  background-color: #0d0d10 !important;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5) !important;
+/* ── Primary Buttons (both themes) ── */
+button[class*="btn--style-primary"],
+a[class*="btn--style-primary"] {
+  background-color: #E8952F !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  border-radius: 6px !important;
 }
 
-/* Nav sidebar */
-.template-default__nav,
-[class*="template-default__nav"],
-aside[class*="nav"] {
-  background-color: #131318 !important;
-  border-right: 1px solid #2a2a33 !important;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.35) !important;
+button[class*="btn--style-primary"]:hover,
+a[class*="btn--style-primary"]:hover {
+  background-color: #d4841e !important;
 }
 
-/* Nav links */
-.nav__link,
-[class*="nav-group__link"],
-[class*="nav__link"] {
-  color: #c8c8d8 !important;
-  transition: background 0.15s ease, color 0.15s ease;
+/* ── Toast Notifications ── */
+[class*="toast"] {
+  border-radius: 8px !important;
 }
 
-.nav__link:hover,
-[class*="nav-group__link"]:hover,
-[class*="nav__link"]:hover {
-  background-color: #1e1e26 !important;
+
+/* ═══════════════════════════════════════════════════════
+   DARK THEME
+   ═══════════════════════════════════════════════════════ */
+
+[data-theme="dark"] {
+  --theme-bg: #1a1a22;
+  --theme-input-bg: #24242e;
+  --theme-elevation-0: #1a1a22;
+  --theme-elevation-50: #1e1e28;
+  --theme-elevation-100: #24242e;
+  --theme-elevation-150: #2a2a35;
+  --theme-elevation-200: #30303c;
+  --theme-elevation-250: #363643;
+  --theme-elevation-300: #3c3c4a;
+  --theme-elevation-350: #424251;
+  --theme-elevation-400: #484858;
+  --theme-elevation-450: #4e4e5f;
+  --theme-elevation-500: #555566;
+  --theme-elevation-550: #65657a;
+  --theme-elevation-600: #75758e;
+  --theme-elevation-650: #8585a2;
+  --theme-elevation-700: #9595b6;
+  --theme-elevation-750: #a8a8ca;
+  --theme-elevation-800: #bbbbde;
+  --theme-elevation-850: #d0d0ee;
+  --theme-elevation-900: #e0e0f5;
+  --theme-elevation-950: #eeeefc;
+  --theme-elevation-1000: #ffffff;
+  --theme-text: #e0e0ee;
+  --theme-border-color: #3c3c4a;
+}
+
+/* ── Dark: Nav sidebar ── */
+[data-theme="dark"] [class*="template-default__nav"],
+[data-theme="dark"] aside[class*="nav"] {
+  background-color: #111117 !important;
+  border-right-color: #2a2a36 !important;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ── Dark: App header ── */
+[data-theme="dark"] header[class*="app-header"],
+[data-theme="dark"] [class*="app-header"] {
+  background-color: #0e0e14 !important;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5) !important;
+  border-bottom-color: #2a2a36 !important;
+}
+
+/* ── Dark: Nav links ── */
+[data-theme="dark"] [class*="nav__link"]:hover,
+[data-theme="dark"] [class*="nav-group__link"]:hover {
+  background-color: #1c1c26 !important;
   color: #E8952F !important;
 }
 
-.nav__link--active,
-[class*="nav__link--active"],
-[class*="nav-group__link--active"] {
+[data-theme="dark"] [class*="nav__link--active"],
+[data-theme="dark"] [class*="nav-group__link--active"] {
   color: #E8952F !important;
-  background-color: #1a1a22 !important;
+  background-color: #1a1a24 !important;
   border-left: 3px solid #E8952F !important;
 }
 
-/* Nav group labels */
-[class*="nav-group__label"],
-[class*="nav-group"] > button {
-  color: #8888a0 !important;
+/* ── Dark: Nav group labels ── */
+[data-theme="dark"] [class*="nav-group__label"],
+[data-theme="dark"] [class*="nav-group"] > button {
+  color: #8888a2 !important;
   text-transform: uppercase;
   font-size: 0.7rem;
   letter-spacing: 0.08em;
 }
 
-/* ── Main content area ── */
-.template-default__content,
-[class*="template-default__content"],
-main {
-  background-color: #1e1e24 !important;
+/* ── Dark: Nav brand area ── */
+[data-theme="dark"] [class*="nav__brand"],
+[data-theme="dark"] [class*="nav__logo"] {
+  border-bottom-color: #2a2a36 !important;
 }
 
-/* ── Header / top bar ── */
-header[class*="app-header"],
-[class*="app-header"] {
-  background-color: #0d0d10 !important;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.4) !important;
-  border-bottom: 1px solid #2a2a33 !important;
+/* ── Dark: Nav group dividers ── */
+[data-theme="dark"] [class*="nav-group"] {
+  border-top-color: #2a2a36 !important;
 }
 
-/* ── Cards & table rows ── */
-[class*="card"],
-[class*="table__row"],
-tr {
-  background-color: #23232b !important;
-  border-color: #31313b !important;
+/* ── Dark: Focus rings ── */
+[data-theme="dark"] *:focus-visible {
+  outline-color: #E8952F;
 }
 
-[class*="card"]:hover,
-[class*="table__row"]:hover,
-tr:hover {
-  background-color: #2a2a34 !important;
-}
-
-/* ── Form fields ── */
-input,
-textarea,
-select,
-[class*="field-type"] input,
-[class*="field-type"] textarea,
-[class*="field-type"] select {
-  background-color: #27272f !important;
-  border-color: #3b3b47 !important;
-  color: #e0e0eb !important;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  border-color: #E8952F !important;
-  box-shadow: 0 0 0 2px rgba(232, 149, 47, 0.2) !important;
-}
-
-/* ── Buttons ── */
-[class*="btn"] {
-  border-radius: 6px !important;
-}
-
-button[class*="btn--style-primary"],
-[class*="btn--style-primary"] {
-  background-color: #E8952F !important;
-  color: #0d0d10 !important;
-  font-weight: 600 !important;
-}
-
-button[class*="btn--style-primary"]:hover,
-[class*="btn--style-primary"]:hover {
-  background-color: #d4841e !important;
-}
-
-/* ── "No Results" and empty states ── */
-[class*="no-results"],
-[class*="list__no-results"] {
-  color: #8888a0 !important;
-}
-
-/* ── Headings & text ── */
-[class*="collection-list__header"],
-[class*="eyebrow"] {
-  color: #eeeeff !important;
-}
-
-
-
-/* ── Scrollbar ── */
-::-webkit-scrollbar {
+/* ── Dark: Scrollbar ── */
+[data-theme="dark"] ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-::-webkit-scrollbar-track {
-  background: #1e1e24;
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #1a1a22;
 }
 
-::-webkit-scrollbar-thumb {
-  background: #40404d;
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #40404e;
   border-radius: 4px;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #50505f;
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #55556a;
 }
 
-/* ── Payload logo area ── */
-[class*="nav__brand"],
-[class*="nav__logo"] {
-  padding: 1rem !important;
-  border-bottom: 1px solid #2a2a33 !important;
+/* ── Dark: Primary button text ── */
+[data-theme="dark"] button[class*="btn--style-primary"],
+[data-theme="dark"] a[class*="btn--style-primary"] {
+  color: #0d0d10 !important;
 }
 
-/* ── Global & Collection dividers ── */
-[class*="nav-group"] {
-  border-top: 1px solid #2a2a33 !important;
-  margin-top: 0.25rem !important;
-  padding-top: 0.5rem !important;
+
+/* ═══════════════════════════════════════════════════════
+   LIGHT THEME
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Light: Nav sidebar — dark branded nav ── */
+[data-theme="light"] [class*="template-default__nav"],
+[data-theme="light"] aside[class*="nav"] {
+  background-color: #1B3C2D !important;
+  border-right: 1px solid #244a38 !important;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15) !important;
 }
 
-/* ── Toast notifications ── */
-[class*="toast"] {
-  border-radius: 8px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+/* ── Light: App header ── */
+[data-theme="light"] header[class*="app-header"],
+[data-theme="light"] [class*="app-header"] {
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+
+/* ── Light: Nav links — white text on forest green ── */
+[data-theme="light"] [class*="nav__link"],
+[data-theme="light"] [class*="nav-group__link"] {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+[data-theme="light"] [class*="nav__link"]:hover,
+[data-theme="light"] [class*="nav-group__link"]:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #E8952F !important;
+}
+
+[data-theme="light"] [class*="nav__link--active"],
+[data-theme="light"] [class*="nav-group__link--active"] {
+  color: #E8952F !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-left: 3px solid #E8952F !important;
+}
+
+/* ── Light: Nav group labels ── */
+[data-theme="light"] [class*="nav-group__label"],
+[data-theme="light"] [class*="nav-group"] > button {
+  color: rgba(255, 255, 255, 0.5) !important;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+}
+
+/* ── Light: Nav brand/logo area ── */
+[data-theme="light"] [class*="nav__brand"],
+[data-theme="light"] [class*="nav__logo"] {
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ── Light: Nav group dividers ── */
+[data-theme="light"] [class*="nav-group"] {
+  border-top-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ── Light: Nav close/toggle button ── */
+[data-theme="light"] [class*="nav"] button[class*="close"],
+[data-theme="light"] [class*="nav"] button[class*="hamburger"] {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* ── Light: Focus ring ── */
+[data-theme="light"] *:focus-visible {
+  outline-color: #E8952F;
 }

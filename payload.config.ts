@@ -2,7 +2,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { lexicalEditor, FixedToolbarFeature, HTMLConverterFeature } from '@payloadcms/richtext-lexical'
 import sharp from 'sharp'
 
 import { Pages } from '@/payload/collections/Pages'
@@ -25,8 +25,17 @@ export default buildConfig({
     meta: {
       titleSuffix: ' — SF Paragliding',
     },
+    components: {
+      actions: ['@/components/admin/ThemeToggle'],
+    },
   },
-  editor: lexicalEditor(),
+  editor: lexicalEditor({
+    features: ({ defaultFeatures }) => [
+      ...defaultFeatures,
+      FixedToolbarFeature(),
+      HTMLConverterFeature({}),
+    ],
+  }),
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
