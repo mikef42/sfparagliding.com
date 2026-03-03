@@ -324,7 +324,18 @@ label,
   min-height: 42px !important;
   font-size: 0.95rem !important;
   box-shadow: none !important;
-  padding: 0 8px !important;
+}
+
+/* Ensure the value container shows full text */
+.rs__value-container {
+  overflow: visible !important;
+  padding: 2px 8px !important;
+}
+
+/* Payload's outer value-container wrapper */
+.value-container {
+  overflow: visible !important;
+  min-width: 0 !important;
 }
 
 .rs__control--is-focused {
@@ -459,6 +470,17 @@ select {
   border: none !important;
   cursor: pointer !important;
   color: var(--theme-elevation-400) !important;
+  overflow: hidden !important;
+  font-size: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+/* Show only the SVG icon inside toggle, hide text */
+.collapsible__toggle svg {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0 !important;
 }
 
 .collapsible__toggle:hover {
