@@ -22,15 +22,12 @@ export function Header() {
       <div className="container-wide">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
+          <Link href="/" className="flex items-center group">
             <img
               src="/logo.png"
-              alt="SF Paragliding Logo"
-              className="w-8 h-8 object-contain transition-transform group-hover:scale-105"
+              alt="SF Paragliding"
+              className="h-10 lg:h-12 w-auto object-contain transition-transform group-hover:scale-105"
             />
-            <span className="font-heading text-xl tracking-wide text-brand-forest">
-              SF Paragliding
-            </span>
           </Link>
 
           {/* Desktop Navigation */}

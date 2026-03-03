@@ -25,6 +25,7 @@ export default buildConfig({
     meta: {
       titleSuffix: ' — SF Paragliding',
     },
+    css: path.resolve(dirname, 'src/styles/admin.css'),
   },
   editor: lexicalEditor(),
   db: postgresAdapter({
