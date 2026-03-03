@@ -21,7 +21,7 @@ export function StaticHomepage() {
           </h1>
           <div className="animate-fade-up animate-delay-200">
             <Link
-              href="/services/tandem-flights"
+              href="/tandem-flights"
               className="btn-primary text-base px-10 py-4 shadow-xl"
             >
               Book Now
@@ -43,7 +43,7 @@ export function StaticHomepage() {
             and we have same-day booking for tandem flights. Our tandem pilots
             are some of the most experienced in the world, with a combined total
             of over 10,000 flights and a perfect safety record.{' '}
-            <Link href="/services/tandem-flights">Come fly with us!</Link>
+            <Link href="/tandem-flights">Come fly with us!</Link>
           </p>
           <p>
             Ready to become a solo pilot? SF Paragliding has got you covered. We
@@ -51,7 +51,7 @@ export function StaticHomepage() {
             Bay Area. Our team of highly experienced instructors teach
             year-round. All instructors are certified by the USHPA and have
             thousands of hours of flying experience.{' '}
-            <Link href="/services/paragliding-lessons">
+            <Link href="/paragliding-lessons">
               Sign up for lessons today!
             </Link>
           </p>
@@ -95,7 +95,7 @@ export function StaticHomepage() {
                   Free Pictures
                 </li>
               </ul>
-              <Link href="/services/tandem-flights" className="btn-primary text-xs">
+              <Link href="/tandem-flights" className="btn-primary text-xs">
                 Book Now
               </Link>
             </div>
@@ -118,7 +118,7 @@ export function StaticHomepage() {
                 earn your P2 rating which allows you to fly at thousands of
                 paragliding sights around the world.
               </p>
-              <Link href="/services/paragliding-lessons" className="btn-primary text-xs">
+              <Link href="/paragliding-lessons" className="btn-primary text-xs">
                 Sign Up Today!
               </Link>
             </div>
@@ -139,7 +139,7 @@ export function StaticHomepage() {
                 Gift the gift of memories that last a lifetime. Our gift
                 certificates are delivered electronically and never expire.
               </p>
-              <Link href="/products/gift-certificate" className="btn-primary text-xs">
+              <Link href="/gift-certificate" className="btn-primary text-xs">
                 Buy Now
               </Link>
             </div>

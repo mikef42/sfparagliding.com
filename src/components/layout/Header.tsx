@@ -5,8 +5,8 @@ import Link from 'next/link'
 import { useCartStore } from '@/store/cart'
 
 const NAV_LINKS = [
-  { label: 'Tandem Flights', href: '/services/tandem-flights' },
-  { label: 'Gift Card', href: '/products/gift-certificate' },
+  { label: 'Tandem Flights', href: '/tandem-flights' },
+  { label: 'Gift Card', href: '/gift-certificate' },
   { label: 'Shop', href: '/products' },
   { label: 'Contact', href: '/contact' },
   { label: 'Services', href: '/services' },

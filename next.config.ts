@@ -18,6 +18,13 @@ const nextConfig: NextConfig = {
   experimental: {
     reactCompiler: false,
   },
+  async redirects() {
+    return [
+      { source: '/services/tandem-flights', destination: '/tandem-flights', permanent: true },
+      { source: '/services/paragliding-lessons', destination: '/paragliding-lessons', permanent: true },
+      { source: '/products/gift-certificate', destination: '/gift-certificate', permanent: true },
+    ]
+  },
 }
 
 export default withPayload(nextConfig)
