@@ -22,6 +22,10 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    meta: {
+      titleSuffix: ' — SF Paragliding',
+    },
+    css: path.resolve(dirname, 'src/styles/admin.css'),
   },
   editor: lexicalEditor(),
   db: postgresAdapter({
