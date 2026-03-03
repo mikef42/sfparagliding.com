@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 /* ═══════════════════════════════════════════════════════
-   SF Paragliding — "Summit" Admin Theme
+   SF Paragliding — "Summit" Admin Theme v2
    Deep navy dark mode · Warm light mode · Amber accents
    Font: Outfit (geometric, modern)
    ═══════════════════════════════════════════════════════ */
@@ -40,8 +40,6 @@ body,
 
 /* ══════════════════════════════
    THEME TOGGLE
-   Both icons always in DOM —
-   CSS toggles via [data-theme]
    ══════════════════════════════ */
 
 .theme-toggle-btn {
@@ -94,6 +92,219 @@ a[class*="btn--style-primary"]:hover {
   background-color: var(--sfp-amber-hover) !important;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(232, 149, 47, 0.3) !important;
+}
+
+
+/* ══════════════════════════════
+   FORM FIELD SPACING
+   Fix text overlapping inputs,
+   labels too close to fields
+   ══════════════════════════════ */
+
+/* Field wrapper spacing */
+[class*="field-type"] {
+  margin-bottom: 20px !important;
+}
+
+/* Labels above inputs need gap */
+[class*="field-type"] > label,
+[class*="field-type"] > [class*="label"] {
+  display: block !important;
+  margin-bottom: 6px !important;
+  font-size: 0.8125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* Field descriptions */
+[class*="field-description"] {
+  margin-top: 4px !important;
+  font-size: 0.75rem !important;
+  opacity: 0.6 !important;
+}
+
+
+/* ══════════════════════════════
+   BLOCK COLLAPSIBLE HEADERS
+   Fix text overlap in block rows
+   ══════════════════════════════ */
+
+/* Block row header — ensure flex items don't overlap */
+[class*="blocks-field__block-pill-header"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  min-height: 40px !important;
+  flex-wrap: nowrap !important;
+  overflow: hidden !important;
+}
+
+/* Collapsible header for blocks */
+[class*="collapsible__header"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px 16px !important;
+  min-height: 44px !important;
+}
+
+/* Block type label — don't let it shrink or wrap */
+[class*="blocks-field__block-type"],
+[class*="pill__label"] {
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  font-weight: 600 !important;
+  font-size: 0.8125rem !important;
+}
+
+/* Block name (e.g., "Untitled") — allow truncation */
+[class*="section-title"],
+[class*="collapsible__label"] {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  min-width: 0 !important;
+}
+
+/* Block actions (three dots menu + collapse toggle) */
+[class*="collapsible__actions"],
+[class*="blocks-field__block-actions"] {
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  margin-left: auto !important;
+}
+
+/* Collapsible content padding */
+[class*="collapsible__content"] {
+  padding: 16px !important;
+}
+
+
+/* ══════════════════════════════
+   BLOCK DRAWER / PICKER
+   Better readability for block
+   selection modal
+   ══════════════════════════════ */
+
+/* Drawer overlay */
+[class*="drawer__content"] {
+  padding: 24px !important;
+}
+
+/* Block cards in the picker */
+[class*="block-card"] {
+  border-radius: var(--sfp-radius) !important;
+  overflow: hidden !important;
+  transition: all var(--sfp-ease) !important;
+  cursor: pointer !important;
+}
+
+[class*="block-card"]:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Block card labels */
+[class*="block-card"] [class*="label"],
+[class*="block-card"] span {
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  padding: 8px 4px !important;
+  text-align: center !important;
+}
+
+
+/* ══════════════════════════════
+   INPUTS & TEXTAREAS
+   ══════════════════════════════ */
+
+[data-theme] input[type="text"],
+[data-theme] input[type="email"],
+[data-theme] input[type="number"],
+[data-theme] input[type="url"],
+[data-theme] input[type="password"],
+[data-theme] textarea,
+[data-theme] select {
+  border-radius: var(--sfp-radius-sm) !important;
+  padding: 10px 12px !important;
+  font-size: 0.875rem !important;
+  transition: border-color var(--sfp-ease), box-shadow var(--sfp-ease) !important;
+}
+
+
+/* ══════════════════════════════
+   SELECT DROPDOWNS
+   ══════════════════════════════ */
+
+[class*="react-select"] {
+  font-size: 0.875rem !important;
+}
+
+
+/* ══════════════════════════════
+   RICH TEXT EDITOR
+   ══════════════════════════════ */
+
+/* Editor toolbar */
+[class*="rich-text"] [class*="toolbar"] {
+  border-radius: var(--sfp-radius-sm) var(--sfp-radius-sm) 0 0 !important;
+  padding: 4px !important;
+  gap: 2px !important;
+}
+
+/* Editor body area */
+[class*="rich-text"] [class*="editor"],
+[class*="rich-text"] [class*="ContentEditable"] {
+  min-height: 120px !important;
+  padding: 12px 16px !important;
+  font-size: 0.9375rem !important;
+  line-height: 1.7 !important;
+}
+
+
+/* ══════════════════════════════
+   CODE EDITOR (CodeEmbed field)
+   ══════════════════════════════ */
+
+[class*="code-field"] {
+  border-radius: var(--sfp-radius-sm) !important;
+  overflow: hidden !important;
+}
+
+
+/* ══════════════════════════════
+   SIDEBAR (Edit View)
+   ══════════════════════════════ */
+
+[class*="edit-view__sidebar"] {
+  padding: 20px !important;
+}
+
+[class*="edit-view__sidebar"] [class*="field-type"] {
+  margin-bottom: 16px !important;
+}
+
+
+/* ══════════════════════════════
+   TABLE / LIST VIEW
+   ══════════════════════════════ */
+
+[class*="table"] th {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+}
+
+[class*="table"] td {
+  font-size: 0.875rem !important;
+  padding: 12px 16px !important;
+}
+
+[class*="table"] tr {
+  transition: background var(--sfp-ease) !important;
 }
 
 
@@ -206,6 +417,34 @@ a[class*="btn--style-primary"]:hover {
 
 [data-theme="dark"] [class*="nav-group"] {
   border-top-color: #171e2e !important;
+}
+
+/* ── Dark: Block Cards in Drawer ── */
+
+[data-theme="dark"] [class*="block-card"] {
+  background: var(--theme-elevation-100) !important;
+  border: 1px solid var(--theme-elevation-250) !important;
+}
+
+[data-theme="dark"] [class*="block-card"]:hover {
+  border-color: var(--sfp-amber) !important;
+  background: var(--theme-elevation-150) !important;
+}
+
+[data-theme="dark"] [class*="block-card"] [class*="label"],
+[data-theme="dark"] [class*="block-card"] span {
+  color: var(--theme-elevation-900) !important;
+}
+
+/* ── Dark: Collapsible blocks ── */
+
+[data-theme="dark"] [class*="collapsible__header"] {
+  background: var(--theme-elevation-50) !important;
+  border-bottom: 1px solid var(--theme-elevation-200) !important;
+}
+
+[data-theme="dark"] [class*="collapsible__header"]:hover {
+  background: var(--theme-elevation-100) !important;
 }
 
 /* ── Dark: Focus Ring ── */
@@ -323,6 +562,29 @@ a[class*="btn--style-primary"]:hover {
   outline: none !important;
 }
 
+/* ── Light: Block Cards in Drawer ── */
+
+[data-theme="light"] [class*="block-card"] {
+  background: #ffffff !important;
+  border: 1px solid #e5e7ec !important;
+}
+
+[data-theme="light"] [class*="block-card"]:hover {
+  border-color: var(--sfp-amber) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ── Light: Collapsible blocks ── */
+
+[data-theme="light"] [class*="collapsible__header"] {
+  background: #f0f1f4 !important;
+  border-bottom: 1px solid #e0e2e8 !important;
+}
+
+[data-theme="light"] [class*="collapsible__header"]:hover {
+  background: #e8eaef !important;
+}
+
 /* ── Light: Focus Ring ── */
 
 [data-theme="light"] *:focus-visible {
@@ -361,4 +623,15 @@ a[class*="btn--style-primary"]:hover {
 [class*="toast"] {
   border-radius: var(--sfp-radius) !important;
   font-weight: 500 !important;
+}
+
+
+/* ══════════════════════════════════════════════════════
+   SAVE BUTTON (top right)
+   ══════════════════════════════════════════════════════ */
+
+[class*="save-draft"] button,
+[class*="doc-controls"] button[class*="btn--style-primary"] {
+  padding: 8px 20px !important;
+  font-size: 0.875rem !important;
 }

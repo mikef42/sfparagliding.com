@@ -20,14 +20,17 @@ async function ensureSchema() {
     await client.connect()
     console.log('[ensure-schema] Connected to database.')
 
-    // Create any missing block tables for the pages collection.
-    // This handles new blocks added after the initial schema was pushed.
+    // Drop the old broken table (had integer id instead of varchar)
+    await client.query(`DROP TABLE IF EXISTS "pages_blocks_code_embed" CASCADE`).catch(() => {})
+
+    // Create block tables for the pages collection.
+    // Payload 3.x uses varchar IDs (MongoDB-style ObjectId strings), not serial integers.
     const statements = [
       `CREATE TABLE IF NOT EXISTS "pages_blocks_code_embed" (
         "_order" integer NOT NULL,
         "_parent_id" integer NOT NULL,
         "_path" text NOT NULL,
-        "id" serial PRIMARY KEY,
+        "id" varchar PRIMARY KEY,
         "label" varchar,
         "code" text NOT NULL DEFAULT '',
         "max_width" varchar DEFAULT 'wide',
