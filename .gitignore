@@ -36,3 +36,6 @@ docker-compose.override.yml
 
 # Screenshots / assets
 clone/
+
+# Deployment credentials
+.deploy-credentials
