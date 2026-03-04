@@ -5,24 +5,30 @@ export function StaticHomepage() {
   return (
     <>
       {/* ─── Hero Section ─── */}
-      <section className="relative h-[70vh] min-h-[500px] max-h-[800px] flex items-center overflow-hidden">
+      <section className="relative h-[80vh] md:h-[70vh] min-h-[500px] max-h-[900px] flex items-end overflow-hidden">
+        {/* Desktop hero */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage:
-              'url(/hero.jpg)',
-          }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden md:block"
+          style={{ backgroundImage: 'url(/hero.jpg)' }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/40" />
+        {/* Mobile hero — portrait tandem close-up */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat md:hidden"
+          style={{ backgroundImage: 'url(/hero-mobile.jpg)' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/50" />
 
-        <div className="relative z-10 container-wide w-full text-center">
-          <h1 className="text-6xl md:text-8xl lg:text-9xl text-white mb-4 animate-fade-up drop-shadow-lg">
+        <div className="relative z-10 container-wide w-full text-center pb-[calc(12%-50px)] md:pb-[calc(10%-50px)]">
+          <h1
+            className="text-2xl md:text-4xl lg:text-5xl text-white mb-4 animate-fade-up drop-shadow-lg"
+            style={{ fontFamily: "'Times New Roman', Times, serif" }}
+          >
             Fly Today !
           </h1>
           <div className="animate-fade-up animate-delay-200">
             <Link
               href="/tandem-flights"
-              className="btn-primary text-base px-10 py-4 shadow-xl"
+              className="inline-block bg-transparent border-2 border-white text-white font-heading text-sm tracking-[0.15em] uppercase px-10 py-4 shadow-xl hover:bg-white/10 transition-colors"
             >
               Book Now
             </Link>
@@ -69,7 +75,7 @@ export function StaticHomepage() {
             <div className="group text-center">
               <div className="aspect-[4/3] overflow-hidden rounded-sm bg-gray-100 mb-5">
                 <img
-                  src="https://cdn.shopify.com/s/files/1/0654/9177/3656/files/tandemflight_480x480.jpg"
+                  src="/tandem-flight.jpg"
                   alt="Tandem paragliding flight over the coast"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -104,7 +110,7 @@ export function StaticHomepage() {
             <div className="group text-center">
               <div className="aspect-[4/3] overflow-hidden rounded-sm bg-gray-100 mb-5">
                 <img
-                  src="https://cdn.shopify.com/s/files/1/0654/9177/3656/files/lessons_480x480.jpg"
+                  src="/lessons.jpg"
                   alt="Paragliding lessons at the coast"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -127,7 +133,7 @@ export function StaticHomepage() {
             <div className="group text-center">
               <div className="aspect-[4/3] overflow-hidden rounded-sm bg-gray-100 mb-5">
                 <img
-                  src="https://cdn.shopify.com/s/files/1/0654/9177/3656/files/gift-certificate_480x480.jpg"
+                  src="/gift-certificate.jpg"
                   alt="SF Paragliding Gift Certificate"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />

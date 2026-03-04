@@ -362,6 +362,20 @@ label,
   display: none !important;
 }
 
+/* Hide react-select's internal search input from global input styles
+   (otherwise the global border/padding rules make it show as a rectangle) */
+.rs__value-container input,
+.rs__input input,
+.rs__input-container input {
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  min-width: 1px !important;
+  width: auto !important;
+}
+
 /* Fix dropdown arrow indicators — the "white rectangle" */
 .rs__indicators {
   padding: 0 !important;
@@ -675,9 +689,56 @@ select {
   color: var(--theme-elevation-400) !important;
 }
 
-/* Content padding */
-.template-default__wrap {
-  padding-top: 12px !important;
+/* Content area — remove gray gap above white content on all pages */
+.template-default__wrap,
+.template-minimal__wrap {
+  padding-top: 0 !important;
+  background: var(--theme-elevation-50) !important;
+}
+
+/* Ensure the main content area fills white on every page type */
+.collection-list,
+.collection-edit,
+.global-edit,
+.account__controls-wrap,
+.dashboard {
+  background: var(--theme-elevation-50) !important;
+}
+
+/* Space between page heading (e.g. "Pages") and "Create New" button */
+.list-header {
+  gap: 16px !important;
+  align-items: center !important;
+  padding: 20px 0 16px !important;
+}
+
+.list-header .btn,
+.doc-header .btn {
+  margin-left: 12px !important;
+}
+
+/* Fix magnifying glass icon overlapping search placeholder */
+.search-filter input[type="search"],
+.search-filter input[type="text"],
+.list-controls input[type="search"],
+.list-controls input[type="text"] {
+  padding-left: 36px !important;
+}
+
+.search-filter__icon,
+.list-controls__search svg,
+.search-filter svg {
+  position: absolute !important;
+  left: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none !important;
+  z-index: 1 !important;
+}
+
+.search-filter,
+.list-controls__search {
+  position: relative !important;
 }
 
 /* Render fields — ensure proper spacing inside blocks */

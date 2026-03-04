@@ -19,6 +19,7 @@ const config: Config = {
       fontFamily: {
         heading: ['var(--font-heading)', 'sans-serif'],
         body: ['var(--font-body)', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Georgia', 'serif'],
       },
       letterSpacing: {
         widest: '0.2em',
@@ -27,6 +28,7 @@ const config: Config = {
         'fade-in': 'fadeIn 0.6s ease-out forwards',
         'fade-up': 'fadeUp 0.6s ease-out forwards',
         'slide-down': 'slideDown 0.3s ease-out forwards',
+        'slide-up': 'slideUp 0.3s ease-out forwards',
       },
       keyframes: {
         fadeIn: {
@@ -40,6 +42,10 @@ const config: Config = {
         slideDown: {
           '0%': { opacity: '0', transform: 'translateY(-10px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(100%)' },
+          '100%': { transform: 'translateY(0)' },
         },
       },
     },

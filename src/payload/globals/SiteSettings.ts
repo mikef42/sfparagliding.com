@@ -27,6 +27,17 @@ export const SiteSettings: GlobalConfig = {
           defaultValue: 'SF Paragliding',
         },
         {
+          name: 'logoScale',
+          type: 'number',
+          defaultValue: 90,
+          min: 50,
+          max: 200,
+          admin: {
+            description: 'Logo size as a percentage of the default (100 = original, 90 = 10% smaller). Adjust in increments of 5.',
+            step: 5,
+          },
+        },
+        {
           name: 'navLinks',
           type: 'array',
           fields: [

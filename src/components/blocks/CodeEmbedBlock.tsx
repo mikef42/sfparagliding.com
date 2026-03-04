@@ -19,12 +19,15 @@ const widthClasses: Record<string, string> = {
 export function CodeEmbedBlock({ block }: CodeEmbedBlockProps) {
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // After mount, re-create <script> tags so they actually execute.
-  // dangerouslySetInnerHTML renders the HTML (including iframes) but
-  // does NOT execute <script> elements — we handle that here.
   useEffect(() => {
     if (!containerRef.current) return
 
+    // Snapshot body children before scripts run so we can clean up after
+    const bodyChildrenBefore = new Set(Array.from(document.body.children))
+
+    // Re-create <script> tags so they actually execute.
+    // dangerouslySetInnerHTML renders the HTML (including iframes) but
+    // does NOT execute <script> elements — we handle that here.
     const scripts = containerRef.current.querySelectorAll('script')
     scripts.forEach((oldScript) => {
       const newScript = document.createElement('script')
@@ -36,6 +39,15 @@ export function CodeEmbedBlock({ block }: CodeEmbedBlockProps) {
       }
       oldScript.parentNode?.replaceChild(newScript, oldScript)
     })
+
+    // Cleanup: remove any elements the scripts added to document.body
+    return () => {
+      Array.from(document.body.children).forEach((child) => {
+        if (!bodyChildrenBefore.has(child)) {
+          child.remove()
+        }
+      })
+    }
   }, [block.code])
 
   if (!block.code) return null

@@ -46,6 +46,25 @@ function renderNode(node: any, index: number): React.ReactNode {
           {children}
         </a>
       )
+    case 'table':
+      return (
+        <table key={index} className="w-full text-sm border-collapse my-4">
+          <tbody>{children}</tbody>
+        </table>
+      )
+    case 'tablerow':
+      return <tr key={index} className="border-b border-gray-200">{children}</tr>
+    case 'tablecell': {
+      const cellClasses = 'px-4 py-2.5 text-left'
+      if (node.headerState) {
+        return (
+          <th key={index} className={`${cellClasses} font-heading tracking-wide text-xs uppercase text-gray-500 bg-gray-50`}>
+            {children}
+          </th>
+        )
+      }
+      return <td key={index} className={cellClasses}>{children}</td>
+    }
     case 'quote':
       return <blockquote key={index}>{children}</blockquote>
     case 'upload':

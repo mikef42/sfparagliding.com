@@ -11,14 +11,23 @@ export interface CartItem {
   image?: string
   slug?: string
   type: 'product' | 'service' | 'gift-card'
+  size?: string
+  color?: string
+  cartItemId?: string
+  ushpaId?: string
+}
+
+function makeCartItemId(item: { id: string; size?: string; color?: string }): string {
+  return [item.id, item.size, item.color].filter(Boolean).join('-')
 }
 
 interface CartState {
   items: CartItem[]
   isOpen: boolean
-  addItem: (item: Omit<CartItem, 'quantity'>) => void
-  removeItem: (id: string) => void
-  updateQuantity: (id: string, quantity: number) => void
+  _hasHydrated: boolean
+  addItem: (item: Omit<CartItem, 'quantity'>, quantity?: number) => void
+  removeItem: (cartItemId: string) => void
+  updateQuantity: (cartItemId: string, quantity: number) => void
   clearCart: () => void
   toggleCart: () => void
   openCart: () => void
@@ -32,37 +41,49 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       items: [],
       isOpen: false,
+      _hasHydrated: false,
 
-      addItem: (item) => {
+      addItem: (item, quantity = 1) => {
         const items = get().items
-        const existing = items.find((i) => i.id === item.id)
+        const cartItemId = makeCartItemId(item)
+        const existing = items.find(
+          (i) => (i.cartItemId || i.id) === cartItemId,
+        )
 
         if (existing) {
           set({
             items: items.map((i) =>
-              i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i,
+              (i.cartItemId || i.id) === cartItemId
+                ? { ...i, quantity: i.quantity + quantity }
+                : i,
             ),
             isOpen: true,
           })
         } else {
           set({
-            items: [...items, { ...item, quantity: 1 }],
+            items: [...items, { ...item, quantity, cartItemId }],
             isOpen: true,
           })
         }
       },
 
-      removeItem: (id) => {
-        set({ items: get().items.filter((i) => i.id !== id) })
+      removeItem: (cartItemId) => {
+        set({
+          items: get().items.filter(
+            (i) => (i.cartItemId || i.id) !== cartItemId,
+          ),
+        })
       },
 
-      updateQuantity: (id, quantity) => {
+      updateQuantity: (cartItemId, quantity) => {
         if (quantity <= 0) {
-          get().removeItem(id)
+          get().removeItem(cartItemId)
           return
         }
         set({
-          items: get().items.map((i) => (i.id === id ? { ...i, quantity } : i)),
+          items: get().items.map((i) =>
+            (i.cartItemId || i.id) === cartItemId ? { ...i, quantity } : i,
+          ),
         })
       },
 
@@ -82,6 +103,9 @@ export const useCartStore = create<CartState>()(
     {
       name: 'sfp-cart',
       partialize: (state) => ({ items: state.items }),
+      onRehydrateStorage: () => () => {
+        useCartStore.setState({ _hasHydrated: true })
+      },
     },
   ),
 )

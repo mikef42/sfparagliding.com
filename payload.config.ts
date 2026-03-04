@@ -11,6 +11,7 @@ import { Categories } from '@/payload/collections/Categories'
 import { Services } from '@/payload/collections/Services'
 import { Orders } from '@/payload/collections/Orders'
 import { Media } from '@/payload/collections/Media'
+import { Posts } from '@/payload/collections/Posts'
 import { SiteSettings } from '@/payload/globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
@@ -49,6 +50,7 @@ export default buildConfig({
     Services,
     Orders,
     Media,
+    Posts,
     {
       slug: 'users',
       auth: true,

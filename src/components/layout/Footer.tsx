@@ -47,7 +47,7 @@ const BOTTOM_LINKS = [
   { label: 'Terms of Service', href: '/terms-of-service' },
   { label: 'Refund Policy', href: '/refund-policy' },
   { label: 'Contact', href: '/contact' },
-  { label: 'Articles', href: '/articles' },
+  { label: 'Blog', href: '/blog' },
 ]
 
 export function Footer() {

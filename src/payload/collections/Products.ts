@@ -68,9 +68,93 @@ export const Products: CollectionConfig = {
       ],
     },
     {
+      name: 'sizes',
+      type: 'array',
+      label: 'Available Sizes',
+      admin: {
+        description: 'Add available sizes for this product',
+      },
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+          admin: { description: 'Display label (e.g. "XS", "Small")' },
+        },
+        {
+          name: 'value',
+          type: 'text',
+          required: true,
+          admin: { description: 'Internal value (e.g. "xs", "s")' },
+        },
+      ],
+    },
+    {
+      name: 'colors',
+      type: 'array',
+      label: 'Available Colors',
+      admin: {
+        description: 'Add available color options for this product',
+      },
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          required: true,
+          admin: { description: 'Display label (e.g. "HTA/W", "Custom")' },
+        },
+        {
+          name: 'value',
+          type: 'text',
+          required: true,
+          admin: { description: 'Internal value (e.g. "hta-w", "custom")' },
+        },
+        {
+          name: 'priceModifier',
+          type: 'number',
+          admin: {
+            description:
+              'Override price for this color. Leave blank to use default product price.',
+          },
+        },
+      ],
+    },
+    {
+      name: 'sizingChart',
+      type: 'richText',
+      label: 'Sizing Chart',
+      admin: {
+        description: 'Optional sizing chart (tables, text, etc.)',
+      },
+    },
+    {
       name: 'category',
       type: 'relationship',
       relationTo: 'categories',
+    },
+    {
+      name: 'manufacturer',
+      type: 'text',
+      index: true,
+      admin: {
+        description: 'Brand / manufacturer name (e.g. "Ozone", "Gin", "SUP\'Air")',
+      },
+    },
+    {
+      name: 'enRating',
+      type: 'select',
+      label: 'EN Rating',
+      index: true,
+      options: [
+        { label: 'EN A', value: 'EN A' },
+        { label: 'EN B', value: 'EN B' },
+        { label: 'EN C', value: 'EN C' },
+        { label: 'EN D', value: 'EN D' },
+        { label: 'CCC', value: 'CCC' },
+      ],
+      admin: {
+        description: 'EN certification class',
+      },
     },
     {
       name: 'sku',
@@ -113,6 +197,13 @@ export const Products: CollectionConfig = {
         {
           name: 'metaDescription',
           type: 'textarea',
+        },
+        {
+          name: 'metaKeywords',
+          type: 'text',
+          admin: {
+            description: 'Comma-separated keywords for SEO',
+          },
         },
         {
           name: 'ogImage',

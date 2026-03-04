@@ -50,8 +50,18 @@ export async function POST(req: NextRequest) {
             price: number
             quantity: number
             type: string
+            size?: string
+            color?: string
+            ushpaId?: string
           }) => ({
-            name: item.name,
+            name: [
+              item.name,
+              item.size && `Size: ${item.size}`,
+              item.color && `Color: ${item.color}`,
+              item.ushpaId && `USHPA#: ${item.ushpaId}`,
+            ]
+              .filter(Boolean)
+              .join(' — '),
             price: item.price,
             quantity: item.quantity,
             ...(item.type === 'product' ? { product: item.id } : {}),

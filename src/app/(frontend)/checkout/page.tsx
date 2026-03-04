@@ -4,12 +4,28 @@ import { useCartStore } from '@/store/cart'
 import { formatPriceDollars } from '@/lib/utils'
 import { SquarePaymentForm } from '@/components/checkout/SquarePaymentForm'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function CheckoutPage() {
+  const [mounted, setMounted] = useState(false)
   const { items, getTotal } = useCartStore()
   const [customerEmail, setCustomerEmail] = useState('')
   const [customerName, setCustomerName] = useState('')
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Avoid hydration mismatch — show loading until cart state is available
+  if (!mounted) {
+    return (
+      <div className="py-20 text-center">
+        <div className="container-narrow">
+          <h1 className="font-heading text-3xl mb-4">Loading...</h1>
+        </div>
+      </div>
+    )
+  }
 
   if (items.length === 0) {
     return (
@@ -102,9 +118,20 @@ export default function CheckoutPage() {
               </h2>
               <ul className="space-y-3 mb-6">
                 {items.map((item) => (
-                  <li key={item.id} className="flex justify-between text-sm">
+                  <li key={item.cartItemId || item.id} className="flex justify-between text-sm">
                     <span className="text-gray-700">
-                      {item.name} &times; {item.quantity}
+                      {item.name}
+                      {(item.size || item.color) && (
+                        <span className="text-gray-400 text-xs ml-1">
+                          ({[item.size, item.color].filter(Boolean).join(' / ')})
+                        </span>
+                      )}
+                      {item.ushpaId && (
+                        <span className="text-gray-400 text-xs block">
+                          USHPA#: {item.ushpaId}
+                        </span>
+                      )}
+                      {' '}&times; {item.quantity}
                     </span>
                     <span className="font-medium">
                       {formatPriceDollars(item.price * item.quantity)}
