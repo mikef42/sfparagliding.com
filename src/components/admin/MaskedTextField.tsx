@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { useField, TextInput, FieldLabel } from '@payloadcms/ui'
+import { useField, FieldLabel } from '@payloadcms/ui'
 import type { TextFieldClientComponent } from 'payload'
 
 const MaskedTextField: TextFieldClientComponent = ({ field, path }) => {
@@ -19,16 +19,23 @@ const MaskedTextField: TextFieldClientComponent = ({ field, path }) => {
         </div>
       )}
       <div style={{ position: 'relative' }}>
-        <TextInput
-          path={path || field.name}
+        <input
+          type={visible ? 'text' : 'password'}
           value={value || ''}
-          onChange={(e) => setValue(typeof e === 'string' ? e : (e?.target as HTMLInputElement)?.value || '')}
-          showError={false}
-          label=""
-          name={field.name}
+          onChange={(e) => setValue(e.target.value)}
+          className="field-type__input"
           style={{
-            WebkitTextSecurity: visible ? 'none' : 'disc',
-          } as React.CSSProperties}
+            width: '100%',
+            padding: '10px 60px 10px 12px',
+            fontSize: '0.875rem',
+            border: '1px solid var(--theme-elevation-150)',
+            borderRadius: 'var(--style-radius-s, 4px)',
+            background: 'var(--theme-input-bg, var(--theme-elevation-0))',
+            color: 'var(--theme-text)',
+            outline: 'none',
+            fontFamily: 'monospace',
+          }}
+          autoComplete="off"
         />
         <button
           type="button"
