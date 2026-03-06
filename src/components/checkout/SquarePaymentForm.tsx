@@ -30,6 +30,13 @@ interface Card {
   destroy: () => void
 }
 
+interface SquareConfig {
+  appId: string
+  locationId: string
+  environment: string
+  paymentsEnabled: boolean
+}
+
 export function SquarePaymentForm({
   amount,
   customerEmail,
@@ -37,6 +44,7 @@ export function SquarePaymentForm({
   items,
 }: SquarePaymentFormProps) {
   const cardRef = useRef<Card | null>(null)
+  const initRan = useRef(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [sdkReady, setSdkReady] = useState(false)
@@ -44,39 +52,70 @@ export function SquarePaymentForm({
   const clearCart = useCartStore((s) => s.clearCart)
 
   useEffect(() => {
-    const appId = process.env.NEXT_PUBLIC_SQUARE_APP_ID
-    const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID
+    // Guard against React StrictMode double-mounting which would
+    // load the SDK script twice and create duplicate payment forms
+    if (initRan.current) return
+    initRan.current = true
 
-    if (!appId || !locationId) {
-      setError('Square payment is not configured. Please contact support.')
-      return
-    }
-
-    // Load Square Web Payments SDK
-    const script = document.createElement('script')
-    script.src = 'https://sandbox.web.squarecdn.com/v1/square.js'
-    script.async = true
-    script.onload = async () => {
+    async function init() {
       try {
-        if (!window.Square) {
-          setError('Failed to load payment form.')
+        // Fetch Square config from server (reads from SiteSettings → env vars)
+        const res = await fetch('/api/square-config')
+        if (!res.ok) {
+          setError('Unable to load payment configuration. Please try again later.')
           return
         }
-        const payments = await window.Square.payments(appId, locationId)
-        const card = await payments.card()
-        await card.attach('#card-container')
-        cardRef.current = card
-        setSdkReady(true)
-      } catch (e) {
-        console.error('Square SDK error:', e)
-        setError('Failed to initialize payment form.')
+
+        const config: SquareConfig = await res.json()
+
+        if (!config.paymentsEnabled) {
+          setError('Online payments are currently unavailable. Please contact us to place an order.')
+          return
+        }
+
+        if (!config.appId || !config.locationId) {
+          setError('Square payment is not configured. Please contact support.')
+          return
+        }
+
+        // Load Square Web Payments SDK (sandbox or production)
+        const sdkUrl =
+          config.environment === 'production'
+            ? 'https://web.squarecdn.com/v1/square.js'
+            : 'https://sandbox.web.squarecdn.com/v1/square.js'
+
+        const script = document.createElement('script')
+        script.src = sdkUrl
+        script.async = true
+        script.onload = async () => {
+          try {
+            if (!window.Square) {
+              setError('Failed to load payment form.')
+              return
+            }
+            const payments = await window.Square.payments(config.appId, config.locationId)
+            const card = await payments.card()
+            await card.attach('#card-container')
+            cardRef.current = card
+            setSdkReady(true)
+          } catch (e) {
+            console.error('Square SDK error:', e)
+            setError('Failed to initialize payment form.')
+          }
+        }
+        script.onerror = () => {
+          setError('Failed to load the payment processor. Please try again.')
+        }
+        document.body.appendChild(script)
+      } catch {
+        setError('Failed to load payment configuration.')
       }
     }
-    document.body.appendChild(script)
+
+    init()
 
     return () => {
       cardRef.current?.destroy()
-      script.remove()
     }
   }, [])
 

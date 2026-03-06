@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { squareClient, SQUARE_LOCATION_ID } from '@/lib/square'
+import { getSquareClient } from '@/lib/square'
 import { getPayload } from '@/lib/payload'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -15,6 +15,24 @@ export async function POST(req: NextRequest) {
       )
     }
 
+    // Get Square client from SiteSettings (falls back to env vars)
+    const { client: squareClient, locationId, paymentsEnabled } = await getSquareClient()
+
+    if (!paymentsEnabled) {
+      return NextResponse.json(
+        { error: 'Payments are currently disabled. Please contact us to place an order.' },
+        { status: 503 },
+      )
+    }
+
+    if (!locationId) {
+      console.error('[Checkout] Square location ID is not configured')
+      return NextResponse.json(
+        { error: 'Payment processing is not configured. Please contact support.' },
+        { status: 500 },
+      )
+    }
+
     // Create payment with Square
     const idempotencyKey = uuidv4()
 
@@ -25,7 +43,7 @@ export async function POST(req: NextRequest) {
         amount: BigInt(amount), // Amount in cents
         currency: 'USD',
       },
-      locationId: SQUARE_LOCATION_ID,
+      locationId,
       buyerEmailAddress: customerEmail,
       note: `Order from ${customerName || customerEmail}`,
     })

@@ -22,7 +22,16 @@ import { StrikethroughFeatureClient as StrikethroughFeatureClient_e70f5e05f09f93
 import { UnderlineFeatureClient as UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BoldFeatureClient as BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { ItalicFeatureClient as ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { default as default_d572ded1c017fe858839e8cdc754e090 } from '@/components/admin/ColorPickerField'
+import { default as default_7d2aec74efab34b01cc6d70474e90305 } from '@/components/admin/MaskedTextField'
+import { default as default_d500ae2ad98a0a33d640ae0ac1a3417c } from '@/components/admin/AdminIcon'
+import { default as default_b80a86fce1072afc84cd6a430a965697 } from '@/components/admin/AdminLogo'
 import { default as default_b365ace62efbcb847151a48980b5dea6 } from '@/components/admin/ThemeToggle'
+import { default as default_c4734b417dd2f37db2adf0e6ec330b48 } from '@/components/admin/AdminUserMenu'
+import { default as default_ab72f2afa277b78bf1fb3bcda1d1a511 } from '@/components/admin/NavCollapseButton'
+import { default as default_d8816c4bca290ed5b5596bb3533c3751 } from '@/components/admin/AnalyticsDashboard'
+import { default as default_49936b2ec21bc594e09761b6eceb66da } from '@/components/admin/AdminDashboardLink'
+import { default as default_a389a6e7ec37501bb8ffcbc0d68ee808 } from '@/components/admin/AdminNavTheme'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
@@ -50,6 +59,15 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#UnderlineFeatureClient": UnderlineFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#BoldFeatureClient": BoldFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#ItalicFeatureClient": ItalicFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  "@/components/admin/ColorPickerField#default": default_d572ded1c017fe858839e8cdc754e090,
+  "@/components/admin/MaskedTextField#default": default_7d2aec74efab34b01cc6d70474e90305,
+  "@/components/admin/AdminIcon#default": default_d500ae2ad98a0a33d640ae0ac1a3417c,
+  "@/components/admin/AdminLogo#default": default_b80a86fce1072afc84cd6a430a965697,
   "@/components/admin/ThemeToggle#default": default_b365ace62efbcb847151a48980b5dea6,
+  "@/components/admin/AdminUserMenu#default": default_c4734b417dd2f37db2adf0e6ec330b48,
+  "@/components/admin/NavCollapseButton#default": default_ab72f2afa277b78bf1fb3bcda1d1a511,
+  "@/components/admin/AnalyticsDashboard#default": default_d8816c4bca290ed5b5596bb3533c3751,
+  "@/components/admin/AdminDashboardLink#default": default_49936b2ec21bc594e09761b6eceb66da,
+  "@/components/admin/AdminNavTheme#default": default_a389a6e7ec37501bb8ffcbc0d68ee808,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }
