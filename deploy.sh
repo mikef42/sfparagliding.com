@@ -3,7 +3,7 @@ set -euo pipefail
 
 # ── Config ────────────────────────────────────────────────────────────────────
 SITE_URL="https://sfparagliding.com"
-SSH_HOST="root@cp.gotoix.com"
+SSH_HOST="pgsf"
 REMOTE_DIR="/var/www/sfparagliding.com"
 PM2_NAME="sfparagliding"
 LOCAL_DIR="$(cd "$(dirname "$0")" && pwd)"
