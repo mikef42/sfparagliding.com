@@ -1,0 +1,23 @@
+name: Deploy to production
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.head_commit.message, 'claude.ai/code') ||
+      contains(github.event.head_commit.message, 'noreply@anthropic.com')
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH to server and deploy
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: cp.gotoix.com
+          username: root
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: bash /var/www/sfparagliding.com/deploy-server.sh
+          script_stop: true
+          command_timeout: 15m
