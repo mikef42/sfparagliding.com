@@ -16,7 +16,8 @@ export default async function ServicesPage() {
 
   try {
     services = await getServices()
-  } catch {
+  } catch (error) {
+    console.error('[ServicesPage] Error fetching services:', error)
     services = { docs: [] }
   }
 
@@ -35,7 +36,7 @@ export default async function ServicesPage() {
             {services.docs.map((service) => {
               const imageUrl =
                 service.image && typeof service.image === 'object'
-                  ? getImageUrl(service.image as any, 'medium')
+                  ? getImageUrl(service.image, 'medium')
                   : '/placeholder.jpg'
 
               return (

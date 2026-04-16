@@ -17,11 +17,12 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
 }
 
 export function getImageUrl(
-  image: { url?: string; sizes?: Record<string, { url?: string }> } | string | null | undefined,
+  image: { url?: string | null; sizes?: Record<string, { url?: string | null }> } | string | number | null | undefined,
   size?: string,
 ): string {
   if (!image) return '/placeholder.jpg'
   if (typeof image === 'string') return image
+  if (typeof image === 'number') return '/placeholder.jpg'
 
   if (size && image.sizes?.[size]?.url) {
     return image.sizes[size].url

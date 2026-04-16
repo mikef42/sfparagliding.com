@@ -29,9 +29,12 @@ import { default as default_b80a86fce1072afc84cd6a430a965697 } from '@/component
 import { default as default_b365ace62efbcb847151a48980b5dea6 } from '@/components/admin/ThemeToggle'
 import { default as default_c4734b417dd2f37db2adf0e6ec330b48 } from '@/components/admin/AdminUserMenu'
 import { default as default_ab72f2afa277b78bf1fb3bcda1d1a511 } from '@/components/admin/NavCollapseButton'
+import { default as default_68e91adf65dce60c0cef9bf11d818391 } from '@/components/admin/AdminSettingsNavLink'
 import { default as default_d8816c4bca290ed5b5596bb3533c3751 } from '@/components/admin/AnalyticsDashboard'
 import { default as default_49936b2ec21bc594e09761b6eceb66da } from '@/components/admin/AdminDashboardLink'
-import { default as default_a389a6e7ec37501bb8ffcbc0d68ee808 } from '@/components/admin/AdminNavTheme'
+import { default as default_aed186f427612c880d8a28f694f189dc } from '@/components/admin/SettingsView'
+import { default as default_962398438dc32156624c732cc8eeb380 } from '@/components/admin/SitemapSettingsView'
+import { default as default_61c5084872fec1da9c4cc8f1c67b3803 } from '@/components/admin/ApiEndpointsView'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 export const importMap = {
@@ -66,8 +69,11 @@ export const importMap = {
   "@/components/admin/ThemeToggle#default": default_b365ace62efbcb847151a48980b5dea6,
   "@/components/admin/AdminUserMenu#default": default_c4734b417dd2f37db2adf0e6ec330b48,
   "@/components/admin/NavCollapseButton#default": default_ab72f2afa277b78bf1fb3bcda1d1a511,
+  "@/components/admin/AdminSettingsNavLink#default": default_68e91adf65dce60c0cef9bf11d818391,
   "@/components/admin/AnalyticsDashboard#default": default_d8816c4bca290ed5b5596bb3533c3751,
   "@/components/admin/AdminDashboardLink#default": default_49936b2ec21bc594e09761b6eceb66da,
-  "@/components/admin/AdminNavTheme#default": default_a389a6e7ec37501bb8ffcbc0d68ee808,
+  "@/components/admin/SettingsView#default": default_aed186f427612c880d8a28f694f189dc,
+  "@/components/admin/SitemapSettingsView#default": default_962398438dc32156624c732cc8eeb380,
+  "@/components/admin/ApiEndpointsView#default": default_61c5084872fec1da9c4cc8f1c67b3803,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

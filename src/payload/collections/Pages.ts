@@ -10,7 +10,11 @@ import { FAQAccordion } from '../blocks/FAQAccordion'
 import { Gallery } from '../blocks/Gallery'
 import { Spacer } from '../blocks/Spacer'
 import { CodeEmbed } from '../blocks/CodeEmbed'
-import { revalidateCollection } from '../hooks/revalidate'
+import {
+  regenerateSitemapOnContentChange,
+  regenerateSitemapOnContentDelete,
+  revalidateCollection,
+} from '../hooks/revalidate'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -33,7 +37,8 @@ export const Pages: CollectionConfig = {
     read: () => true,
   },
   hooks: {
-    afterChange: [revalidateCollection('pages')],
+    afterChange: [revalidateCollection('pages'), regenerateSitemapOnContentChange],
+    afterDelete: [regenerateSitemapOnContentDelete],
   },
   fields: [
     {

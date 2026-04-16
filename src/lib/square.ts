@@ -9,8 +9,7 @@ async function getSquareConfig() {
   try {
     const payload = await getPayload()
     const settings = await payload.findGlobal({ slug: 'site-settings' })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const payments = (settings as any)?.payments
+    const payments = settings?.payments
 
     if (payments?.squareAccessToken && payments?.squareLocationId) {
       return {

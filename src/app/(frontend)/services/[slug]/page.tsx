@@ -18,7 +18,8 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
       title: service.meta?.metaTitle || `${service.name} | SF Paragliding`,
       description: service.meta?.metaDescription || undefined,
     }
-  } catch {
+  } catch (error) {
+    console.error('[ServicePage] Error generating metadata:', error)
     return {}
   }
 }
@@ -28,14 +29,15 @@ export default async function ServicePage({ params }: ServicePageProps) {
   let service
   try {
     service = await getService(slug)
-  } catch {
+  } catch (error) {
+    console.error('[ServicePage] Error fetching service:', error)
     notFound()
   }
   if (!service) notFound()
 
   const imageUrl =
     service.image && typeof service.image === 'object'
-      ? getImageUrl(service.image as any, 'large')
+      ? getImageUrl(service.image, 'large')
       : null
 
   return (

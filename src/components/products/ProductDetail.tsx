@@ -16,18 +16,18 @@ interface ProductDetailProps {
     price: number
     compareAtPrice?: number | null
     description?: any
-    images?: Array<{ image: any; id?: string | null }>
-    sizes?: Array<{ label: string; value: string; id?: string | null }>
+    images?: Array<{ image: any; id?: string | null }> | null
+    sizes?: Array<{ label: string; value: string; id?: string | null }> | null
     colors?: Array<{
       label: string
       value: string
       priceModifier?: number | null
       id?: string | null
-    }>
+    }> | null
     sizingChart?: any
     sku?: string | null
     inventory?: number | null
-    category?: { id: number | string; name: string; slug: string } | null
+    category?: { id: number | string; name: string; slug: string } | number | null
   }
 }
 

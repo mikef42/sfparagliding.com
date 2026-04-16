@@ -73,14 +73,16 @@ export async function getFilterOptions(): Promise<{
     collection: 'products',
     where: { status: { equals: 'active' } },
     limit: 500,
+    select: {
+      manufacturer: true,
+      enRating: true,
+    },
   })
   const manufacturers = new Set<string>()
   const enRatings = new Set<string>()
   for (const p of result.docs) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const prod = p as any
-    if (prod.manufacturer) manufacturers.add(prod.manufacturer)
-    if (prod.enRating) enRatings.add(prod.enRating)
+    if (p.manufacturer) manufacturers.add(p.manufacturer)
+    if (p.enRating) enRatings.add(p.enRating)
   }
   const ratingOrder = ['EN A', 'EN B', 'EN C', 'EN D', 'CCC']
   return {
@@ -130,8 +132,7 @@ export async function getSiteSettings() {
 
 export async function getBlogPost(slug: string) {
   const payload = await getPayload()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const result = await (payload as any).find({
+  const result = await payload.find({
     collection: 'posts',
     where: {
       slug: { equals: slug },
@@ -144,8 +145,7 @@ export async function getBlogPost(slug: string) {
 
 export async function getBlogPosts(limit?: number) {
   const payload = await getPayload()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (payload as any).find({
+  return payload.find({
     collection: 'posts',
     where: { status: { equals: 'published' } },
     limit: limit || 50,

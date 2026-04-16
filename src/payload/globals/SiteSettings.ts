@@ -5,7 +5,8 @@ const colorPickerField = '@/components/admin/ColorPickerField'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
-  label: 'Site Settings',
+  label: 'Settings',
+  admin: {},
   access: {
     read: () => true,
   },
@@ -339,156 +340,7 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
 
-        // ── Tab 7: Admin Nav ──
-        {
-          label: 'Admin Nav',
-          fields: [
-            {
-              name: 'adminTheme',
-              type: 'group',
-              label: false,
-              admin: {
-                description:
-                  'Customize the admin sidebar navigation colors. Leave blank to use defaults.',
-              },
-              fields: [
-                {
-                  name: 'navBgColor',
-                  type: 'text',
-                  label: 'Sidebar Background',
-                  admin: {
-                    description:
-                      'Background color of the left sidebar (default: white in light mode, dark in dark mode)',
-                    components: {
-                      Field: colorPickerField,
-                    },
-                  },
-                },
-                {
-                  name: 'navLinkColor',
-                  type: 'text',
-                  label: 'Link Color',
-                  admin: {
-                    description: 'Default text color for navigation links',
-                    components: {
-                      Field: colorPickerField,
-                    },
-                  },
-                },
-                {
-                  name: 'navLinkHoverColor',
-                  type: 'text',
-                  label: 'Link Hover Color',
-                  admin: {
-                    description: 'Text color when hovering over a navigation link',
-                    components: {
-                      Field: colorPickerField,
-                    },
-                  },
-                },
-                {
-                  name: 'navActiveBgColor',
-                  type: 'text',
-                  label: 'Active Link Background',
-                  admin: {
-                    description: 'Background color of the currently active navigation link',
-                    components: {
-                      Field: colorPickerField,
-                    },
-                  },
-                },
-                {
-                  name: 'navActiveTextColor',
-                  type: 'text',
-                  label: 'Active Link Text',
-                  admin: {
-                    description: 'Text color of the currently active navigation link',
-                    components: {
-                      Field: colorPickerField,
-                    },
-                  },
-                },
-              ],
-            },
-          ],
-        },
-
-        // ── Tab 8: Contact ──
-        {
-          label: 'Contact',
-          fields: [
-            {
-              name: 'contact',
-              type: 'group',
-              label: false,
-              admin: {
-                description:
-                  'Configure the contact information displayed on the Contact Us page.',
-              },
-              fields: [
-                {
-                  name: 'heading',
-                  type: 'text',
-                  defaultValue: 'Get in Touch',
-                  admin: {
-                    description: 'Main heading shown on the contact page',
-                  },
-                },
-                {
-                  name: 'description',
-                  type: 'textarea',
-                  defaultValue:
-                    "Have questions about tandem flights, lessons, or gift certificates? We'd love to hear from you!",
-                  admin: {
-                    description: 'Introductory text below the heading',
-                  },
-                },
-                {
-                  name: 'email',
-                  type: 'email',
-                  defaultValue: 'info@sfparagliding.com',
-                  admin: {
-                    description: 'Contact email address',
-                  },
-                },
-                {
-                  name: 'phone',
-                  type: 'text',
-                  defaultValue: '(415) 555-1234',
-                  admin: {
-                    description: 'Phone number displayed on the contact page',
-                  },
-                },
-                {
-                  name: 'addressLine1',
-                  type: 'text',
-                  defaultValue: 'Pacifica, California',
-                  admin: {
-                    description: 'Primary address line (city, state)',
-                  },
-                },
-                {
-                  name: 'addressLine2',
-                  type: 'text',
-                  defaultValue: 'San Francisco Bay Area',
-                  admin: {
-                    description: 'Secondary address line (region or additional info)',
-                  },
-                },
-                {
-                  name: 'hours',
-                  type: 'text',
-                  admin: {
-                    description:
-                      'Business hours (optional — only displayed if filled in)',
-                  },
-                },
-              ],
-            },
-          ],
-        },
-
-        // ── Tab 9: Payments ──
+        // ── Tab 7: Payments ──
         {
           label: 'Payments',
           fields: [

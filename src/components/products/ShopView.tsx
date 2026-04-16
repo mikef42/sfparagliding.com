@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
+import { getImageUrl, formatPriceDollars } from '@/lib/utils'
 
 /* ─── Types ─── */
 interface Category {
@@ -45,18 +46,6 @@ interface ShopViewProps {
   currentPage: number
   totalPages: number
   totalDocs: number
-}
-
-/* ─── Helpers ─── */
-function getImageUrl(image: any): string {
-  if (!image) return '/placeholder.jpg'
-  if (image.sizes?.medium?.url) return image.sizes.medium.url
-  if (image.url) return image.url
-  return '/placeholder.jpg'
-}
-
-function formatPrice(cents: number): string {
-  return `$${(cents / 1).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
 }
 
 /* ─── Accordion Section ─── */
@@ -364,7 +353,7 @@ export function ShopView({
               {products.map((product) => {
                 const imageUrl =
                   product.images?.[0]?.image
-                    ? getImageUrl(product.images[0].image)
+                    ? getImageUrl(product.images[0].image, 'medium')
                     : '/placeholder.jpg'
 
                 const isOnSale =
@@ -410,15 +399,15 @@ export function ShopView({
                         {isOnSale ? (
                           <>
                             <span className="text-sm text-red-600">
-                              {formatPrice(product.price)}
+                              {formatPriceDollars(product.price)}
                             </span>
                             <span className="text-sm text-gray-400 line-through">
-                              {formatPrice(product.compareAtPrice!)}
+                              {formatPriceDollars(product.compareAtPrice!)}
                             </span>
                           </>
                         ) : (
                           <span className="text-sm text-gray-700">
-                            {formatPrice(product.price)}
+                            {formatPriceDollars(product.price)}
                           </span>
                         )}
                       </div>

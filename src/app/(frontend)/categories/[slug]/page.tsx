@@ -23,7 +23,8 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
       title: `${category.name} | SF Paragliding`,
       description: category.description || undefined,
     }
-  } catch {
+  } catch (error) {
+    console.error('[CategoryPage] Error generating metadata:', error)
     return {}
   }
 }
@@ -53,7 +54,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       },
       limit: 50,
     })
-  } catch {
+  } catch (error) {
+    console.error('[CategoryPage] Error fetching category or products:', error)
     notFound()
   }
 
@@ -81,7 +83,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               const imageUrl =
                 product.images?.[0]?.image &&
                   typeof product.images[0].image === 'object'
-                  ? getImageUrl(product.images[0].image as any, 'medium')
+                  ? getImageUrl(product.images[0].image, 'medium')
                   : '/placeholder.jpg'
 
               return (

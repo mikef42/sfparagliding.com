@@ -23,7 +23,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         description: page.meta?.metaDescription || undefined,
       },
     }
-  } catch {
+  } catch (error) {
+    console.error('[DynamicPage] Error generating metadata:', error)
     return {}
   }
 }
@@ -35,7 +36,8 @@ export default async function DynamicPage({ params }: PageProps) {
   let page
   try {
     page = await getPage(slugString)
-  } catch {
+  } catch (error) {
+    console.error('[DynamicPage] Error fetching page:', error)
     notFound()
   }
 

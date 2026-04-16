@@ -1,5 +1,9 @@
 import type { CollectionConfig } from 'payload'
-import { revalidateCollection } from '../hooks/revalidate'
+import {
+  regenerateSitemapOnContentChange,
+  regenerateSitemapOnContentDelete,
+  revalidateCollection,
+} from '../hooks/revalidate'
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -15,7 +19,8 @@ export const Products: CollectionConfig = {
     read: () => true,
   },
   hooks: {
-    afterChange: [revalidateCollection('products')],
+    afterChange: [revalidateCollection('products'), regenerateSitemapOnContentChange],
+    afterDelete: [regenerateSitemapOnContentDelete],
   },
   fields: [
     {

@@ -15,14 +15,14 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   try {
     const product = await getProduct(slug)
     if (!product) return {}
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const meta = product.meta as any
+    const meta = product.meta
     return {
       title: meta?.metaTitle || `${product.name} | SF Paragliding`,
       description: meta?.metaDescription || undefined,
       keywords: meta?.metaKeywords || undefined,
     }
-  } catch {
+  } catch (error) {
+    console.error('[ProductPage] Error generating metadata:', error)
     return {}
   }
 }
@@ -32,14 +32,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
   let product
   try {
     product = await getProduct(slug)
-  } catch {
+  } catch (error) {
+    console.error('[ProductPage] Error fetching product:', error)
     notFound()
   }
   if (!product) notFound()
 
   const featuredImage =
     product.images?.[0]?.image && typeof product.images[0].image === 'object'
-      ? getImageUrl(product.images[0].image as any, 'large')
+      ? getImageUrl(product.images[0].image, 'large')
       : '/placeholder.jpg'
 
   return (
@@ -68,8 +69,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         }}
       />
 
-      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-      <ProductDetail product={product as any} />
+      <ProductDetail product={product} />
     </>
   )
 }

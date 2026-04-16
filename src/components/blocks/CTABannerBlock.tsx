@@ -14,7 +14,7 @@ interface CTABannerBlockProps {
 
 export function CTABannerBlock({ block }: CTABannerBlockProps) {
   const hasImage = !!block.backgroundImage
-  const imageUrl = hasImage ? getImageUrl(block.backgroundImage as any, 'large') : null
+  const imageUrl = hasImage ? getImageUrl(block.backgroundImage, 'large') : null
 
   return (
     <section

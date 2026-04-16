@@ -49,27 +49,34 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       getCategories(),
       getFilterOptions(),
     ])
-  } catch {
+  } catch (err) {
+    console.error('[Products Page] Data fetch failed:', {
+      error: err instanceof Error ? err.message : String(err),
+      stack: err instanceof Error ? err.stack?.slice(0, 300) : undefined,
+      params: { activeCategory, activeManufacturer, activeEnRating, activeSort, currentPage },
+      timestamp: new Date().toISOString(),
+    })
     products = { docs: [], totalPages: 1, page: 1, totalDocs: 0 }
     categories = { docs: [] }
+    filterOptions = { manufacturers: [], enRatings: [] }
   }
 
-  const totalPages = (products as any).totalPages || 1
-  const totalDocs = (products as any).totalDocs || 0
+  const totalPages = products.totalPages || 1
+  const totalDocs = products.totalDocs || 0
 
-  /* Serialize categories for client components */
-  const categoryList = categories.docs.map((cat) => ({
+  /* Serialize categories for client components — defensive access */
+  const categoryList = (categories?.docs || []).map((cat: any) => ({
     id: cat.id,
-    name: cat.name as string,
-    slug: cat.slug as string,
+    name: (cat.name as string) || '',
+    slug: (cat.slug as string) || '',
   }))
 
-  /* Serialize products for client component */
-  const productList = products.docs.map((p: any) => ({
+  /* Serialize products for client component — defensive access */
+  const productList = (products?.docs || []).map((p: any) => ({
     id: p.id,
-    name: p.name,
-    slug: p.slug,
-    price: p.price,
+    name: p.name || '',
+    slug: p.slug || '',
+    price: p.price || 0,
     compareAtPrice: p.compareAtPrice || undefined,
     manufacturer: p.manufacturer || undefined,
     enRating: p.enRating || undefined,
@@ -89,7 +96,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </p>
 
         {/* ── Mobile: Filter/Sort Bar ── */}
-        <Suspense>
+        <Suspense fallback={null}>
           <MobileFilterBar
             filterOptions={{
               categories: categoryList,
@@ -105,7 +112,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </Suspense>
 
         {/* ── Desktop: Full ShopView ── */}
-        <Suspense>
+        <Suspense fallback={null}>
           <ShopView
             products={productList}
             categories={categoryList}

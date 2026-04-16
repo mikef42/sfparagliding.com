@@ -9,50 +9,27 @@ const MaskedTextField: TextFieldClientComponent = ({ field, path }) => {
   const [visible, setVisible] = useState(false)
 
   return (
-    <div className="field-type text" style={{ marginBottom: '1.5rem' }}>
+    <div className="field-type text masked-field">
       <FieldLabel label={field.label || field.name} path={path || field.name} />
       {field.admin?.description && (
-        <div className="field-description" style={{ marginBottom: 8 }}>
-          <p style={{ fontSize: '0.8rem', color: 'var(--theme-elevation-400)' }}>
+        <div className="masked-field__description">
+          <p>
             {typeof field.admin.description === 'string' ? field.admin.description : null}
           </p>
         </div>
       )}
-      <div style={{ position: 'relative' }}>
+      <div className="masked-field__input-wrap">
         <input
           type={visible ? 'text' : 'password'}
           value={value || ''}
           onChange={(e) => setValue(e.target.value)}
-          className="field-type__input"
-          style={{
-            width: '100%',
-            padding: '10px 60px 10px 12px',
-            fontSize: '0.875rem',
-            border: '1px solid var(--theme-elevation-150)',
-            borderRadius: 'var(--style-radius-s, 4px)',
-            background: 'var(--theme-input-bg, var(--theme-elevation-0))',
-            color: 'var(--theme-text)',
-            outline: 'none',
-            fontFamily: 'monospace',
-          }}
+          className="masked-field__input"
           autoComplete="off"
         />
         <button
           type="button"
           onClick={() => setVisible(!visible)}
-          style={{
-            position: 'absolute',
-            right: 10,
-            top: '50%',
-            transform: 'translateY(-50%)',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '4px 8px',
-            fontSize: '0.8rem',
-            color: 'var(--theme-elevation-400)',
-            fontFamily: 'inherit',
-          }}
+          className="masked-field__toggle"
         >
           {visible ? 'Hide' : 'Show'}
         </button>

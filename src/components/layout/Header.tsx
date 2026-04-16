@@ -22,7 +22,6 @@ const NAV_LINKS: NavLink[] = [
     ],
   },
   { label: 'Contact', href: '/contact' },
-  { label: 'Services', href: '/services' },
 ]
 
 export function Header({ logoScale = 90 }: { logoScale?: number }) {

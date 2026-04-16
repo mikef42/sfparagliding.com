@@ -5,7 +5,7 @@ export function StaticHomepage() {
   return (
     <>
       {/* ─── Hero Section ─── */}
-      <section className="relative h-[80vh] md:h-[70vh] min-h-[500px] max-h-[900px] flex items-end overflow-hidden">
+      <section className="relative h-[80vh] md:h-[70vh] min-h-[500px] max-h-[900px] flex items-center md:items-end overflow-hidden">
         {/* Desktop hero */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat hidden md:block"
@@ -18,9 +18,9 @@ export function StaticHomepage() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/50" />
 
-        <div className="relative z-10 container-wide w-full text-center pb-[calc(12%-50px)] md:pb-[calc(10%-50px)]">
+        <div className="relative z-10 container-wide w-full text-center mt-[350px] md:mt-0 pb-0 md:pb-[calc(10%-50px)]">
           <h1
-            className="text-2xl md:text-4xl lg:text-5xl text-white mb-4 animate-fade-up drop-shadow-lg"
+            className="text-2xl md:text-4xl lg:text-5xl text-white mb-2 md:mb-4 animate-fade-up drop-shadow-lg"
             style={{ fontFamily: "'Times New Roman', Times, serif" }}
           >
             Fly Today !
@@ -28,7 +28,7 @@ export function StaticHomepage() {
           <div className="animate-fade-up animate-delay-200">
             <Link
               href="/tandem-flights"
-              className="inline-block bg-transparent border-2 border-white text-white font-heading text-sm tracking-[0.15em] uppercase px-10 py-4 shadow-xl hover:bg-white/10 transition-colors"
+              className="inline-block bg-white/10 border border-white/50 text-white font-heading text-lg tracking-[0.15em] uppercase px-10 py-4 rounded-[10%] shadow-xl hover:bg-white/20 transition-colors"
             >
               Book Now
             </Link>

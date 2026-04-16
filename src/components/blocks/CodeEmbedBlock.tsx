@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 
 interface CodeEmbedBlockProps {
   block: {
@@ -16,28 +16,54 @@ const widthClasses: Record<string, string> = {
   full: 'w-full',
 }
 
+/**
+ * Separate HTML from <script> tags so we can render the HTML via
+ * dangerouslySetInnerHTML (safe, no execution) and only run scripts
+ * once in a useEffect. This prevents double-execution caused by:
+ *   1. Browser executing inline scripts during SSR HTML parsing
+ *   2. useEffect re-executing them after hydration
+ */
+function splitScripts(html: string) {
+  const scriptRegex = /<script[\s\S]*?<\/script>/gi
+  const scripts: string[] = []
+  const htmlOnly = html.replace(scriptRegex, (match) => {
+    scripts.push(match)
+    return ''
+  })
+  return { htmlOnly, scripts }
+}
+
 export function CodeEmbedBlock({ block }: CodeEmbedBlockProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  const scriptsRan = useRef(false)
+
+  const { htmlOnly, scripts } = useMemo(
+    () => splitScripts(block.code || ''),
+    [block.code],
+  )
 
   useEffect(() => {
-    if (!containerRef.current) return
+    if (!containerRef.current || scriptsRan.current || scripts.length === 0) return
+    scriptsRan.current = true
 
     // Snapshot body children before scripts run so we can clean up after
     const bodyChildrenBefore = new Set(Array.from(document.body.children))
 
-    // Re-create <script> tags so they actually execute.
-    // dangerouslySetInnerHTML renders the HTML (including iframes) but
-    // does NOT execute <script> elements — we handle that here.
-    const scripts = containerRef.current.querySelectorAll('script')
-    scripts.forEach((oldScript) => {
+    // Parse each <script> string and create a live script element
+    const parser = new DOMParser()
+    scripts.forEach((scriptStr) => {
+      const doc = parser.parseFromString(scriptStr, 'text/html')
+      const parsed = doc.querySelector('script')
+      if (!parsed) return
+
       const newScript = document.createElement('script')
-      Array.from(oldScript.attributes).forEach((attr) => {
+      Array.from(parsed.attributes).forEach((attr) => {
         newScript.setAttribute(attr.name, attr.value)
       })
-      if (oldScript.textContent) {
-        newScript.textContent = oldScript.textContent
+      if (parsed.textContent) {
+        newScript.textContent = parsed.textContent
       }
-      oldScript.parentNode?.replaceChild(newScript, oldScript)
+      containerRef.current!.appendChild(newScript)
     })
 
     // Cleanup: remove any elements the scripts added to document.body
@@ -48,7 +74,7 @@ export function CodeEmbedBlock({ block }: CodeEmbedBlockProps) {
         }
       })
     }
-  }, [block.code])
+  }, [scripts])
 
   if (!block.code) return null
 
@@ -59,7 +85,7 @@ export function CodeEmbedBlock({ block }: CodeEmbedBlockProps) {
       <div className={`${maxW} mx-auto px-4`}>
         <div
           ref={containerRef}
-          dangerouslySetInnerHTML={{ __html: block.code }}
+          dangerouslySetInnerHTML={{ __html: htmlOnly }}
         />
       </div>
     </section>
