@@ -2,9 +2,12 @@
 #
 # Server-side deploy script for sfparagliding.com (Next.js + Payload)
 #
-# Triggered by GitHub Actions via SSH. Downloads the latest repo zipball,
-# rsyncs preserving runtime data, runs npm install + build + migrations,
-# and restarts the PM2 process.
+# Safety properties:
+#   - Logs outside site root (rsync --delete can't wipe them)
+#   - Backs up .next/ before building; on build failure, restores the old build
+#     and skips pm2 restart so the site keeps serving the last known-good build.
+#   - Concurrent-run lock with 15 min staleness.
+#   - Cleans up temp zips, extract dirs, and .next.bak on exit.
 # ─────────────────────────────────────────────────────────────────────────────
 set -uo pipefail
 
@@ -13,7 +16,8 @@ REPO="mikef42/sfparagliding.com"
 BRANCH="main"
 PM2_NAME="sfparagliding"
 LOCK="/tmp/deploy_sfpg.lock"
-LOG="$ROOT/deploy.log"
+LOG="/var/log/hetzner-deploys/sfpg.log"
+NEXT_BAK="$ROOT/.next.bak"
 ERRORS=0
 
 mkdir -p "$(dirname "$LOG")"
@@ -34,6 +38,7 @@ TMP_DIR=""
 cleanup() {
     rm -f "$LOCK" "$TMP_ZIP"
     [[ -n "$TMP_DIR" && -d "$TMP_DIR" ]] && rm -rf "$TMP_DIR"
+    [[ -d "$NEXT_BAK" ]] && rm -rf "$NEXT_BAK"
     if [[ -f "$LOG" ]] && [[ $(wc -l <"$LOG") -gt 1000 ]]; then
         tail -1000 "$LOG" > "$LOG.tmp" && mv "$LOG.tmp" "$LOG"
     fi
@@ -47,7 +52,7 @@ echo "=== Deploy started at $(date) ==="
 TMP_ZIP=$(mktemp /tmp/deploy_sfpg_XXXXXX.zip)
 TMP_DIR=$(mktemp -d /tmp/deploy_sfpg_extract_XXXXXX)
 
-echo "[1/5] Downloading from GitHub..."
+echo "[1/6] Downloading from GitHub..."
 HTTP_CODE=$(curl -sL -o "$TMP_ZIP" -w "%{http_code}" \
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: Bearer ${GITHUB_TOKEN}" \
@@ -63,7 +68,7 @@ echo "  Downloaded $(du -h "$TMP_ZIP" | cut -f1)"
 unzip -q "$TMP_ZIP" -d "$TMP_DIR"
 SOURCE_DIR=$(find "$TMP_DIR" -maxdepth 1 -mindepth 1 -type d | head -1)
 
-echo "[2/5] Syncing code..."
+echo "[2/6] Syncing code..."
 rsync -rlptD --delete --no-owner --no-group \
     --exclude='.git/' \
     --exclude='.github/' \
@@ -72,6 +77,7 @@ rsync -rlptD --delete --no-owner --no-group \
     --exclude='.playwright-mcp/' \
     --exclude='node_modules/' \
     --exclude='.next/' \
+    --exclude='.next.bak/' \
     --exclude='.env' \
     --exclude='.env.local' \
     --exclude='.env.production' \
@@ -93,16 +99,45 @@ if [[ -f "${SOURCE_DIR}/deploy-server.sh" ]] && ! cmp -s "${SOURCE_DIR}/deploy-s
     echo "  Updated deploy-server.sh"
 fi
 
-echo "[3/5] Installing dependencies..."
+echo "[3/6] Installing dependencies..."
 cd "$ROOT"
-npm install --legacy-peer-deps 2>&1 | tail -5 || fail "npm install failed"
+if ! npm install --legacy-peer-deps 2>&1 | tail -5; then
+    fail "npm install failed — keeping old build running"
+    exit 1
+fi
 
-echo "[4/5] Building Next.js..."
-npm run build 2>&1 | tail -10 || fail "build failed"
+echo "[4/6] Backing up current .next/ and building..."
+# Hardlink-based backup is fast and space-efficient (cp -al uses hardlinks).
+rm -rf "$NEXT_BAK"
+if [[ -d "$ROOT/.next" ]]; then
+    cp -al "$ROOT/.next" "$NEXT_BAK" 2>/dev/null || cp -a "$ROOT/.next" "$NEXT_BAK"
+    echo "  .next/ backed up"
+fi
 
-echo "[5/5] Running migrations & restarting PM2..."
-npx payload migrate 2>&1 | tail -5 || echo "  (no migrations or skipped)"
-pm2 restart "$PM2_NAME" 2>&1 | tail -3 || fail "pm2 restart failed"
+if npm run build 2>&1 | tail -10; then
+    echo "  Build succeeded"
+    BUILD_OK=1
+else
+    echo "  BUILD FAILED — restoring old .next/ and skipping pm2 restart"
+    rm -rf "$ROOT/.next"
+    if [[ -d "$NEXT_BAK" ]]; then
+        mv "$NEXT_BAK" "$ROOT/.next"
+    fi
+    fail "build failed"
+    BUILD_OK=0
+fi
+
+echo "[5/6] Running migrations..."
+if [[ "${BUILD_OK:-0}" == "1" ]]; then
+    npx payload migrate 2>&1 | tail -5 || echo "  (no migrations or skipped)"
+fi
+
+echo "[6/6] Restarting PM2..."
+if [[ "${BUILD_OK:-0}" == "1" ]]; then
+    pm2 restart "$PM2_NAME" 2>&1 | tail -3 || fail "pm2 restart failed"
+else
+    echo "  Skipped (build failed — site keeps running previous build)"
+fi
 
 echo ""
 if [[ "$ERRORS" -gt 0 ]]; then
