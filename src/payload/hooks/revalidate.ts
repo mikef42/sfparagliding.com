@@ -1,5 +1,7 @@
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook } from 'payload'
 import { revalidatePath } from 'next/cache'
+// Next 16: revalidateTag needs a cacheLife profile; { expire: 0 } keeps the Next 15 behavior of
+// serving fresh content on the very next request after an edit (rather than stale-while-revalidate).
 import { revalidateTag } from 'next/cache'
 import { generateSitemapArtifacts } from '@/lib/sitemap-generation'
 
@@ -44,8 +46,8 @@ async function regenerateSitemapAfterContentChange({
 export const revalidateCollection =
   (tag: string): CollectionAfterChangeHook =>
   ({ doc }) => {
-    revalidateTag(tag)
-    revalidateTag(`${tag}-${doc.slug || doc.id}`)
+    revalidateTag(tag, { expire: 0 })
+    revalidateTag(`${tag}-${doc.slug || doc.id}`, { expire: 0 })
 
     // Revalidate the listing pages so new/updated items appear
     const paths = COLLECTION_PATHS[tag]
@@ -97,7 +99,7 @@ export const regenerateSitemapOnContentDelete: CollectionAfterDeleteHook = async
 
 export const revalidateGlobal = (tag: string) => {
   return () => {
-    revalidateTag(tag)
+    revalidateTag(tag, { expire: 0 })
     revalidatePath('/')
     revalidateSeoPaths()
   }

@@ -14,9 +14,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  experimental: {
-    reactCompiler: false,
-  },
   async redirects() {
     return [
       { source: '/services/tandem-flights', destination: '/tandem-flights', permanent: true },
