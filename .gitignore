@@ -16,7 +16,6 @@ dist/
 
 # Payload
 media/
-src/payload-types.ts
 
 # OS
 .DS_Store
