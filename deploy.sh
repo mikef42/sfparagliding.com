@@ -15,6 +15,46 @@ ok()   { echo -e "${GREEN}✓${NC} $1"; }
 warn() { echo -e "${YELLOW}⚠${NC} $1"; }
 fail() { echo -e "${RED}✗${NC} $1"; exit 1; }
 
+# ── Shared SSH connection ─────────────────────────────────────────────────────
+# The server's sshd refuses some new connections while bots crowd its
+# pre-login queue (MaxStartups). Open one connection up front, retrying
+# until it gets through, then send every ssh/rsync call over it so the
+# rest of the deploy never waits in that queue again.
+# Socket paths must stay under 104 bytes on macOS; %C is a 40-char hash.
+SSH_CONTROL_PATH="/tmp/deploy-$$-%C"
+SSH_MUX_OPTS=(-o ControlMaster=auto -o "ControlPath=$SSH_CONTROL_PATH" -o ControlPersist=300 -o ServerAliveInterval=15 -o ServerAliveCountMax=4)
+ssh() { command ssh "${SSH_MUX_OPTS[@]}" "$@"; }
+# rsync reads RSYNC_RSH when no -e is given; it splits on spaces itself.
+export RSYNC_RSH="ssh -o ControlMaster=auto -o ControlPath=$SSH_CONTROL_PATH -o ControlPersist=300 -o ServerAliveInterval=15 -o ServerAliveCountMax=4"
+
+# ssh_open HOST: connect once, retrying refused connections with backoff.
+# Fails fast on errors a retry cannot fix (bad key, unknown host).
+ssh_open() {
+    local host="$1" attempt err
+    for attempt in 1 2 3 4 5 6; do
+        if err=$(ssh -o ConnectTimeout=20 "$host" true 2>&1 </dev/null); then
+            return 0
+        fi
+        case "$err" in
+            *"Permission denied"*|*"Host key verification failed"*|*"Could not resolve"*)
+                echo "$err" >&2
+                fail "Cannot connect to ${host}"
+                ;;
+        esac
+        warn "SSH connection to ${host} refused (attempt ${attempt}/6); retrying in $((attempt * 5))s..."
+        sleep $((attempt * 5))
+    done
+    fail "Could not open an SSH connection to ${host} after 6 attempts."
+}
+
+# ssh_close HOST: shut the shared connection (safe to call twice).
+ssh_close() {
+    command ssh -o "ControlPath=$SSH_CONTROL_PATH" -O exit "$1" >/dev/null 2>&1 || true
+}
+trap 'ssh_close "$SSH_HOST"' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
 usage() {
     echo "Usage: $0 [options]"
     echo ""
@@ -82,6 +122,7 @@ git_push() {
 # ── Rsync to server + build & restart ────────────────────────────────────────
 sync_files() {
     cd "$LOCAL_DIR"
+    ssh_open "$SSH_HOST"
     info "Syncing files to server..."
     rsync -az --delete --stats \
         "${RSYNC_EXCLUDES[@]}" \
@@ -113,6 +154,7 @@ REMOTE
 # ── Pull server → local ───────────────────────────────────────────────────────
 pull_files() {
     cd "$LOCAL_DIR"
+    ssh_open "$SSH_HOST"
     info "Pulling server files → local..."
     rsync -az --stats \
         "${RSYNC_EXCLUDES[@]}" \
@@ -123,6 +165,7 @@ pull_files() {
 # ── Diff (dry-run both directions) ───────────────────────────────────────────
 show_diff() {
     cd "$LOCAL_DIR"
+    ssh_open "$SSH_HOST"
     echo ""
     info "Changes that would be pushed to server:"
     rsync -az --dry-run --itemize-changes \
