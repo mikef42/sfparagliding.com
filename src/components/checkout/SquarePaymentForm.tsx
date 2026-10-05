@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCartStore, type CartItem } from '@/store/cart'
 import { formatPriceDollars } from '@/lib/utils'
+import { OrderByPhone } from '@/components/checkout/OrderByPhone'
 
 interface SquarePaymentFormProps {
   amount: number
@@ -48,6 +49,9 @@ export function SquarePaymentForm({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [sdkReady, setSdkReady] = useState(false)
+  // No card payments possible: show the phone number instead of a form
+  // that can never submit.
+  const [unavailable, setUnavailable] = useState(false)
   const router = useRouter()
   const clearCart = useCartStore((s) => s.clearCart)
 
@@ -68,13 +72,8 @@ export function SquarePaymentForm({
 
         const config: SquareConfig = await res.json()
 
-        if (!config.paymentsEnabled) {
-          setError('Online payments are currently unavailable. Please contact us to place an order.')
-          return
-        }
-
-        if (!config.appId || !config.locationId) {
-          setError('Square payment is not configured. Please contact support.')
+        if (!config.paymentsEnabled || !config.appId || !config.locationId) {
+          setUnavailable(true)
           return
         }
 
@@ -173,6 +172,10 @@ export function SquarePaymentForm({
       setError('Something went wrong. Please try again.')
       setLoading(false)
     }
+  }
+
+  if (unavailable) {
+    return <OrderByPhone context="checkout" />
   }
 
   return (

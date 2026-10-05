@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getProduct } from '@/lib/payload'
+import { getSquarePublicConfig } from '@/lib/square'
 import { getImageUrl } from '@/lib/utils'
 import { ProductDetail } from '@/components/products/ProductDetail'
 
@@ -38,6 +39,17 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
   if (!product) notFound()
 
+  // Card checkout works only once Square is set up in Site Settings. Until
+  // then the page offers ordering by phone rather than a checkout that
+  // can't take payment (the case from launch to 2026-10-05).
+  let onlineCheckout = false
+  try {
+    const square = await getSquarePublicConfig()
+    onlineCheckout = Boolean(square.paymentsEnabled && square.appId && square.locationId)
+  } catch (error) {
+    console.error('[ProductPage] Could not read payment settings:', error)
+  }
+
   const featuredImage =
     product.images?.[0]?.image && typeof product.images[0].image === 'object'
       ? getImageUrl(product.images[0].image, 'large')
@@ -69,7 +81,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         }}
       />
 
-      <ProductDetail product={product} />
+      <ProductDetail product={product} onlineCheckout={onlineCheckout} />
     </>
   )
 }

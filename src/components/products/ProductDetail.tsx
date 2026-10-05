@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useCartStore } from '@/store/cart'
 import { getImageUrl, formatPriceDollars, cn } from '@/lib/utils'
 import { RichTextRenderer } from '@/components/ui/RichTextRenderer'
+import { OrderByPhone } from '@/components/checkout/OrderByPhone'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -29,9 +30,11 @@ interface ProductDetailProps {
     inventory?: number | null
     category?: { id: number | string; name: string; slug: string } | number | null
   }
+  /** False while the site can't take card payments: offer ordering by phone instead. */
+  onlineCheckout?: boolean
 }
 
-export function ProductDetail({ product }: ProductDetailProps) {
+export function ProductDetail({ product, onlineCheckout = true }: ProductDetailProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
   const [selectedSize, setSelectedSize] = useState<string | null>(null)
   const [selectedColor, setSelectedColor] = useState<string | null>(null)
@@ -302,6 +305,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
               </div>
             )}
 
+            {!onlineCheckout && <OrderByPhone context="product" />}
+
+            {onlineCheckout && (
+            <>
             {/* Quantity Selector */}
             <div className="mb-6">
               <div className="inline-flex items-center border border-gray-300">
@@ -405,6 +412,8 @@ export function ProductDetail({ product }: ProductDetailProps) {
             >
               Buy Now
             </button>
+            </>
+            )}
 
             {/* Share */}
             <button
