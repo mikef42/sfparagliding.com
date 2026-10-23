@@ -10,9 +10,14 @@ export const Orders: CollectionConfig = {
     useAsTitle: 'customerEmail',
     defaultColumns: ['customerEmail', 'total', 'status', 'createdAt'],
   },
+  // Orders hold customer names, emails and payment ids. Only signed-in admins may read them
+  // through the API; the checkout route creates them server-side through the Local API, which
+  // bypasses collection access, so no anonymous create is needed either. (2026-10-22 audit)
   access: {
-    read: () => true,
-    create: () => true,
+    read: ({ req: { user } }) => Boolean(user),
+    create: ({ req: { user } }) => Boolean(user),
+    update: ({ req: { user } }) => Boolean(user),
+    delete: ({ req: { user } }) => Boolean(user),
   },
   fields: [
     {

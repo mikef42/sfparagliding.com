@@ -12,9 +12,12 @@ export const PageViews: CollectionConfig = {
     group: 'Analytics',
     hidden: true,
   },
+  // Written by /api/track and read by the analytics routes through the Local API (server side);
+  // nothing anonymous needs the REST API, which used to list every visitor's user agent and
+  // referrer. (2026-10-22 audit)
   access: {
-    read: () => true,
-    create: () => true,
+    read: ({ req: { user } }) => Boolean(user),
+    create: ({ req: { user } }) => Boolean(user),
     update: () => false,
     delete: () => false,
   },
