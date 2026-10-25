@@ -69,11 +69,14 @@ function buildFailureMessage(error: unknown): string {
 }
 
 export async function generateSitemapArtifacts({
+  dueToleranceMs = 0,
   force = false,
   payload,
   siteUrl,
   trigger,
 }: {
+  /** Treat generation as due this much before its scheduled time (see the cron route). */
+  dueToleranceMs?: number
   force?: boolean
   payload: Payload
   siteUrl: string
@@ -87,7 +90,7 @@ export async function generateSitemapArtifacts({
 
   const generationFrequency = normalizeSitemapGenerationFrequency(settings.generationFrequency)
   const nextScheduledGenerationAt = getNextSitemapGenerationAt(settings)
-  const generationDue = force || isSitemapGenerationDue(settings)
+  const generationDue = force || isSitemapGenerationDue(settings, new Date(Date.now() + dueToleranceMs))
 
   if (!generationDue) {
     return {
