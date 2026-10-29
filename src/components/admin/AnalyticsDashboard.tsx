@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
+import { getPacificDay } from '@/lib/pacific-day'
 
 interface DashboardData {
   totalViews: number
@@ -28,6 +29,7 @@ export default function AnalyticsDashboard() {
       .catch(() => setLoading(false))
   }, [days])
 
+  const todayPacific = getPacificDay()
   const maxViews = data ? Math.max(...data.dailySeries.map((d) => d.views), 1) : 1
   const chartHeight = 160
   const barWidth = data ? Math.max(8, Math.min(40, Math.floor(600 / (data.dailySeries.length || 1)) - 4)) : 20
@@ -103,7 +105,7 @@ export default function AnalyticsDashboard() {
               {data.dailySeries.map((d, i) => {
                 const h = (d.views / maxViews) * chartHeight
                 const x = i * (barWidth + 4) + 10
-                const isToday = d.date === new Date().toISOString().split('T')[0]
+                const isToday = d.date === todayPacific
                 return (
                   <g key={d.date}>
                     <rect

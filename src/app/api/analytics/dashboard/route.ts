@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from '@/lib/payload'
+import { getPacificDay, pacificDaysBefore } from '@/lib/pacific-day'
 
 export async function GET(req: NextRequest) {
   try {
@@ -7,9 +8,8 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const days = parseInt(searchParams.get('days') || '7', 10)
 
-  const startDate = new Date()
-  startDate.setDate(startDate.getDate() - days)
-  const startStr = startDate.toISOString().split('T')[0]
+  const todayStr = getPacificDay()
+  const startStr = pacificDaysBefore(todayStr, days)
 
   const summaries = await payload.find({
     collection: 'analytics-summary',
@@ -21,7 +21,6 @@ export async function GET(req: NextRequest) {
     sort: 'date',
   })
 
-  const todayStr = new Date().toISOString().split('T')[0]
   const todayEvents = await payload.find({
     collection: 'page-views',
     where: {
@@ -81,9 +80,7 @@ export async function GET(req: NextRequest) {
 
   const dailySeries: { date: string; views: number; unique: number }[] = []
   for (let i = days; i >= 0; i--) {
-    const d = new Date()
-    d.setDate(d.getDate() - i)
-    const key = d.toISOString().split('T')[0]
+    const key = pacificDaysBefore(todayStr, i)
     dailySeries.push({
       date: key,
       views: dailyMap[key]?.views || 0,

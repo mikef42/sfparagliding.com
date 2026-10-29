@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from '@/lib/payload'
+import { getPacificDay, pacificDaysBefore } from '@/lib/pacific-day'
 
 export async function POST(req: NextRequest) {
   const authHeader = req.headers.get('authorization')
@@ -9,9 +10,7 @@ export async function POST(req: NextRequest) {
 
   try {
   const payload = await getPayload()
-  const yesterday = new Date()
-  yesterday.setDate(yesterday.getDate() - 1)
-  const dateStr = yesterday.toISOString().split('T')[0]
+  const dateStr = pacificDaysBefore(getPacificDay(), 1)
 
   const rawEvents = await payload.find({
     collection: 'page-views',

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from '@/lib/payload'
 import crypto from 'crypto'
+import { getPacificDay } from '@/lib/pacific-day'
 
 interface TrackEvent {
   path: string
@@ -23,7 +24,7 @@ function getDeviceType(ua: string): 'desktop' | 'mobile' | 'tablet' {
 }
 
 function getDailySalt(): string {
-  const today = new Date().toISOString().split('T')[0]
+  const today = getPacificDay()
   return `sfp-${today}-${process.env.PAYLOAD_SECRET || 'salt'}`
 }
 
@@ -78,7 +79,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing path' }, { status: 400 })
     }
 
-    const today = new Date().toISOString().split('T')[0]
+    const today = getPacificDay()
 
     buffer.push({
       path,
