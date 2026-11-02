@@ -65,8 +65,27 @@ if [[ "$HTTP_CODE" != "200" ]]; then
 fi
 echo "  Downloaded $(du -h "$TMP_ZIP" | cut -f1)"
 
-unzip -q "$TMP_ZIP" -d "$TMP_DIR"
+# A failed extraction must stop the deploy. Without these checks an empty
+# SOURCE_DIR turns the rsync below into "rsync / $ROOT/ --delete", which is how
+# gotoix.com was wiped on 2026-10-23 when unzip had been autoremoved.
+if ! command -v unzip >/dev/null 2>&1; then
+    echo "  unzip is missing; installing it"
+    DEBIAN_FRONTEND=noninteractive apt-get install -y -q unzip >/dev/null 2>&1 || { echo "  FATAL: unzip is not installed and could not be installed"; exit 1; }
+    apt-mark manual unzip >/dev/null 2>&1 || true
+fi
+if ! unzip -q "$TMP_ZIP" -d "$TMP_DIR"; then
+    echo "  FATAL: could not extract the archive"
+    exit 1
+fi
 SOURCE_DIR=$(find "$TMP_DIR" -maxdepth 1 -mindepth 1 -type d | head -1)
+case "$SOURCE_DIR" in
+    /tmp/deploy_sfpg_extract_*/*) ;;
+    *) echo "  FATAL: extracted tree not found under $TMP_DIR (got '${SOURCE_DIR}')"; exit 1 ;;
+esac
+for must in package.json package-lock.json next.config.ts deploy-server.sh src/app; do
+    [[ -e "$SOURCE_DIR/$must" ]] || { echo "  FATAL: extracted tree lacks $must; refusing to sync"; exit 1; }
+done
+echo "  Extracted to $SOURCE_DIR"
 
 echo "[2/6] Syncing code..."
 rsync -rlptD --delete --no-owner --no-group \
